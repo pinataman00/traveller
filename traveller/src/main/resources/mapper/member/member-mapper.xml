@@ -6,4 +6,12 @@
 	<select id="login" parameterType="member" resultType="member">
 		SELECT * FROM MEMBER WHERE MEMBER_ID=#{memberId}
 	</select>
+	
+	<insert id="insertMember" parameterType="member">
+		INSERT INTO MEMBER VALUES(#{memberId},#{email},#{memberPwd},#{phone},default,#{introduce},SYSDATE,#{areaCode},#{sigunguCode})
+	</insert>
+	
+	<insert id="insertProfileImg" parameterType="profileimg">
+		INSERT INTO PROFILEIMG VALUES('IMG'||SEQ_PROIMG.NEXTVAL,#{memberId},#{oriName},#{renamedFileName},SYSDATE)
+	</insert>
 </mapper>

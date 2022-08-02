@@ -17,7 +17,7 @@ public class Member {
 	private String email;
 	private String memberPwd;
 	private String phone;
-	private String image;
+	private Profileimg image;
 	private String grade;
 	private String introduce;
 	private Date enrollDate;

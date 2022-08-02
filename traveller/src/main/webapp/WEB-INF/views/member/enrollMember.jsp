@@ -23,7 +23,7 @@
 				</div>
 				
 				<div class="info-container">
-				<input type="password" class="form-control" placeholder="비밀번호(대문자 1개 포함 최소 8글자 입력)" name="password" id="password_" required>
+				<input type="password" class="form-control" placeholder="비밀번호(대문자 1개 포함 최소 8글자 입력)" name="memberPwd" id="password_" required>
 				<input type="password" class="form-control" placeholder="비밀번호 확인" id="password_2" required>
 				<span id="pwRes"></span>
 				<input type="text" class="form-control" placeholder="이메일" name="email" id="email_" required>
@@ -46,7 +46,7 @@
 					<h5 style="font-size:18px; text-align:left;">관심 지역</h5>
 					<p style="font-size:13px; float:left;">관련 소식을 알림으로 알려드릴게요</p>
 					
-				<select class="custom-select custom-select-sm" name="areacode" id="areacode_">
+				<select class="custom-select custom-select-sm" name="areaCode" id="areacode_">
 							<option value="">-- 선택 --</option>
 							<option value="1">서울</option>
 							<option value="2">인천</option>
@@ -66,7 +66,7 @@
 							<option value="38">전라남도</option>
 							<option value="39">제주도</option>	
 				</select>
-				<select class="custom-select custom-select-sm" name="sigungucode" id="sigungucode_">
+				<select class="custom-select custom-select-sm" name="sigunguCode" id="sigungucode_">
 				  <option selected>-- 선택 --</option>
 				</select>
 					
@@ -202,7 +202,7 @@
 		}
 		
 		//----------------------------------------------------------------------------------------------------
-		//관심 지역 옵션 생성 관련
+		//관심 지역 옵션 *생성 관련
 		const area = document.getElementById("areacode_");
 		const sigungu = document.getElementById("sigungucode_");
 
