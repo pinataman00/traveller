@@ -1,0 +1,116 @@
+@charset "UTF-8";
+
+
+.container{
+	
+padding-right:15px;
+padding-left:15px;
+margin-right:auto;
+margin-left:auto;
+width:1920px;
+/* background-color:gray; */
+/* border:1px solid red; */
+	
+}
+
+div.enroll-container {
+	text-align: center;
+/* 	border: 1px solid red; */
+	margin: 30px;
+	width: 500px;
+	display: inline-table;
+}
+
+div.title-container {
+/* 	border: 1px solid red; */
+	margin: 30px;
+}
+
+div#memberId-container {
+	width: 400px;
+	position: relative;
+	/*     margin-bottom: -10px; */
+	margin-left: 120px;
+	display: inline-flex;
+}
+
+span.guide {
+	display: none;
+}
+
+span.ok {
+	color: green;
+}
+
+span.error {
+	color: red;
+}
+
+section.container {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.info-container {
+	width: 300px;
+	margin: 10px;
+	display: inline-block;
+}
+
+.info-container input {
+	margin: 10px;
+}
+
+.memberId-container input {
+	width: 211px;
+	display: inline;
+	display: flex;
+	margin-left: 59px;
+}
+
+::placeholder {
+	font-size: 14px;
+}
+
+textarea#introduce_ {
+	resize: none;
+	width: 300px;
+	margin-left: 11px;
+	border-radius: 5px;
+}
+
+/* select#areacode_ {
+	width: 150px;
+}
+
+select#sigungucode_ {
+	width: 150px;
+} */
+
+.button-container {
+    margin-top: 17px;
+    display: flex;
+    margin-left: 181px;
+}
+
+.area-container {
+	margin-top: 12px;
+	margin-bottom: 10px;
+	margin-left: 25px;
+	display: inline-block;
+	width:300px;
+}
+
+.input-file-container {
+	width: 300px;
+	display: inline-block;
+	margin-left: 24px;
+}
+.title-container h3{
+    font-size: 1.75rem;
+    margin-bottom: 23px;
+    display: inline-block;
+    float: left;
+    margin-left: 87px;
+	
+}

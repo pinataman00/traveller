@@ -1,0 +1,42 @@
+server:
+  port: 9090
+  
+spring:
+  datasource: 
+    url: jdbc:oracle:thin:@61.78.121.242:8877:xe
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    username: dy
+    password: dydy
+    #connection pool설정
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 50
+      auto-commit: false
+      connection-test-query: select 1 from dual
+      pool-name: dypool
+    #파일 업로드 관련 설정 (location? 최대 10MB)
+  servlet:
+    multipart:
+      enabled: true
+      location: ${java.io.tmpdir}
+      max-file-size: 10485760KB
+      max-request-size: 10485760KB
+          
+  
+#MVC패턴으로 jsp페이지 연결하기 (internal view resolover를 등록했던 것처럼...) (mvnrepository에서 tomcat-embed-jasper를 dependencies에 등록함)
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+      
+mybatis:
+  mapper-locations: /mapper/**/*.xml
+  type-aliases-package: com.dy.traveller.member.model.vo
+  configuration:
+    map-underscore-to-camel-case: true
+      
+
+  
+  
+  
+  

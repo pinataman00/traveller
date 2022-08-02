@@ -1,0 +1,109 @@
+{
+	"folders": {},
+	"connections": {
+		"oracle_thin-1824e8c7b76-6da5e6a8d75d6051": {
+			"provider": "oracle",
+			"driver": "oracle_thin",
+			"name": "61.78.121.242",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "61.78.121.242",
+				"port": "8877",
+				"database": "XE",
+				"url": "jdbc:oracle:thin:@61.78.121.242:8877:XE",
+				"home": "C:\\app\\pinat\\product\\18.0.0\\dbhomeXE",
+				"type": "dev",
+				"provider-properties": {
+					"show-only-one-schema@": "false",
+					"@dbeaver-check-schema-content@": "false",
+					"@dbeaver-always-show-dba@": "false",
+					"@dbeaver-always-use-dba-views@": "false",
+					"@dbeaver-meta-use-sys-schema@": "false",
+					"@dbeaver-meta-use-simple-constraints@": "false",
+					"@dbeaver-use-rule-hint@": "false",
+					"@dbeaver-use-meta-optimizer@": "true",
+					"@dbeaver-meta-use-alternative-table-query@": "false",
+					"oracle.meta-search-in-synonyms": "false",
+					"@dbeaver-connection-type@": "BASIC",
+					"@dbeaver-sid-service@": "SID"
+				},
+				"auth-model": "oracle_native",
+				"handlers": {}
+			}
+		},
+		"oracle_thin-1824e8d6458-53e8890673d4a1c8": {
+			"provider": "oracle",
+			"driver": "oracle_thin",
+			"name": "61.78.121.242 2",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "61.78.121.242",
+				"port": "8877",
+				"database": "XE",
+				"url": "jdbc:oracle:thin:@//61.78.121.242:8877/XE",
+				"home": "C:\\app\\pinat\\product\\18.0.0\\dbhomeXE",
+				"type": "dev",
+				"provider-properties": {
+					"show-only-one-schema@": "false",
+					"@dbeaver-check-schema-content@": "false",
+					"@dbeaver-always-show-dba@": "false",
+					"@dbeaver-always-use-dba-views@": "false",
+					"@dbeaver-meta-use-sys-schema@": "false",
+					"@dbeaver-meta-use-simple-constraints@": "false",
+					"@dbeaver-use-rule-hint@": "false",
+					"@dbeaver-use-meta-optimizer@": "true",
+					"@dbeaver-meta-use-alternative-table-query@": "false",
+					"oracle.meta-search-in-synonyms": "false",
+					"@dbeaver-connection-type@": "BASIC",
+					"@dbeaver-sid-service@": "SERVICE"
+				},
+				"auth-model": "oracle_native",
+				"handlers": {}
+			}
+		},
+		"oracle_thin-1824e8e0d7f-62c46b20af43561d": {
+			"provider": "oracle",
+			"driver": "oracle_thin",
+			"name": "61.78.121.242 3",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "61.78.121.242",
+				"port": "8877",
+				"database": "XE",
+				"url": "jdbc:oracle:thin:@61.78.121.242:8877:XE",
+				"home": "C:\\app\\pinat\\product\\18.0.0\\dbhomeXE",
+				"type": "dev",
+				"provider-properties": {
+					"show-only-one-schema@": "false",
+					"@dbeaver-check-schema-content@": "false",
+					"@dbeaver-always-show-dba@": "false",
+					"@dbeaver-always-use-dba-views@": "false",
+					"@dbeaver-meta-use-sys-schema@": "false",
+					"@dbeaver-meta-use-simple-constraints@": "false",
+					"@dbeaver-use-rule-hint@": "false",
+					"@dbeaver-use-meta-optimizer@": "true",
+					"@dbeaver-meta-use-alternative-table-query@": "false",
+					"oracle.meta-search-in-synonyms": "false",
+					"@dbeaver-connection-type@": "BASIC",
+					"@dbeaver-sid-service@": "SID"
+				},
+				"auth-model": "oracle_native",
+				"handlers": {}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"auto-close-transactions": false
+		}
+	}
+}

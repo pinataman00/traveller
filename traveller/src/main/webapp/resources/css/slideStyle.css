@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+.mainImg {
+	height: 600px;
+	overflow: hidden;
+}
+
+.textBox{
+	background-color:rgba(0,0,0,0.4);
+	padding:10px;
+	border-radius:5px;
+}
