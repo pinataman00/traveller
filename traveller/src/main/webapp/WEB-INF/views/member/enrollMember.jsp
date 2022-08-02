@@ -47,7 +47,7 @@
 					<p style="font-size:13px; float:left;">관련 소식을 알림으로 알려드릴게요</p>
 					
 				<select class="custom-select custom-select-sm" name="areaCode" id="areacode_">
-							<option value="">-- 선택 --</option>
+							<option value="0">-- 선택 --</option>
 							<option value="1">서울</option>
 							<option value="2">인천</option>
 							<option value="3">대전</option>
@@ -67,7 +67,7 @@
 							<option value="39">제주도</option>	
 				</select>
 				<select class="custom-select custom-select-sm" name="sigunguCode" id="sigungucode_">
-				  <option selected>-- 선택 --</option>
+				  <option selected value="0">-- 선택 --</option>
 				</select>
 					
 					

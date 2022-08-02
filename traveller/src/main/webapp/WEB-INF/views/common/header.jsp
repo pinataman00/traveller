@@ -93,12 +93,29 @@
 	      <button class="btn btn-outline-primary btn-sm my-2 my-sm-0" type="submit" onclick="location.assign('${path}/member/enrollMember.do')">회원가입</button>
      </c:if>
      <c:if test="${loginMember!=null }">
+     
+     	<!-- TODO : 메시지, 알림이 있을 때, 아이콘 분기 처리해야 함 -->
+        <img src="${path}/resources/img/icons/msg.svg" alt="msg" style="width:25px;height:25px; margin-right:10px;">
+        <img src="${path}/resources/img/icons/bell.svg" alt="alarm" style="width:25px;height:25px; margin-right:10px;">
      	<span>
-     		<a href="${path }/member/memberView.do?memberId=${loginMember.memberId}">
-     			<c:out value="${loginMember.memberId}"/>
-     		</a>님
-     	</span>
-     	<button class="btn btn-outline-primary btn-sm my-2 my-sm-0" type="submit" onclick="location.replace('${path}/member/logout.do')">로그아웃</button>
+
+				<div class="dropdown" style="margin-right:10px;">
+				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    ${loginMember.memberId}
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+				    <button class="dropdown-item" type="button" onclick="location.assign('${path}/member/myInfo.do')">정보 수정</button>
+				    <button class="dropdown-item" type="button">메시지</button>
+				    <button class="dropdown-item" type="button">알림</button>
+				    <button class="dropdown-item" type="button">나의 여행</button>
+				    <div class="dropdown-divider"></div>
+				    <button class="dropdown-item" type="button" onclick="location.replace('${path}/member/logout.do')">로그아웃</button>
+				    
+				  </div>
+				</div>
+
+				</span>
+     	<%-- <button class="btn btn-outline-primary btn-sm my-2 my-sm-0" type="submit" onclick="location.replace('${path}/member/logout.do')">로그아웃</button> --%>
      </c:if>
       
   </div>

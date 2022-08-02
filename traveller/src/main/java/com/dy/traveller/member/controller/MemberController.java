@@ -94,7 +94,7 @@ public class MemberController {
 
 	// 회원 가입
 	@RequestMapping("/enrollMemberEnd.do")
-	public void enrollMemberEnd(Member m, Model model, MultipartFile img, HttpServletRequest rs) {
+	public String enrollMemberEnd(Member m, Model model, MultipartFile img, HttpServletRequest rs) {
 
 		
 		//로직 순서
@@ -106,15 +106,9 @@ public class MemberController {
 		
 		//1. MEMBER테이블에 회원 정보 저장하기 (+ '단방향 암호화'작업)
 		m.setMemberPwd(pwEncoder.encode(m.getMemberPwd())); //BcryptPasswordEncoder로 암호화하기
-//		int res = service.insertMember(m);
-//		
-//		System.out.println(res>0?"저장 성공":"저장 실패");
-		
-		System.out.println("areacode : "+m.getAreaCode());
-		System.out.println("sigungucode : "+m.getSigunguCode());
+
 			
-			//2. MEMBER에 회원 정보 저장 성공 時, 프로필 사진(PROFILEIMG)도 저장할 것임
-			
+			//2. 프로필 사진(PROFILEIMG) 저장 관련
 			
 			// 프로필 사진 관련
 			System.out.println("파일 이름 :" + img.getOriginalFilename());
@@ -158,7 +152,7 @@ public class MemberController {
 			  try {
 			  
 				  service.insertMember(m);
-				  msg="회원 가입 성공!";
+				  msg="회원 가입 성공! 로그인 해주세요!";
 				  loc="/";
 
 			  } catch (RuntimeException e) {
@@ -173,8 +167,10 @@ public class MemberController {
 			  }
 		  
 		  
+		model.addAttribute("msg",msg);
+		model.addAttribute("loc",loc);
 		  
-		// return "";
+		return "common/msg";
 	}
 
 }
