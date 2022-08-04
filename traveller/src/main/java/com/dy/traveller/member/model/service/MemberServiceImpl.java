@@ -50,4 +50,16 @@ public class MemberServiceImpl implements MemberService {
 		return res;
 	}
 
+	@Override
+	public int updatePwd(Member m) {
+		
+		return dao.updatePwd(session,m);
+	}
+
+	@Override
+	public int deleteMember(Member m) {
+		
+		return dao.deleteMember(session,m);
+	}
+
 }

@@ -23,14 +23,12 @@
 
 <body>
 
-<div class="container-fluid" onclick="location.replace('${path}/')">
+<%-- <div class="container-fluid" onclick="location.replace('${path}/')">
   <h2 style="font-family:Work+Sans;text-align:center;padding:10px">traveⅡer</h2>
-</div>
+</div> --%>
 
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
 
-
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <!-- <a class="navbar-brand" href="#">traveⅡer</a> -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -38,16 +36,18 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-<!--       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li> -->
+       <li class="nav-item">
+        	<div class="container-fluid" onclick="location.replace('${path}/')">
+  		<h5 style="font-family:Work+Sans;text-align:center;padding:10px">traveⅡer</h5>
+	</div>
+      </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="여행지를 검색해보세요" href="#">여행지</a>
+        <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="여행지를 검색해보세요" href="#" style="margin-top:4px;">여행지</a>
       </li>
       
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-         data-toggle="tooltip" data-placement="bottom" title="여행의 시작은 계획!">
+         data-toggle="tooltip" data-placement="bottom" title="여행의 시작은 계획!" style="margin-top:4px;">
           플래너
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -60,7 +60,7 @@
       
       <c:if test="${loginMember.memberId=='admin'}">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top:4px;">
           관리자
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">

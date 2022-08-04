@@ -23,7 +23,7 @@
 				</div>
 				
 				<div class="info-container">
-				<input type="password" class="form-control" placeholder="비밀번호(대문자 1개 포함 최소 8글자 입력)" name="memberPwd" id="password_" required>
+				<input type="password" class="form-control" placeholder="비밀번호(숫자, 문자 1개 포함 최소 8글자 입력)" name="memberPwd" id="password_" required>
 				<input type="password" class="form-control" placeholder="비밀번호 확인" id="password_2" required>
 				<span id="pwRes"></span>
 				<input type="text" class="form-control" placeholder="이메일" name="email" id="email_" required>
@@ -89,6 +89,8 @@
     	console.log("있니");
         console.log($.ajax);
       });
+    
+    console.log("외?");
 
 	
 		const checkMemberId = ()=>{ //아이디 중복 체크
@@ -187,11 +189,11 @@
 			} 
 			
 			//2. 비밀번호
-			//정규표현식 : 최소 한 개의 대문자+최소 8자
-			const exr = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
+			//정규표현식 : 최소 한 개의 문자+숫자, 최소 8자
+			const exr = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 			const password=document.getElementById("password_").value;
 			if(password.trim()<8||!exr.test(password)){
-				alert("최소 한 개의 영문자가 포함된 8글자 이상의 비밀번호를 입력하세요");
+				alert("최소 하나의 문자와 숫자가 포함된 8글자 이상의 비밀번호를 입력하세요");
 				document.getElementById("password_").value="";
 				document.getElementById("password_2").value="";
 				document.getElementById("password_").focus();

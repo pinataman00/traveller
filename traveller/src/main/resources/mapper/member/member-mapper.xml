@@ -3,6 +3,46 @@
 <mapper namespace="member">
 
 
+	<!-- 
+		● selectMember 쿼리문 관련
+		resultMap으로 출력해야 함! 1:多관계니까 (Member클래스에는 Profileimg image라는 멤버변수로서 "객체"가 저장됨)
+		상술하면 MEMBER, PROFILEIMG - has a 관계이므로...! 
+		※ mybatis의 collection복습 要
+	-->
+	
+	<!-- memberMap 만들기 -->
+	<resultMap id="memberMap" type="member">
+		<!-- collection 사용 時, 모든 column을 반드시 작성해야 함! -->
+		<id column="member_id" property="memberId"/>
+		<result column="email" property="email"/>
+		<result column="member_pwd" property="memberPwd"/> 
+		<result column="phone" property="phone"/> 
+		<result column="grade" property="grade"/>		
+		<result column="introduce" property="introduce"/>
+		<result column="enroll_date" property="enrollDate"/>
+		<result column="areacode" property="areaCode"/>
+		<result column="sigungucode" property="sigunguCode"/>
+		<!-- ▲ Member객체가 기본적으로 보유한 것 -->
+		<!-- Profileimg 관련 ▼ -->	
+		<collection property="image" ofType="profileimg">
+			<id column="imgno" property="imgNo"/>
+			<result column="member_id" property="memberId"/>
+			<result column="oriname" property="oriName"/>
+			<result column="renamedfilename" property="renamedFileName"/>
+			<result column="uploaddate" property="uploadDate"/>
+		</collection>
+	</resultMap>	
+	
+
+	<select id="selectMember" parameterType="member" resultMap="memberMap">
+		SELECT * FROM MEMBER M 
+					  LEFT JOIN PROFILEIMG P 
+					  ON M.MEMBER_ID=P.MEMBER_ID
+			     WHERE M.MEMBER_ID=#{memberId}		
+	</select>
+
+
+
 	<select id="login" parameterType="member" resultType="member">
 		SELECT * FROM MEMBER WHERE MEMBER_ID=#{memberId}
 	</select>
@@ -14,4 +54,13 @@
 	<insert id="insertProfileImg" parameterType="profileimg">
 		INSERT INTO PROFILEIMG VALUES('IMG'||SEQ_PROIMG.NEXTVAL,#{memberId},#{oriName},#{renamedFileName},SYSDATE)
 	</insert>
+	
+	<update id="updatePwd" parameterType="member">
+		UPDATE MEMBER SET MEMBER_PWD=#{memberPwd} WHERE MEMBER_ID=#{memberId}	
+	</update>
+	
+	<delete id="deleteMember" parameterType="member">
+		DELETE FROM MEMBER WHERE MEMBER_ID=#{memberId} 
+	</delete>
+	
 </mapper>

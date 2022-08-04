@@ -12,5 +12,9 @@ public interface MemberDao {
 	public int insertMember(SqlSessionTemplate session, Member m);
 
 	public int insertProfileimg(SqlSessionTemplate session, Profileimg image);
+
+	public int updatePwd(SqlSessionTemplate session, Member m);
+
+	public int deleteMember(SqlSessionTemplate session, Member m);
 	
 }

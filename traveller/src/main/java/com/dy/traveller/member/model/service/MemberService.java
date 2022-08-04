@@ -8,6 +8,10 @@ public interface MemberService {
 
 	int insertMember(Member m);
 
+	int updatePwd(Member m);
+
+	int deleteMember(Member member);
+
 	
 	
 }

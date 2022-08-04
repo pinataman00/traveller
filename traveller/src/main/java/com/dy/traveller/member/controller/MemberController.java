@@ -37,15 +37,11 @@ public class MemberController {
 
 		Member loginMember = service.login(m); // 1. 클라이언트 입력 아이디-DB 아이디 대조
 
-		System.out.println(loginMember);
-		System.out.println("클라이언트 입력 값 : " + m.getMemberPwd());
-		System.out.println("DB에 저장된 값 : " + loginMember.getMemberPwd());
+		//DB에서 loginMember객체를 가져오니까, images는 못 가져올 수밖에...
+		System.out.println("로그인 멤버 확인 "+loginMember);
 
 		String viewName = "redirect:/";
 
-		//회원 가입 기능 구현 前(=BcryptPasswordEncoder로 클라이언트의 비밀번호를 암호화하기 前) 
-		//... DB에 저장된 암호 값은, 암호화되어 있지 않다고 인식함 : Encoded password does not look like BCrypt
-		//: 회원가입 로직 구현 후 재시도할 것 -> 기존 저장된 회원 정보 (x) 신규 가입 회원으로는 다음 로직으로 로그인 성공!
 		if (loginMember != null && pwEncoder.matches(m.getMemberPwd(),
 		 loginMember.getMemberPwd())) {
 
@@ -145,9 +141,14 @@ public class MemberController {
 					}
 			  }
 			  
+			  
+				
+				System.out.println("///////////////////////////////"+m.getImage());
+			  
 			  //DB에 이미지 파일 저장하기
 			  
 			  String msg,loc="";
+			  
 			  
 			  try {
 			  
@@ -159,9 +160,11 @@ public class MemberController {
 				  msg="회원 가입 실패. 다시 시도해주세요.";
 				  loc="/member/enrollMember.do";
 
-				  File deleteFile = new File(path+m.getImage().getRenamedFileName());
-				  if(deleteFile.exists()) {
-					  deleteFile.delete();
+				  if(!img.isEmpty()) {
+					  File deleteFile = new File(path+m.getImage().getRenamedFileName());
+					  if(deleteFile.exists()) {
+						  deleteFile.delete();
+					  }
 				  }
 
 			  }
@@ -169,8 +172,113 @@ public class MemberController {
 		  
 		model.addAttribute("msg",msg);
 		model.addAttribute("loc",loc);
+		
+		System.out.println("이미지는 왜 널인가? "+m);
 		  
 		return "common/msg";
+	}
+	
+	@RequestMapping("/myInfo.do")
+	public String myInfo() {
+		return "member/myInfo";
+	}
+	
+	@RequestMapping("/myInfoEnd.do")
+	public String updateInfo() {
+		
+		String viewName = "redirect:/";
+		return viewName;
+	}
+	
+	@RequestMapping("/updatePwd.do")
+	public String updatePwd(Member m, Model model, String nowPwd, String memberPwd, SessionStatus status) {
+		
+		String viewName = "member/myInfo";
+		
+		System.out.println(m.getMemberId());
+		
+		
+		  Member loginMember = service.login(m); // 1. 클라이언트 입력 아이디-DB 아이디 대조
+		  m.setMemberPwd(nowPwd); //클라이언트가 입력한 "현재 비밀번호"
+		  
+		  String msg= "";
+		  String loc = "/member/myInfo.do";
+		  
+		  if (loginMember != null && pwEncoder.matches(m.getMemberPwd(),loginMember.getMemberPwd())) {
+		  
+			  System.out.println("클라이언트 입력 값 : " + m.getMemberPwd());
+			  System.out.println("DB에 저장된 값 : " + loginMember.getMemberPwd());
+		  
+			  //비밀번호 "수정" 관련 로직 수행하기
+			  m.setMemberPwd(memberPwd); //클라이언트가 희망하는 수정 비밀번호 값
+			  m.setMemberPwd(pwEncoder.encode(m.getMemberPwd())); //BcryptPasswordEncoder로 암호화하기
+			  int res = service.updatePwd(m);
+			  if(res>0) {
+				  
+				  msg="비밀번호 수정 성공! 다시 로그인해주세요";
+			  
+			  } else {
+				  msg="비밀번호 수정 실패! 다시 시도해주세요";
+			  }
+			
+		  } else { //현재 비밀번호-DB에 저장된 비밀번호, 불일치할 경우
+		  
+			  msg = "현재 비밀번호를 다시 확인해주세요!";
+		  
+		  }
+		 
+		model.addAttribute("loginMember", loginMember);
+		model.addAttribute("msg", msg);
+		model.addAttribute("loc", loc);
+		return "common/msg";
+	}
+	
+	//회원 탈퇴
+	@RequestMapping("/deleteMember.do")
+	public String deleteMember(Member member, Model m,  SessionStatus status, HttpServletRequest rs) {
+		
+		Member memberInfo = service.login(member);
+		System.out.println(memberInfo.getImage().getImgNo()==null?"사진 없음":"사진 있음");
+		
+		//멤버 탈퇴 성공 여부 -> 프로필 사진 삭제하기
+		
+		
+		  int res = service.deleteMember(member);
+		  
+		  String msg = ""; String loc = "/";
+		  
+		  if(res>0) { msg = "회원 탈퇴 완료. 안녕히 계세요.";
+		  
+		  
+			  //1. 로그아웃 처리하기
+				if (!status.isComplete()) {
+					status.setComplete();
+				}
+				
+			  //2. 프로필 사진을 저장했던 회원인 경우 -> 프로필 사진 삭제
+			  String path = rs.getServletContext().getRealPath("/resources/member/profile/");
+			  File deleteFile = new File(path+memberInfo.getImage().getRenamedFileName());
+			  if(deleteFile.exists()) {
+				  deleteFile.delete();
+			  }
+				
+				
+			  loc="/"; //메인화면으로 이동하기
+		  
+		  
+			  if (!status.isComplete()) { //로그아웃 처리 
+				  status.setComplete(); } 
+		  
+		  } else { 
+			  
+			  msg ="회원 탈퇴 실패. 다시 시도해주세요."; 
+		 
+		  }
+		  
+		  m.addAttribute("msg", msg); m.addAttribute("loc", loc); 
+		  
+		  return "common/msg";
+
 	}
 
 }
