@@ -46,6 +46,13 @@ public class MemberDaoImpl implements MemberDao {
 		
 		return session.delete("member.deleteMember",m);
 	}
+
+
+
+	@Override
+	public int deletePic(SqlSessionTemplate session, Member m) {
+		return session.delete("member.deleteProfileImg",m);
+	}
 	
 
 }

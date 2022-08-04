@@ -3,6 +3,73 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/slideStyle.css"/>
 
+<style>
+.planner-photo{
+    border-radius: 10px;
+    width: auto;
+    height: auto;
+    max-width: 242px;
+    max-height: 200px;
+}
+p.traveler-title{
+	font-size: 18px;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+p.traveler-info{
+    margin: 18px;
+    font-size: 15px;
+    text-align: justify;
+    display: contents;
+}
+.planner-container{
+
+    display: flex;
+    border-radius: 10px;
+    margin: 10px;
+    margin-top: 30px;
+    padding: 13px;
+
+}
+
+.planners-big-container{
+    display: flex;
+    justify-content:center;
+}
+
+div.planner-info{
+	margin:14px;
+}
+
+.planner-introduce-title{
+	text-align:center;
+    margin-top: 80px;
+}
+
+.plannerImg{
+
+  width: 286px;
+  height: 286.34px;
+  object-fit: cover;
+
+}
+
+.planner-btn-container{
+
+	text-align:center;
+
+}
+div.planner-btn-container a{
+
+	width:110px;
+	margin:3px;
+
+}
+
+
+
+</style>
+
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height:600px">
 
   <ol class="carousel-indicators">
@@ -35,7 +102,7 @@
       <img class="d-block w-100" src="${path}/resources/img/main04.jpg" alt="Third slide">
       		<div class="carousel-caption d-none d-md-block">
       		<div class="textBox">
-			<h5>전문가에게 맡겨보세요</h5>
+			<p>전문가에게 맡겨보세요</p>
 			<p>계획형은 아니지만, 잘 짜여진 여행을 하고 싶다구요?</p>
 			<button type="button" class="btn btn-primary btn-sm">플랜 의뢰하기</button>
 			</div>
@@ -51,6 +118,55 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
+
+<!-- TODO 0804) 플래너 회원 목록 출력하기 -->
+
+<div class="page-header planner-introduce-title">
+  <h1>Members only! <small>여행 전문가에게 루트를 맡겨보세요!</small></h1>
+  <p>원하는 지역과 테마를 말씀해보세요. 마음에 쏙 드는 여행 계획을 만들어 드릴게요</p>
+</div>
+
+<div class="row planners-big-container">
+  <div class="planner-container">
+<div class="card planner-info" style="width: 18rem;">
+  <img class="card-img-top plannerImg" src="${path}/resources/img/testPic/dorothea.png" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <div class="planner-btn-container">
+	    <a href="#" class="btn btn-primary">구경하기</a>
+	    <a href="#" class="btn btn-primary">의뢰하기</a>
+    </div>
+  </div>
+</div>
+<div class="card planner-info" style="width: 18rem;">
+  <img class="card-img-top plannerImg" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <div class="planner-btn-container">
+	    <a href="#" class="btn btn-primary">구경하기</a>
+	    <a href="#" class="btn btn-primary">의뢰하기</a>
+    </div>
+  </div>
+</div>
+<div class="card planner-info" style="width: 18rem;">
+  <img class="card-img-top plannerImg" src="${path}/resources/img/testPic/edelgard.png" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <div class="planner-btn-container">
+	    <a href="#" class="btn btn-primary">구경하기</a>
+	    <a href="#" class="btn btn-primary">의뢰하기</a>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<hr>
+
+
 
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

@@ -216,6 +216,10 @@ public class MemberController {
 			  if(res>0) {
 				  
 				  msg="비밀번호 수정 성공! 다시 로그인해주세요";
+				  
+				  if (!status.isComplete()) { //로그아웃 처리 
+					  status.setComplete(); } 
+				  loc="/";
 			  
 			  } else {
 				  msg="비밀번호 수정 실패! 다시 시도해주세요";
@@ -280,5 +284,35 @@ public class MemberController {
 		  return "common/msg";
 
 	}
+	
+	@RequestMapping("/deletePic.do")
+	public String deletePic(Member m, HttpServletRequest rs, Model model) {
+		
+		Member loginMember = service.login(m);
+		
+		String msg = "이미지 삭제 실패! 다시 시도해주세요";
+		String loc = "/member/myInfo.do";
+		
+		  String path = rs.getServletContext().getRealPath("/resources/member/profile/");
+		  File deleteFile = new File(path+loginMember.getImage().getRenamedFileName());
+		  if(deleteFile.exists()) {
+			  
+			  deleteFile.delete();
+			  
+			  int res = service.deletePic(loginMember); //PROFILEIMG에서 삭제하기
+			  if(res>0) {
+				  msg = "이미지 삭제 성공!";
+				  loginMember.setImage(null); //이미지 관련 인스턴스 삭제하기
+			  }
+			  
+		  }
+		  
+		model.addAttribute("loginMember", loginMember);
+		model.addAttribute("msg", msg);
+		model.addAttribute("loc",loc);
+		
+		return "common/msg";
+	}
+	
 
 }

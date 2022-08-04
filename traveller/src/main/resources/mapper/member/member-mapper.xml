@@ -41,11 +41,9 @@
 			     WHERE M.MEMBER_ID=#{memberId}		
 	</select>
 
-
-
-	<select id="login" parameterType="member" resultType="member">
+<!-- 	<select id="login" parameterType="member" resultType="member">
 		SELECT * FROM MEMBER WHERE MEMBER_ID=#{memberId}
-	</select>
+	</select> -->
 	
 	<insert id="insertMember" parameterType="member">
 		INSERT INTO MEMBER VALUES(#{memberId},#{email},#{memberPwd},#{phone},default,#{introduce},SYSDATE,#{areaCode},#{sigunguCode})
@@ -61,6 +59,10 @@
 	
 	<delete id="deleteMember" parameterType="member">
 		DELETE FROM MEMBER WHERE MEMBER_ID=#{memberId} 
+	</delete>
+	
+	<delete id="deleteProfileImg" parameterType="member">
+		DELETE FROM PROFILEIMG WHERE MEMBER_ID=#{memberId}
 	</delete>
 	
 </mapper>

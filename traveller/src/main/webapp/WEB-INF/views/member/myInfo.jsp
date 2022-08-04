@@ -10,16 +10,22 @@
 		margin-top:100px;
 		text-align:center;
 	}
-	div#myPic-container img{
+	
+	
+	img.profileImg{
 	
 		margin-top: 20px;
 		margin-bottom: 20px;
-		width: 100px;
-	    height: 100px;
+		width:100px;
+		height:100px;
+ 		max-width: 200px;
+	    max-height: 200px;
 	    border-radius: 50px;
-/* 	    border: 1px solid red; */
+	    
+/* 	    border:1px solid red; */
 	
 	}
+	
 	
 	#update-info-frm{
 	display: inline-grid;
@@ -35,6 +41,11 @@
 	div.btn-container button{
 	width : 150px;
 	}
+	
+	.input-file-container button{
+	margin-left: 130px;
+    margin-bottom: 8px;
+    }
 	
 </style>
 
@@ -59,7 +70,7 @@
 			
         	</c:when>
         	<c:when test="${empty loginMember.image.imgNo}">
-        		<img src="${path}/resources/img/icons/person-fill.svg" alt="profileImg">
+        		<img class="profileImg" src="${path}/resources/img/icons/person-fill.svg" alt="profileImg">
         		<hr>
         	</c:when> 	
         </c:choose>
@@ -80,7 +91,15 @@
 				</div>
 				
 				<div class="input-file-container">
+					<div style="display:flex;">
 					<h5 style="font-size:18px; text-align:left;">프로필 사진</h5>
+					
+					<!-- 프로필 사진 삭제 기능-->
+					<c:if test="${not empty loginMember.image.imgNo}">
+						<button type="button" class="btn btn-secondary btn-sm" onclick="location.assign('${path}/member/deletePic.do?memberId=${loginMember.memberId}')">삭제하기</button>
+					</c:if>
+						
+					</div>
 					<div class="input-group mb-3">
 					  <div class="custom-file">
 					    <input type="file" class="custom-file-input" id="img_" name="img">
@@ -166,6 +185,11 @@
   </div>
 </div>
 <script>
+
+
+	/* 유효성 체크 */
+
+
 
 	/* 비밀번호 수정 관련 로직 구현하기 */
 	
@@ -478,6 +502,7 @@
 				const container = document.getElementById("myPic-container");
 				container.append(img);
 				container.append(document.createElement("hr"));
+				img.className = "profileImg";
 				img.src = URL.createObjectURL(blob);
 			}
 			
@@ -533,22 +558,26 @@
 		
 		
 		//유효성 체크
-		const fn_infoValidate = ()=>{
+		//이메일 양식 준수 여부 체크
+		function emailCk(email) {    
+		    var regex=/([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+		    return (email != '' && email != 'undefined' && regex.test(email)); 
+		}
+	
+		
+
+		email.addEventListener("blur", e=>{
+			const emailVal = email.value;
+			if (emailVal==''||email=='undefined') return;
 			
-			//2. 비밀번호
-			//정규표현식 : 최소 한 개의 대문자+최소 8자
-			const exr = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
-			const password=document.getElementById("password_").value;
-			if(password.trim()<8||!exr.test(password)){
-				alert("최소 한 개의 영문자가 포함된 8글자 이상의 비밀번호를 입력하세요");
-				document.getElementById("password_").value="";
-				document.getElementById("password_2").value="";
-				document.getElementById("password_").focus();
+			//유효성 체크 (정규표현식 기준)
+			if(!emailCk(emailVal)){
+				alert("이메일 양식에 맞춰 작성해주세요!");
+				email.value = "${loginMember.email}";
+				email.focus();
 				return false;
 			}
-			
-
-		}
+		});
 		
 
 </script>

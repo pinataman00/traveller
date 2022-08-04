@@ -20,13 +20,9 @@ public class MemberServiceImpl implements MemberService {
 		return dao.login(session, m);
 	}
 
-//	@Override
-//	public int insertMember(Member m) {
-//		return dao.insertMember(session, m);
-//	}
 	
 	@Override
-	public int insertMember(Member m) {
+	public int insertMember(Member m) { //회원가입
 		
 		int res = 0;
 		
@@ -60,6 +56,14 @@ public class MemberServiceImpl implements MemberService {
 	public int deleteMember(Member m) {
 		
 		return dao.deleteMember(session,m);
+	}
+
+
+	@Override
+	public int deletePic(Member m) {
+		
+		//PROFILEIMG테이블에서 ROW 삭제하기
+		return dao.deletePic(session, m);
 	}
 
 }

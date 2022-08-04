@@ -83,14 +83,7 @@
 	</section>
 	
 	<script>
-	
-	
-    $(document).ready(function() {
-    	console.log("있니");
-        console.log($.ajax);
-      });
-    
-    console.log("외?");
+
 
 	
 		const checkMemberId = ()=>{ //아이디 중복 체크
