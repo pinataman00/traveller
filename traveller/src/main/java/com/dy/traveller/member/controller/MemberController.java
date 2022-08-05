@@ -339,7 +339,7 @@ public class MemberController {
 	public String deleteMember(Member member, Model m,  SessionStatus status, HttpServletRequest rs) {
 		
 		Member memberInfo = service.login(member);
-		System.out.println(memberInfo.getImage().getImgNo()==null?"사진 없음":"사진 있음");
+		//System.out.println(memberInfo.getImage().getImgNo()==null?"사진 없음":"사진 있음");
 		
 		//멤버 탈퇴 성공 여부 -> 프로필 사진 삭제하기
 		
@@ -352,6 +352,7 @@ public class MemberController {
 		  
 		  
 			  //1. 로그아웃 처리하기
+		  	    
 				if (!status.isComplete()) {
 					status.setComplete();
 				}
@@ -365,10 +366,7 @@ public class MemberController {
 				
 				
 			  loc="/"; //메인화면으로 이동하기
-		  
-		  
-			  if (!status.isComplete()) { //로그아웃 처리 
-				  status.setComplete(); } 
+		 
 		  
 		  } else { 
 			  
@@ -432,7 +430,7 @@ public class MemberController {
 	
 	@RequestMapping("/updateGrade.do")
 	public String updateGrade(Member m, Model model) {
-		System.out.println("외않되?");
+		
 		int res = service.updateGrade(m);
 		String msg="";
 		if(res>0) {
@@ -444,6 +442,41 @@ public class MemberController {
 		model.addAttribute("msg", msg);
 		model.addAttribute("loc", "/member/memberList.do");
 		return "common/msg";
+	}
+	
+	@RequestMapping("/deleteMemberByAdmin.do")
+	public String deleteMemberByAdmin(Member member, Model m, SessionStatus status, HttpServletRequest rs) {
+		
+		Member memberInfo = service.login(member);
+		
+		//멤버 탈퇴 성공 여부 -> 프로필 사진 삭제하기	
+		  int res = service.deleteMember(member);
+		  
+		  String msg = "";
+		  
+		  if(res>0) { 
+			  
+			  msg = "회원 탈퇴 처리 완료";
+				
+			  //프로필 사진을 저장했던 회원인 경우 -> 프로필 사진 삭제
+			  String path = rs.getServletContext().getRealPath("/resources/member/profile/");
+			  File deleteFile = new File(path+memberInfo.getImage().getRenamedFileName());
+			  if(deleteFile.exists()) {
+				  deleteFile.delete();
+			  }
+		 
+		  
+		  } else { 
+			  
+			  msg ="회원 탈퇴 실패. 다시 시도해주세요."; 
+		 
+		  }
+		  
+		  m.addAttribute("msg", msg); 
+		  m.addAttribute("loc", "/member/memberList.do"); 
+		  
+		  return "common/msg";
+
 	}
 
 }

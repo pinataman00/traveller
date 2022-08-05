@@ -42,7 +42,7 @@
 	</div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="여행지를 검색해보세요" href="#" style="margin-top:4px;">여행지</a>
+        <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="여행지를 검색해보세요" href="${path}/place/placesMain" style="margin-top:4px;">여행지</a>
       </li>
       
       <li class="nav-item dropdown">

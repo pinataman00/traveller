@@ -10,7 +10,7 @@
 		margin-top : 70px;
 		display:flex;
 		overflow:hidden;
-		height:500px;
+		height:800px;
 	}
 	.menu-container{
 		float:left;
@@ -51,6 +51,19 @@
 	}
 	#msgImg{
 		text-align:center;
+	}
+	
+	.member-search-container{
+		display: flex;
+	    text-align: center;
+	    justify-content: center;
+	    margin-bottom: 20px;
+	    margin-top: 30px;
+	}
+	
+	input#searchBox{
+	    width: 200px;
+	    padding-left: 12px;
 	}
 </style>
 
@@ -120,6 +133,12 @@
 						</c:if>
 					</tbody>
 				</table>
+				<div>
+					<form class="member-search-container">
+						<input id="searchBox" class="form-control" type="text" placeholder="아이디">
+						<input type="submit" class="btn btn-primary" value="검색">
+					</form>
+				</div>
 				<div id="pageBar">
 					${pageBar }
 				</div>
@@ -166,17 +185,17 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form action="${path}/member/deleteMemberByAdmin.do" method="post">
       <div class="modal-body">
-		<form>
 			<input class="form-control" type="text" name="memberId" id="memberId_2" readonly>
 			<br> 
 			<p>회원의 탈퇴 처리를 원하십니까?</p>
-		</form>
-	</div>
+	  </div>
       <div class="modal-footer">
-		<button type="button" class="btn btn-danger">탈퇴 처리</button>
+		<input type="submit" class="btn btn-danger" value="탈퇴처리">
 		<button type="button" class="btn btn-primary" data-dismiss="modal">취소하기</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
