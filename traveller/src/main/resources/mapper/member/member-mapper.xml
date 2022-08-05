@@ -80,6 +80,10 @@
 	<select id="selectMemberCnt" resultType="_int">
 		SELECT COUNT(*) FROM MEMBER
 	</select>
+	
+	<update id="updateGrade" parameterType="member">
+		UPDATE MEMBER SET GRADE=#{grade} WHERE MEMBER_ID=#{memberId}
+	</update>
 
 	
 </mapper>

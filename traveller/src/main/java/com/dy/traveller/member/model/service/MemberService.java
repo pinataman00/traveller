@@ -23,6 +23,8 @@ public interface MemberService {
 
 	int selectMemberCnt();
 
+	int updateGrade(Member m);
+
 	
 	
 }

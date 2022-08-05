@@ -89,9 +89,9 @@
 							<th scope="col">PHONE</th>
 							<th scope="col">GRADE</th>
 							<th scope="col">INTRODUCE</th>
-							<th scope="col">관심지역 1</th>
-							<th scope="col">관심지역 2</th>
-							<th scope="col">ENROLL DATE</th>
+							<th scope="col">관심지역1</th>
+							<th scope="col">관심지역2</th>
+							<th scope="col">가입일</th>
 							<th scope="col">MESSAGE</th>
 							<th scope="col">탈퇴처리</th>							
 						</tr>
@@ -105,13 +105,13 @@
 									<td>${m.memberId }</td>
 									<td>${m.email }</td>
 									<td>${m.phone }</td>
-									<td>${m.grade }</td>
+									<td data-toggle="modal" data-target="#updateGrade" onclick="getInfo('${m.memberId}','${m.grade }');">${m.grade }</td>
 									<td>${m.introduce }</td>
 									<td>${m.areaCode }</td>
 									<td>${m.sigunguCode }</td>
 									<td>${m.enrollDate }</td>
 									<td><img id="msgImg" src="${path}/resources/img/icons/msg.svg" alt="msgImg"></td>
-									<td><img id="msgImg" src="${path}/resources/img/icons/person-x.svg" alt="msgImg"></td>								
+									<td data-toggle="modal" data-target="#deleteMember" onclick="getId('${m.memberId}');"><img id="msgImg" src="${path}/resources/img/icons/person-x.svg" alt="msgImg"></td>								
 								</tr>
 							</c:forEach>
 						</c:if>
@@ -124,12 +124,83 @@
 					${pageBar }
 				</div>
 			</div>
-
-
-
 		</div>
-
 </div>
+
+<!-- 회원 등급 조정 -->
+<div class="modal fade" id="updateGrade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">회원 등급 수정하기</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="${path}/member/updateGrade.do" method="post">
+      <div class="modal-body">
+			<input class="form-control" type="text" name="memberId" id="memberId_" readonly>
+			<br> 
+			<select class="custom-select custom-select-sm" name="grade" id="grade_">				
+				<option value="normal">normal</option>
+				<option value="planner">planner</option>
+				<option value="manager">manager</option>			
+			</select>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input value="변경하기" type="submit" class="btn btn-primary">
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 회원 탈퇴 처리 -->
+<div class="modal fade" id="deleteMember" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">회원 탈퇴 처리</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<form>
+			<input class="form-control" type="text" name="memberId" id="memberId_2" readonly>
+			<br> 
+			<p>회원의 탈퇴 처리를 원하십니까?</p>
+		</form>
+	</div>
+      <div class="modal-footer">
+		<button type="button" class="btn btn-danger">탈퇴 처리</button>
+		<button type="button" class="btn btn-primary" data-dismiss="modal">취소하기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+	const getInfo = (id,grade)=>{
+
+		document.getElementById("memberId_").value=id;
+		
+		const opt = document.querySelectorAll("#grade_ option");
+		for(let i=0;i<opt.length;i++){
+			if(opt[i].value==grade){
+				opt[i].selected="true";
+			}
+		}
+	}
+	
+	const getId = (id)=>{
+		console.log(id);
+		document.getElementById("memberId_2").value=id;		
+	}
+</script>
+
 </section>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
 

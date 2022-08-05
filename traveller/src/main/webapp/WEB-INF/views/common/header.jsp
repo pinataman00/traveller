@@ -66,7 +66,6 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true" style="color:gray;margin-left:5px;">회원 관리</a>
           <a class="dropdown-item" href="${path }/member/memberList.do">회원 조회</a>
-          <a class="dropdown-item" href="#">등급 관리</a>
           <div class="dropdown-divider"></div>
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true" style="color:gray;margin-left:5px;">콘텐츠 관리</a>
           <a class="dropdown-item" href="#">장소 등록</a>

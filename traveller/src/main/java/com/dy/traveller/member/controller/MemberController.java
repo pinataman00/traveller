@@ -426,11 +426,24 @@ public class MemberController {
 		mv.addObject("totalMember", totalMember);
 		mv.addObject("pageBar", PageFactory.getPageBar(totalMember, numPerPage, cPage, "memberList.do"));
 		mv.setViewName("member/memberList");
-		
-		
-		
+	
 		return mv;
 	}
 	
+	@RequestMapping("/updateGrade.do")
+	public String updateGrade(Member m, Model model) {
+		System.out.println("외않되?");
+		int res = service.updateGrade(m);
+		String msg="";
+		if(res>0) {
+			msg="등급 변경 성공!";
+		} else {
+			msg="등급 변경 실패! 다시 시도해주세요!";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("loc", "/member/memberList.do");
+		return "common/msg";
+	}
 
 }

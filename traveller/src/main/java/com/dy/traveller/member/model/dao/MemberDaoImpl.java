@@ -88,4 +88,11 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 
+
+	@Override
+	public int updateGrade(SqlSessionTemplate session, Member m) {
+		return session.update("member.updateGrade",m);
+	}
+
+
 }

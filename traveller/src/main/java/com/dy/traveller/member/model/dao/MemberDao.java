@@ -30,5 +30,7 @@ public interface MemberDao {
 
 	public int selectMemberCnt(SqlSessionTemplate session);
 
+	public int updateGrade(SqlSessionTemplate session, Member m);
+
 	
 }

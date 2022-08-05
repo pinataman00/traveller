@@ -106,4 +106,10 @@ public class MemberServiceImpl implements MemberService {
 		return dao.selectMemberCnt(session);
 	}
 
+
+	@Override
+	public int updateGrade(Member m) {
+		return dao.updateGrade(session,m);
+	}
+
 }
