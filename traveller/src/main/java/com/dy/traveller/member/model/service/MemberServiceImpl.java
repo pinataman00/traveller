@@ -1,5 +1,8 @@
 package com.dy.traveller.member.model.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,6 +91,19 @@ public class MemberServiceImpl implements MemberService {
 			throw new RuntimeException("수정 실패!");
 		}		
 		return res;		
+	}
+
+
+	@Override //관리자 > 전체 회원 조회
+	public List<Member> selectMemberListPage(Map param) {
+		
+		return dao.selectMemberListPage(session,param);
+	}
+
+
+	@Override
+	public int selectMemberCnt() {
+		return dao.selectMemberCnt(session);
 	}
 
 }

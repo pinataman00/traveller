@@ -1,5 +1,8 @@
 package com.dy.traveller.member.model.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.dy.traveller.member.model.vo.Member;
 
 public interface MemberService {
@@ -15,6 +18,10 @@ public interface MemberService {
 	int deletePic(Member memberInfo);
 
 	int updateMember(Member m);
+
+	List<Member> selectMemberListPage(Map param);
+
+	int selectMemberCnt();
 
 	
 	

@@ -1,5 +1,9 @@
 package com.dy.traveller.member.model.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -65,6 +69,22 @@ public class MemberDaoImpl implements MemberDao {
 	public int updateProfileimg(SqlSessionTemplate session, Profileimg image) {
 		return session.update("member.updateProfileImg",image);
 		
+	}
+
+
+
+	@Override //관리자 > 전체 회원 조회
+	public List<Member> selectMemberListPage(SqlSessionTemplate session, Map param) {
+		int offSet = (int)param.get("cPage");
+		int limit = (int)param.get("numPerPage");
+		return session.selectList("member.selelctMemberList",null,new RowBounds((offSet-1)*limit, limit));
+	}
+
+
+
+	@Override
+	public int selectMemberCnt(SqlSessionTemplate session) {
+		return session.selectOne("member.selectMemberCnt");
 	}
 
 

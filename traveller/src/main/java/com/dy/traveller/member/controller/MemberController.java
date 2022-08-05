@@ -3,6 +3,8 @@ package com.dy.traveller.member.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,17 +13,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dy.traveller.common.PageFactory;
 import com.dy.traveller.member.model.service.MemberService;
 import com.dy.traveller.member.model.vo.Member;
 import com.dy.traveller.member.model.vo.Profileimg;
-
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 
 @Controller
 @RequestMapping("/member")
@@ -408,6 +410,26 @@ public class MemberController {
 		model.addAttribute("loc",loc);
 		
 		return "common/msg";
+	}
+	
+	@RequestMapping("/memberList.do")
+	public ModelAndView memberList(@RequestParam(value="cPage", defaultValue="1") int cPage,
+								  @RequestParam(value="numPerPage", defaultValue="5") int numPerPage,
+								  ModelAndView mv) 
+	{ //전체 회원 조회 > 게시판 페이징 처리
+		
+		Map param = Map.of("cPage",cPage,"numPerPage",numPerPage);
+		List<Member> list = service.selectMemberListPage(param);
+		
+		int totalMember = service.selectMemberCnt();
+		mv.addObject("list",list);
+		mv.addObject("totalMember", totalMember);
+		mv.addObject("pageBar", PageFactory.getPageBar(totalMember, numPerPage, cPage, "memberList.do"));
+		mv.setViewName("member/memberList");
+		
+		
+		
+		return mv;
 	}
 	
 

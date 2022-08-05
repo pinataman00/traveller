@@ -72,6 +72,14 @@
 	<update id="updateProfileImg" parameterType="profileimg">
 		UPDATE PROFILEIMG SET ORINAME=#{oriName}, RENAMEDFILENAME=#{renamedFileName}, UPLOADDATE=SYSDATE WHERE MEMBER_ID=#{memberId}
 	</update>
+	
+	<select id="selelctMemberList" resultType="member">
+		SELECT * FROM MEMBER
+	</select>
+	
+	<select id="selectMemberCnt" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER
+	</select>
 
 	
 </mapper>

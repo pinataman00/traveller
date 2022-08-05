@@ -1,5 +1,8 @@
 package com.dy.traveller.member.model.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.dy.traveller.member.model.vo.Member;
@@ -22,6 +25,10 @@ public interface MemberDao {
 	public int updateMember(SqlSessionTemplate session, Member m);
 
 	public int updateProfileimg(SqlSessionTemplate session, Profileimg image);
+
+	public List<Member> selectMemberListPage(SqlSessionTemplate session, Map param);
+
+	public int selectMemberCnt(SqlSessionTemplate session);
 
 	
 }
