@@ -7,12 +7,12 @@
 <style>
 .container {
 	margin-top: 80px;
-	border: 1px solid red;
+ 	border: 1px solid red;
 }
 
 
 .container div {
-	border: 1px solid blue;
+ 	border: 1px solid blue; 
 	align-items: center;
 }
 
@@ -40,6 +40,28 @@
 .search-container {
 	display: flex;
 }
+.promotion-container {
+	margin-top:30px;
+	margin-bottom:30px;
+}
+.jumbotron{
+	background-image:url("${path}/resources/img/ocean.jpg");
+	border-radius:25px;
+}
+.search-result-contents{
+	display:flex;
+	justify-content:center;
+}
+.card{
+	margin:10px;
+}
+.card img{
+/*     border-radius: 10px; */
+    width: auto;
+    height: auto;
+    max-width: 242px;
+    max-height: 200px;
+}
 </style>
 
 	<section>
@@ -47,7 +69,15 @@
 			<div class="main-title-container">
 				<h3>여행지 탐색하기</h3>
 				<p>직접 검색하거나, 지역별 멋진 장소를 선택해 보세요!</p>
-			</div>
+
+<!-- 			<div class="jumbotron jumbotron-fluid">
+				<div class="container">
+					<h1 class="display-4">여행지 탐색하기</h1>
+					<p class="lead">여행의 시작은 검색! 마음껏 탐색해볼까요?</p>
+				</div>
+			</div> -->
+
+		</div>
 			<div class="search-container">
 				<br>
 				<form class="form-inline my-2 my-lg-0">
@@ -95,7 +125,18 @@
 			<!-- 검색 前 기본 화면 출력 -->
 			<div class="promotion-container">
 				<!-- 프로모션 -->
+				<div class="jumbotron" onclick="alert('여름!');">
+					  <h1 class="display-4">Hello! Travellers!</h1>
+					  <p class="lead">올 여름 최고의 여행지를 추천해드릴게요</p>
+					  <hr class="my-4">
+					  <p>영화 속 여름처럼, 꿈결 속 여행처럼</p>
+<!-- 					  <p class="lead">
+					    <a class="btn btn-primary btn-sm" href="#" role="button">더 알아보기</a>
+					  </p> -->
+				</div>
+
 			</div>
+			
 			<div class="popular-places-container">
 				<!-- 인기 순위 -->
 			</div>
@@ -226,9 +267,33 @@
 				
 				
 				<!-- 검색 결과 화면 예시 -->
+				<p>검색 결과 썸네일 출력될 곳</p>
 				<div class="search-result-contents">
-					검색 결과 썸네일 출력될 곳
-				</div>
+
+					<div class="card" style="width: 18rem;">
+						<img class="card-img-top" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
+						<div class="card-body">
+							<p class="card-text">Some quick example text to build on the
+								card title and make up the bulk of the card's content.</p>
+						</div>
+					</div>
+					<div class="card" style="width: 18rem;">
+						<img class="card-img-top" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
+						<div class="card-body">
+							<p class="card-text">Some quick example text to build on the
+								card title and make up the bulk of the card's content.</p>
+						</div>
+					</div>
+					<div class="card" style="width: 18rem;">
+						<img class="card-img-top" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
+						<div class="card-body">
+							<p class="card-text">Some quick example text to build on the
+								card title and make up the bulk of the card's content.</p>
+						</div>
+					</div>
+
+
+			</div>
 				
 				
 				
