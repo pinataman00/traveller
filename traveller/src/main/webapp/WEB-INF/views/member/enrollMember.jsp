@@ -42,7 +42,7 @@
 				</div>
 
 
-			<div class="area-container"">
+			<div class="area-container">
 					<h5 style="font-size:18px; text-align:left;">관심 지역</h5>
 					<p style="font-size:13px; float:left;">관련 소식을 알림으로 알려드릴게요</p>
 					
