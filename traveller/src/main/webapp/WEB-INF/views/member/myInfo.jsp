@@ -59,7 +59,7 @@
 		</div>
 		<div id="myPic-container">
 		<c:choose>
-			<c:when test="${not empty loginMember.image.imgNo}">
+			<c:when test="${not empty loginMember.image.oriName}">
 		<!-- 파일 존재 여부에 따라서 기본 이미지||프로필 이미지 출력 
 			 TODO 0803) 이상하게도, image멤버변수에 저장된 객체 값을 불러오지 못함...
 			 (가입 시에는 setImage()로써 저장했고, 저장 내용은 getImage()로 확인할 수 있었으나, 
@@ -69,8 +69,8 @@
 		-->
 			
         	</c:when>
-        	<c:when test="${empty loginMember.image.imgNo}">
-        		<img class="profileImg" src="${path}/resources/img/icons/person-fill.svg" alt="profileImg">
+        	<c:when test="${empty loginMember.image.oriName}">
+        		<img id="basicImg" class="profileImg" src="${path}/resources/img/icons/person-fill.svg" alt="profileImg">
         		<hr>
         	</c:when> 	
         </c:choose>
@@ -79,11 +79,11 @@
 		</div>
 		
 			<div class="update-info-container">
-			<form id="update-info-frm" name="infoFrm" action="${path }/member/myInfoEnd.do" 
+			<form id="update-info-frm" name="infoFrm" action="${path }/member/updateInfo.do" method="post"
 			enctype="multipart/form-data" onsubmit="return fn_infoValidate();">
-			
+		
 				<div class="info-container">
-				<input type="text" class="form-control" placeholder="${loginMember.memberId}" readonly>	
+				<input type="text" class="form-control" name="memberId" value="${loginMember.memberId}" readonly>	
 				<button type="button" class="btn btn-primary btn-lg btn-block" style="margin-left:10px;" data-toggle="modal" data-target="#updatePwdBox">비밀번호 수정하기</button>
 				<input type="text" class="form-control" placeholder="이메일" value="${loginMember.email }" name="email" id="email_" required>
 				<input type="text" class="form-control" placeholder="전화번호" value="${loginMember.phone }" name="phone" id="phone_" required>
@@ -95,10 +95,9 @@
 					<h5 style="font-size:18px; text-align:left;">프로필 사진</h5>
 					
 					<!-- 프로필 사진 삭제 기능-->
-					<c:if test="${not empty loginMember.image.imgNo}">
+					<c:if test="${not empty loginMember.image.oriName}">
 						<button type="button" class="btn btn-secondary btn-sm" onclick="location.assign('${path}/member/deletePic.do?memberId=${loginMember.memberId}')">삭제하기</button>
-					</c:if>
-						
+					</c:if>						
 					</div>
 					<div class="input-group mb-3">
 					  <div class="custom-file">
@@ -109,7 +108,7 @@
 				</div>
 
 
-			<div class="area-container"">
+				<div class="area-container"">
 					<h5 style="font-size:18px; text-align:left;">관심 지역</h5>
 					<p style="font-size:13px; float:left;">관련 소식을 알림으로 알려드릴게요</p>
 					
@@ -140,11 +139,10 @@
 				<select class="custom-select custom-select-sm" name="sigunguCode" id="sigungucode_">
 				  <option selected value="0">-- 선택 --</option>
 				</select>
-					
-					
+				
 				</div>
 				<div class="btn-container">
-					<button type="button" class="btn btn-primary btn-lg">수정하기</button>
+					<input type="submit" class="btn btn-primary btn-lg" value="수정하기">
 					<button type="button" class="btn btn-outline-danger btn-lg" onclick="location.assign('${path}/member/deleteMember.do?memberId=${loginMember.memberId}')">탈퇴하기</button>
 				</div>
 			</form>
@@ -504,6 +502,7 @@
 				container.append(document.createElement("hr"));
 				img.className = "profileImg";
 				img.src = URL.createObjectURL(blob);
+
 			}
 			
 			getImg();

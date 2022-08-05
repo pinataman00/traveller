@@ -21,6 +21,8 @@ import com.dy.traveller.member.model.service.MemberService;
 import com.dy.traveller.member.model.vo.Member;
 import com.dy.traveller.member.model.vo.Profileimg;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+
 @Controller
 @RequestMapping("/member")
 @SessionAttributes({ "loginMember" })
@@ -140,10 +142,7 @@ public class MemberController {
 						e.printStackTrace();
 					}
 			  }
-			  
-			  
-				
-				System.out.println("///////////////////////////////"+m.getImage());
+
 			  
 			  //DB에 이미지 파일 저장하기
 			  
@@ -172,8 +171,6 @@ public class MemberController {
 		  
 		model.addAttribute("msg",msg);
 		model.addAttribute("loc",loc);
-		
-		System.out.println("이미지는 왜 널인가? "+m);
 		  
 		return "common/msg";
 	}
@@ -183,13 +180,111 @@ public class MemberController {
 		return "member/myInfo";
 	}
 	
-	@RequestMapping("/myInfoEnd.do")
-	public String updateInfo() {
+	//회원 정보 수정 > 전반적인 정보 수정
+	@RequestMapping("/updateInfo.do")
+	public String updateInfo(Member m, Model model, MultipartFile img, HttpServletRequest rs) {
 		
-		String viewName = "redirect:/";
-		return viewName;
+		
+			System.out.println("수정 정보 일체 "+m);			
+			Member loginMember = service.login(m);
+			//프로필 사진(PROFILEIMG) 저장 관련
+			
+			
+			System.out.println("기존 : "+loginMember.getPhone());
+			System.out.println("새로운 정보 : "+m.getPhone());
+			System.out.println("수정 정보 일체 "+m);
+			
+			// 프로필 사진 관련
+			System.out.println("파일 이름 :" + img.getOriginalFilename());
+			System.out.println("파일 크기 : " + img.getSize());
+	
+			// 첨부파일 저장 경로 설정하기
+			String path = rs.getServletContext().getRealPath("/resources/member/profile/");
+			File uploadDir = new File(path);
+			// 폴더가 없는 경우에는 생성하기
+			if (!uploadDir.exists())
+				uploadDir.mkdirs();
+	
+			
+			String msg,loc=""; //클라이언트 대상 안내문, 경로 정보 설정하기
+			
+			// 파일 리네임 처리 및 서버 업로드
+			
+			  if(!img.isEmpty()) { //만약, 파일을 업로드했다면~ 
+			  //기존 파일 존재 여부에 따라 UPDATE||INSERT 선택하기
+			  //파일 리네임 처리하기
+				  
+				  
+				  //기존 프로필 파일은 삭제하기
+				  if(loginMember.getImage()!=null) {
+					  
+					  File deleteFile = new File(path+loginMember.getImage().getRenamedFileName());
+					  if(deleteFile.exists()) {
+						  deleteFile.delete();
+						  
+						  //테이블, PROFILEIMG에서 데이터 삭제하기
+						  try {
+							  service.deletePic(loginMember);
+							  
+						  } catch (RuntimeException e) {
+							  msg = "프로필 사진 수정 실패! 다시 시도해주세요";
+							  loc = "/member/myInfo.do";
+						  }
+						  
+					  }
+				  }
+				  
+				  //새로 업로드한 파일 등록하기
+				  String oriName = img.getOriginalFilename(); //원본 파일명 가져오기 
+				  String ext = oriName.substring(oriName.lastIndexOf(".")); //파일명으로부터 확장자 추출 //리네임 작명 규칙 설정
+				  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS"); 
+				  int rndNum = (int)(Math.random()*10000); 
+				  String rename = sdf.format(System.currentTimeMillis())+"_"+rndNum+ext;
+				  
+				  //서버 업로드 처리하기 
+					try {			
+						img.transferTo(new File(path+rename));
+						Profileimg proImg = Profileimg.builder().memberId(m.getMemberId()).oriName(oriName).renamedFileName(rename).build();
+						m.setImage(proImg);
+						System.out.println("이미지 객체 생성했다 "+m.getImage());
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			  }
+			  
+			  //DB에 이미지 파일 저장하기
+			  
+			  
+			  			  
+			  try {
+			  
+				  service.updateMember(m);
+				  msg="정보 수정 성공!";
+				  loc="/";
+
+			  } catch (RuntimeException e) {
+				  msg="수정 실패. 다시 시도해주세요.";
+				  loc="/member/myInfo.do";
+
+				  if(!img.isEmpty()) {
+					  File deleteFile = new File(path+m.getImage().getRenamedFileName());
+					  if(deleteFile.exists()) {
+						  deleteFile.delete();
+					  }
+				  }
+
+			  }
+		  
+		model.addAttribute("loginMember", m);
+		System.out.println("수정처리완료 : "+m);
+		model.addAttribute("msg",msg);
+		model.addAttribute("loc",loc);
+		  
+		return "common/msg";
 	}
 	
+	//회원 정보 수정 > 비밀번호 수정
 	@RequestMapping("/updatePwd.do")
 	public String updatePwd(Member m, Model model, String nowPwd, String memberPwd, SessionStatus status) {
 		
@@ -285,6 +380,7 @@ public class MemberController {
 
 	}
 	
+	//회원 수정 > 프로필 삭제
 	@RequestMapping("/deletePic.do")
 	public String deletePic(Member m, HttpServletRequest rs, Model model) {
 		

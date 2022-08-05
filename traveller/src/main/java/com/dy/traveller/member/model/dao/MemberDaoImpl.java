@@ -53,6 +53,19 @@ public class MemberDaoImpl implements MemberDao {
 	public int deletePic(SqlSessionTemplate session, Member m) {
 		return session.delete("member.deleteProfileImg",m);
 	}
-	
+
+
+
+	@Override //회원 수정 1) 일반 정보 수정
+	public int updateMember(SqlSessionTemplate session, Member m) {
+		return session.update("member.updateMember",m);
+	}
+
+	@Override //회원 수정 2) 프로필 사진 등록
+	public int updateProfileimg(SqlSessionTemplate session, Profileimg image) {
+		return session.update("member.updateProfileImg",image);
+		
+	}
+
 
 }

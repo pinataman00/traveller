@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.dy.traveller.member.model.dao.MemberDao;
 import com.dy.traveller.member.model.vo.Member;
+import com.dy.traveller.member.model.vo.Profileimg;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -62,8 +63,31 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int deletePic(Member m) {
 		
-		//PROFILEIMG테이블에서 ROW 삭제하기
+		//프로필 사진 삭제 > PROFILEIMG테이블에서 ROW 삭제하기
 		return dao.deletePic(session, m);
+	}
+
+
+	@Override
+	public int updateMember(Member m) { //회원 정보 수정 관련
+		
+		int res = 0;
+		
+		try {
+			//先 MEMBER테이블 : 회원 기본 정보 저장
+			res = dao.updateMember(session, m);
+			System.out.println("멤버는 업데이트 완료");
+			
+			//後 PROFILEIMG테이블 : 회원 프로필 사진 저장
+			if(res>0&&m.getImage()!=null) { //회원 가입 절차 성공 AND 등록하고 싶은 프로필 사진이 존재하는 경우
+				
+				res = dao.insertProfileimg(session, m.getImage());
+			}
+			
+		} catch (RuntimeException e) {
+			throw new RuntimeException("수정 실패!");
+		}		
+		return res;		
 	}
 
 }

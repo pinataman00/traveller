@@ -65,4 +65,13 @@
 		DELETE FROM PROFILEIMG WHERE MEMBER_ID=#{memberId}
 	</delete>
 	
+	<update id="updateMember" parameterType="member">
+		UPDATE MEMBER SET EMAIL=#{email}, PHONE=#{phone}, INTRODUCE=#{introduce}, AREACODE=#{areaCode}, SIGUNGUCODE=#{sigunguCode} WHERE MEMBER_ID=#{memberId}
+	</update>
+	
+	<update id="updateProfileImg" parameterType="profileimg">
+		UPDATE PROFILEIMG SET ORINAME=#{oriName}, RENAMEDFILENAME=#{renamedFileName}, UPLOADDATE=SYSDATE WHERE MEMBER_ID=#{memberId}
+	</update>
+
+	
 </mapper>

@@ -14,6 +14,8 @@ public interface MemberService {
 
 	int deletePic(Member memberInfo);
 
+	int updateMember(Member m);
+
 	
 	
 }
