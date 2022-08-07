@@ -46,32 +46,31 @@
 					<h5 style="font-size:18px; text-align:left;">관심 지역</h5>
 					<p style="font-size:13px; float:left;">관련 소식을 알림으로 알려드릴게요</p>
 					
-				<select class="custom-select custom-select-sm" name="areaCode" id="areacode_">
-							<option value="0">-- 선택 --</option>
-							<option value="1">서울</option>
-							<option value="2">인천</option>
-							<option value="3">대전</option>
-							<option value="4">대구</option>
-							<option value="5">광주</option>
-							<option value="6">부산</option>
-							<option value="7">울산</option>
-							<option value="8">세종특별자치시</option>
-							<option value="31">경기도</option>
-							<option value="32">강원도</option>
-							<option value="33">충청북도</option>
-							<option value="34">충청남도</option>
-							<option value="35">경상북도</option>
-							<option value="36">경상남도</option>
-							<option value="37">전라북도</option>
-							<option value="38">전라남도</option>
-							<option value="39">제주도</option>	
-				</select>
-				<select class="custom-select custom-select-sm" name="sigunguCode" id="sigungucode_">
-				  <option selected value="0">-- 선택 --</option>
-				</select>
-					
-					
+					<select class="custom-select custom-select-sm" name="areaCode" id="areacode_">
+								<option value="0">-- 선택 --</option>
+								<option value="1">서울</option>
+								<option value="2">인천</option>
+								<option value="3">대전</option>
+								<option value="4">대구</option>
+								<option value="5">광주</option>
+								<option value="6">부산</option>
+								<option value="7">울산</option>
+								<option value="8">세종특별자치시</option>
+								<option value="31">경기도</option>
+								<option value="32">강원도</option>
+								<option value="33">충청북도</option>
+								<option value="34">충청남도</option>
+								<option value="35">경상북도</option>
+								<option value="36">경상남도</option>
+								<option value="37">전라북도</option>
+								<option value="38">전라남도</option>
+								<option value="39">제주도</option>	
+					</select>
+					<select class="custom-select custom-select-sm" name="sigunguCode" id="sigungucode_">
+					  <option selected value="0">-- 선택 --</option>
+					</select>					
 				</div>
+				
 				<div class="button-container" style="width:150px;">
 					<input type="submit" class="btn btn-outline-success" value="가입하기">&nbsp;
 					<input type="reset" class="btn btn-outline-success" value="취소하기">
