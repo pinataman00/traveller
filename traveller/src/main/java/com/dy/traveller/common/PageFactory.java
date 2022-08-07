@@ -7,6 +7,7 @@ public class PageFactory { //페이징 처리 관련
 		
 		String pageBar = "";
 		
+		//TODO totalPage가 0일 때 예외가 발생할 수 있으니, 더미 데이터를 넣는 식으로 처리할 것
 		int totalPage = (int)Math.ceil((double)totalData/numPerPage);
 		int pageBarSize = 5; //이것도 유동적으로 처리하고 싶거든, 매개변수로 관련 데이터를 받아오면 됨
 		int pageNo = ((cPage-1)/pageBarSize)*pageBarSize+1;

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="place">
+
+	<select id="keywordSearch" resultType="place">
+		SELECT * FROM PLACES WHERE TITLE LIKE '%'||#{keyword}||'%'
+	</select>
+	
+	<select id="keywordSearchList" resultType="place" parameterType="string">
+ 			SELECT * FROM PLACES WHERE TITLE LIKE '%'||#{keyword}||'%'
+<!-- 		SELECT * FROM PLACES WHERE TITLE LIKE '%용인%' -->
+	</select>
+	
+	<select id="keywordResultCnt" resultType="_int" parameterType="string">
+            SELECT COUNT(*) FROM PLACES WHERE TITLE LIKE '%'||#{keyword}||'%'
+<!--  		SELECT COUNT(*) FROM PLACES WHERE TITLE LIKE '%용인%' -->
+	</select>
+
+</mapper>

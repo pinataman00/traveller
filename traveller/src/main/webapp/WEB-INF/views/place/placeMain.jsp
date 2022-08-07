@@ -80,10 +80,12 @@
 		</div>
 			<div class="search-container">
 				<br>
-				<form class="form-inline my-2 my-lg-0">
-					<input class="form-control mr-sm-2" style="width:444px;" type="search" placeholder="장소명 검색하기" aria-label="Search">
-					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-				</form>
+<%--   				<form class="form-inline my-2 my-lg-0" action="${path}/place/searchList.do" method="get"> --%>
+ 					<input id="keyword" name="keyword" class="form-control mr-sm-2" style="width:444px;" type="search" placeholder="장소명 검색하기" aria-label="Search"
+					> 
+ 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="searchPlaces();">Search</button>
+<!--  					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+  				</form>
 				
 				
 				
@@ -266,13 +268,14 @@
 				</div>
 				
 				
-				<!-- 검색 결과 화면 예시 -->
+				<!-- 검색 결과 화면 예시 : 1행에 카드 3장씩 출력하기 -->
 				<p>검색 결과 썸네일 출력될 곳</p>
 				<div class="search-result-contents">
 
 					<div class="card" style="width: 18rem;">
 						<img class="card-img-top" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
 						<div class="card-body">
+							<h5 class="card-title">Card title</h5>
 							<p class="card-text">Some quick example text to build on the
 								card title and make up the bulk of the card's content.</p>
 						</div>
@@ -280,6 +283,7 @@
 					<div class="card" style="width: 18rem;">
 						<img class="card-img-top" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
 						<div class="card-body">
+							<h5 class="card-title">Card title</h5>
 							<p class="card-text">Some quick example text to build on the
 								card title and make up the bulk of the card's content.</p>
 						</div>
@@ -287,13 +291,47 @@
 					<div class="card" style="width: 18rem;">
 						<img class="card-img-top" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
 						<div class="card-body">
+							<h5 class="card-title">Card title</h5>
 							<p class="card-text">Some quick example text to build on the
 								card title and make up the bulk of the card's content.</p>
 						</div>
 					</div>
-
-
-			</div>
+					
+					
+				</div>
+				
+<!-- 				<div style="display:flex;">
+					<p>안녕 1</p>
+					<p>안녕 1</p>
+					<p>안녕 1</p>
+				</div> -->
+				
+				
+				<!-- TODO : 클라이언트의 키워드 검색 결과를 페이징 처리할 수 없어서 주석 처리함 -->
+<%--  			<div class="list-container">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">title</th>					
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${not empty list}">
+							<c:forEach var="m" items="${list}">
+								<tr>
+									<td>${m.title}</td>						
+								</tr>
+							</c:forEach>
+						</c:if>
+						<c:if test="${empty list }">
+							<td colspan="11">검색 결과가 없습니다</td>
+						</c:if>
+					</tbody>
+				</table>
+				<div id="pageBar">
+					${pageBar }
+				</div>
+			</div> --%>
 				
 				
 				
@@ -301,17 +339,113 @@
 				
 				
 				
-	
-	</div>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			
-
-
+				
+			
+			
+			
+	</div>
 	</div>
 	
-
-	
-
+	<div id="printImg">
+		
+	</div>
 	
 	</section>
+	
+	<script>
+		
+		const searchPlaces = ()=>{ //키워드 검색 기능
+			
+		//fetch를 사용해서 검색 결과 가져오기
+		const keyword = document.getElementById("keyword").value;
+			
+		
+		fetch('${path}/place/keywordSearch.do?keyword='+keyword, {
+			  method: 'POST', 
+			  headers: {
+			    'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify({"keyword":keyword}),
+			})
+			.then((response) => response.json())
+			.then((data) => {
+			  
+ 				console.log('성공:', data);
+				
+				const mainContainer = document.getElementsByClassName("container")[0];
+				console.log(mainContainer[0]);
+				const resultContainer = document.getElementsByClassName("search-result-container");
+				resultContainer[0].innerHTML=""; //이전 검색 결과는 화면에서 제거
+				
+				
+				for(let i=0;i<data.length;++i){
+					
+					const container = document.createElement("div");
+					container.classList.add("search-result-contents");
+					console.log("만들어 졌나? ",container);
+					
+					for(let j=0;j<3;j++){ //3개씩 끊어서 출력하기
+						
+								
+						const test = document.createElement("p");
+						if(data[i].title!=""){
+							test.innerText= data[i].title;
+						} else if(data[i].title=null) {
+							data[i].title="이름 없음!";
+						}
+						container.append(test);
+						if(resultContainer[0]!=null){
+							resultContainer[0].append(container);
+						}
+						i++;													
+					}
+					i--;
+						
+				}
+					
+				
+					mainContainer[0].append(resultContainer);
+				
+				console.log(resultContainer);
+				console.log(resultContainer.nextElementSibling);
+				
+				
+				
+				
+				
+				
+				
+				
+			  
+			});
+		
+		
+		
+		
+		
+
+
+		}
+		
+
+	
+	</script>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
