@@ -7,12 +7,12 @@
 <style>
 .container {
 	margin-top: 80px;
- 	border: 1px solid red;
+/*  	border: 1px solid red; */
 }
 
 
 .container div {
- 	border: 1px solid blue; 
+/*  	border: 1px solid blue;  */
 	align-items: center;
 }
 
@@ -45,7 +45,7 @@
 	margin-bottom:30px;
 }
 .jumbotron{
-	background-image:url("${path}/resources/img/ocean.jpg");
+	background-image:url("${path}/resources/img/background.jpg");
 	border-radius:25px;
 }
 .search-result-contents{
@@ -54,21 +54,47 @@
 }
 .card{
 	margin:10px;
+	width:300px;
+	height:340px;
 }
 .card img{
 /*     border-radius: 10px; */
-    width: auto;
+/*     width: auto;
     height: auto;
     max-width: 242px;
-    max-height: 200px;
+    max-height: 200px; */
+    
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    width: 280px;
+    height: 200px;
+    object-fit: cover;
+    border-radius:10px;
+    margin-top:10px;
+ 
 }
+
+.card-body{
+	width:300px;
+	height:120px;
+}
+
+.card-title{
+	font-size:20px;
+}
+/* .card-text{
+	font-size:13px;
+} */
+
+
 </style>
 
 	<section>
 		<div class="container">
 			<div class="main-title-container">
-				<h3>여행지 탐색하기</h3>
-				<p>직접 검색하거나, 지역별 멋진 장소를 선택해 보세요!</p>
+<!-- 				<h3>여행지 탐색하기</h3>
+				<p>직접 검색하거나, 지역별 멋진 장소를 선택해 보세요!</p> -->
 
 <!-- 			<div class="jumbotron jumbotron-fluid">
 				<div class="container">
@@ -76,6 +102,21 @@
 					<p class="lead">여행의 시작은 검색! 마음껏 탐색해볼까요?</p>
 				</div>
 			</div> -->
+						<!-- 검색 前 기본 화면 출력 -->
+			<div class="promotion-container">
+				<!-- 프로모션 -->
+				<div class="jumbotron" onclick="alert('여름!');">
+					  <h1 class="display-4">Hello! Travellers!</h1>
+					  <p class="lead">어디로 갈까요? 먼저 검색해보세요</p>
+					  <hr class="my-4">
+					  <p>검색 창에 키워드를 검색하거나, 지역/테마 옵션을 선택해보세요!</p>
+<!-- 					  <p class="lead">
+					    <a class="btn btn-primary btn-sm" href="#" role="button">더 알아보기</a>
+					  </p> -->
+				</div>
+			</div>
+			
+			
 
 		</div>
 			<div class="search-container">
@@ -124,20 +165,7 @@
 				</form>
 			</div>
 
-			<!-- 검색 前 기본 화면 출력 -->
-			<div class="promotion-container">
-				<!-- 프로모션 -->
-				<div class="jumbotron" onclick="alert('여름!');">
-					  <h1 class="display-4">Hello! Travellers!</h1>
-					  <p class="lead">올 여름 최고의 여행지를 추천해드릴게요</p>
-					  <hr class="my-4">
-					  <p>영화 속 여름처럼, 꿈결 속 여행처럼</p>
-<!-- 					  <p class="lead">
-					    <a class="btn btn-primary btn-sm" href="#" role="button">더 알아보기</a>
-					  </p> -->
-				</div>
 
-			</div>
 			
 			<div class="popular-places-container">
 				<!-- 인기 순위 -->
@@ -387,59 +415,84 @@
 			.then((response) => response.json())
 			.then((data) => {
 			  
- 				console.log('성공:', data);
 				
 				const mainContainer = document.getElementsByClassName("container")[0];
-				console.log(mainContainer[0]);
+				//검색 결과 출력 영역
 				const resultContainer = document.getElementsByClassName("search-result-container");
 				resultContainer[0].innerHTML=""; //이전 검색 결과는 화면에서 제거
 				
 				
-				for(let i=0;i<data.length;++i){
+				if(data==""){
 					
-					const container = document.createElement("div");
-					container.classList.add("search-result-contents");
-					console.log("만들어 졌나? ",container);
 					
-					for(let j=0;j<3;j++){ //3개씩 끊어서 출력하기
+					console.log("없엉");
+					
+				} else {
+				
+				
+		 				console.log('성공 :', data);
 						
+
+										
+						for(let i=0;i<data.length;++i){
+							
+							const container = document.createElement("div"); //1행에 콘텐츠 3개씩 담김
+							container.classList.add("search-result-contents");
+							
+							for(let j=0;j<3;j++){ //3개씩 끊어서 출력하기
 								
-						const test = document.createElement("p");
-						if(data[i].title!=""){
-							test.innerText= data[i].title;
-						} else if(data[i].title=null) {
-							data[i].title="이름 없음!";
+								//1개 콘텐츠 구성
+								//1. div > card
+								const card = document.createElement("div");
+								card.classList.add("card");
+								//card.style.width="18rem";
+								const img = document.createElement("img");
+								if(data[i].firstImage!=null){
+									
+									img.src=data[i].firstImage;
+									
+								} else { //기본 이미지 출력
+									img.src= "${path}/resources/img/testPic/dorothea.png";
+								} 
+								card.append(img);
+								
+								const cardBody = document.createElement("div");
+								cardBody.classList.add("card-body");
+								const cardTitle = document.createElement("h5");
+								cardTitle.classList.add("card-title");
+								cardTitle.innerText = data[i].title;
+								cardBody.append(cardTitle);
+								
+								//주소지는 감춤
+		/* 						const cardText = document.createElement("p");
+								cardText.classList.add("card-text");
+								cardText.innerText= data[i].address;
+								cardBody.append(cardText); */
+								
+								card.append(cardBody);
+								container.append(card);
+								resultContainer[0].append(container);
+		
+									i++;													
+							}
+							
+							i--;
+								
 						}
-						container.append(test);
-						if(resultContainer[0]!=null){
-							resultContainer[0].append(container);
-						}
-						i++;													
-					}
-					i--;
+							
 						
-				}
-					
-				
-					mainContainer[0].append(resultContainer);
-				
-				console.log(resultContainer);
-				console.log(resultContainer.nextElementSibling);
-				
-				
-				
-				
-				
-				
-				
-				
-			  
+						mainContainer.append(resultContainer[0]);
+						
+						console.log(resultContainer);
+						console.log(resultContainer.nextElementSibling);
+			
+					  
+					}
+		
 			});
 		
-		
-		
-		
-		
+			//검색 결과가 없을 때, 어떻게 할래?		
+			
 
 
 		}
