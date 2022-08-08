@@ -15,4 +15,6 @@ public interface PlaceDao {
 
 	int keywordResultCnt(String keyword, SqlSessionTemplate session);
 
+	List<Place> areaFilter(Map<String, Object> map, SqlSessionTemplate session);
+
 }

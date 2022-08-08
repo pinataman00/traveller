@@ -149,7 +149,7 @@
 			<div class="collapse" id="areaSearch">
 			  <div class="card">		    
 			    <div class="area-search-container">
-					<form>
+
 						<div class="area-option-container">						
 							<select class="custom-select custom-select-sm area-class" name="areaCode" id="areacode_" onclick="createAreaOption(0);">
 										<option value="0">-- 선택 --</option>
@@ -174,9 +174,9 @@
 							<select class="custom-select custom-select-sm sigungu-class" name="sigunguCode" id="sigungucode_">
 							  			<option selected value="0">-- 선택 --</option>
 							</select>
-							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>					
+							<button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="fn_searchArea();">검색</button>					
 						</div>
-					</form>
+
 			</div>
 			    
 			<!-- 테마별 검색 -->    
@@ -311,8 +311,8 @@
 						<li class="nav-item"><a class="nav-link active">검색 결과</a>
 						</li>
 						<li class="nav-item"><a class="nav-link disabled" href="#">필터</a>
-						<li class="nav-item nav-link" data-toggle="modal" data-target="#areaFilter">지역별</li>
-						<li class="nav-item nav-link" data-toggle="modal" data-target="#themeFilter">테마별</li>
+						<li class="nav-item nav-link" id="areaTab" data-toggle="modal" data-target="#areaFilter">지역별</li>
+						<li class="nav-item nav-link" id="themeTab" data-toggle="modal" data-target="#themeFilter">테마별</li>
 						</li>
 					</ul>
 				</div>
@@ -356,12 +356,12 @@
 									name="sigunguCode" id="sigungucode_">
 									<option selected value="0">-- 선택 --</option>
 								</select>
-							
+								<input type="hidden" id="areaWord">
 							</div>
 						</div>
 					     <div class="modal-footer" style="width:100%;">
 					        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					        <button type="button" class="btn btn-primary">필터 적용하기</button>
+					        <button type="button" class="btn btn-primary" onclick="fn_areaFilter();">필터 적용하기</button>
 					     </div>
 				    </div>
 				  </div>
@@ -378,6 +378,7 @@
 				      </div>
 				      <div class="modal-body">
 				        ...
+				        <input type="hidden" id="themeWord">
 				      </div>
 				      <div class="modal-footer" style="width:100%;">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -489,7 +490,123 @@
 	</section>
 	
 	<script>
+	
+		//공통 function : 검색 결과 화면에 출력해주는 기능
+		const createCards = (data, keyword)=>{
+			
+			const mainContainer = document.getElementsByClassName("container")[0];
+			//검색 결과 출력 영역
+			const resultContainer = document.getElementsByClassName("search-result-container");
+			resultContainer[0].innerHTML=""; //이전 검색 결과는 화면에서 제거
+			
+			const basicContentsContainer = document.getElementsByClassName("basic-contents-container");
+			basicContentsContainer[0].innerHTML="";
+			
+			if(data==""){ //검색 결과가 없는 경우, 원한다면 장소를 추천할 수 있음
+				
+				const recommendBox = document.createElement("div");
+				recommendBox.classList.add("recommend-container");
+				
+				
+				const infoText = document.createElement("h4");
+				infoText.innerText = keyword+"에 대한 검색 결과가 없습니다 :(";
+				
+				const suggestText = document.createElement("p");
+				suggestText.innerText = "함께 알고 싶은 좋은 장소가 있다면, 우리에게 추천해주세요";
+
+				recommendBox.append(infoText);
+				recommendBox.append(suggestText);
+
+				const recommendBtn = document.createElement("button");
+				recommendBtn.classList.add("btn");
+				recommendBtn.classList.add("btn-primary");
+				recommendBtn.classList.add("btn-lg");
+				recommendBtn.classList.add("btn-block");
+				recommendBtn.innerText = "추천하기";
+				
+				recommendBox.append(recommendBtn);
+				
+				resultContainer[0].append(recommendBox);
+				mainContainer.append(resultContainer[0]);
+			
+			
+			} else { //검색 결과가 존재하는 경우, 화면에 카드 출력
+			
+			
+	 				console.log('성공 :', data);
+					
+					//필터 탭 활성화하기
+					const filterMenu = document.getElementsByClassName("result-filter-container");
+					console.dir(filterMenu[0]);
+					filterMenu[0].style.display="";
+					//필터 > 모달에 키워드 값 전달하기
+					//"지역별 키워드"
+					document.getElementById("areaWord").value=keyword;
+					document.getElementById("themeWord").value=keyword;
+			
+	 				const resultSummary = document.createElement("div");
+	 				resultSummary.classList.add("result-summary-container");
+	 				const summaryText = document.createElement("p");
+	 				summaryText.innerText = "검색 결과 : 총 "+data.length+"건";
+	 				//resultSummary.innerText = "검색 결과 : 총 "+data.length+"건";		 				
+	 				resultSummary.append(summaryText);
+	 				resultContainer[0].append(resultSummary);
+
+									
+					for(let i=0;i<data.length;++i){
+						
+						const container = document.createElement("div"); //1행에 콘텐츠 3개씩 담김
+						container.classList.add("search-result-contents");
+						
+						for(let j=0;j<3;j++){ //3개씩 끊어서 출력하기
+							
+							//1개 콘텐츠 구성
+							//1. div > card
+							const card = document.createElement("div");
+							card.classList.add("result-card");
+							card.classList.add("card");
+							//card.style.width="18rem";
+							const img = document.createElement("img");
+							if(data[i].firstImage!=null){
+								
+								img.src=data[i].firstImage;
+								
+							} else { //기본 이미지 출력
+								img.src= "${path}/resources/img/testPic/dorothea.png";
+							} 
+							card.append(img);
+							
+							const cardBody = document.createElement("div");
+							cardBody.classList.add("card-body");
+							const cardTitle = document.createElement("h5");
+							cardTitle.classList.add("card-title");
+							cardTitle.innerText = data[i].title;
+							cardBody.append(cardTitle);
+
+							card.append(cardBody);
+							container.append(card);
+							resultContainer[0].append(container);
+	
+								i++;													
+						}
+						
+						i--;
+							
+					}
+						
+					
+					mainContainer.append(resultContainer[0]);
+					
+					console.log(resultContainer);
+					console.log(resultContainer.nextElementSibling);
 		
+				  
+				}
+			
+			
+		}
+	
+		//검색 기능 > 키워드, 지역별, 테마별
 		const searchPlaces = ()=>{ //키워드 검색 기능
 			
 		//fetch를 사용해서 검색 결과 가져오기
@@ -507,136 +624,86 @@
 			.then((data) => {
 			  
 				
-				const mainContainer = document.getElementsByClassName("container")[0];
-				//검색 결과 출력 영역
-				const resultContainer = document.getElementsByClassName("search-result-container");
-				resultContainer[0].innerHTML=""; //이전 검색 결과는 화면에서 제거
+				//비활성화됐었다면, 다시 활성화하기
+				const areaTabSetting = document.getElementById("areaTab")
+				//console.log("있니? ",areaTabSetting.classList);
+				console.log(areaTabSetting)
+				areaTabSetting.classList.remove("disabled");		
 				
-				const basicContentsContainer = document.getElementsByClassName("basic-contents-container");
-				basicContentsContainer[0].innerHTML="";
-				
-				if(data==""){ //검색 결과가 없는 경우, 원한다면 장소를 추천할 수 있음
-					
-					console.log("없엉");
-					
-					const recommendBox = document.createElement("div");
-					recommendBox.classList.add("recommend-container");
-					
-					
-					const infoText = document.createElement("h4");
-					infoText.innerText = keyword+"에 대한 검색 결과가 없습니다 :(";
-					
-					const suggestText = document.createElement("p");
-					suggestText.innerText = "함께 알고 싶은 좋은 장소가 있다면, 우리에게 추천해주세요";
+				createCards(data,keyword);
 
-					recommendBox.append(infoText);
-					recommendBox.append(suggestText);
-
-					const recommendBtn = document.createElement("button");
-					recommendBtn.classList.add("btn");
-					recommendBtn.classList.add("btn-primary");
-					recommendBtn.classList.add("btn-lg");
-					recommendBtn.classList.add("btn-block");
-					recommendBtn.innerText = "추천하기";
-					
-					recommendBox.append(recommendBtn);
-					
-					resultContainer[0].append(recommendBox);
-					mainContainer.append(resultContainer[0]);
-				
-				
-				} else { //검색 결과가 존재하는 경우, 화면에 카드 출력
-				
-				
-		 				console.log('성공 :', data);
 						
-						//필터 탭 활성화하기
-						const filterMenu = document.getElementsByClassName("result-filter-container");
-						console.dir(filterMenu[0]);
-						filterMenu[0].style.display="";
-						//필터 > 모달에 키워드 값 전달하기
-						const test = document.getElementsByClassName("area-container");
-						const testText = document.createElement("p");
-						testText.innerText = keyword;
-						test[0].append(testText);
-				
-		 				const resultSummary = document.createElement("div");
-		 				resultSummary.classList.add("result-summary-container");
-		 				const summaryText = document.createElement("p");
-		 				summaryText.innerText = "검색 결과 : 총 "+data.length+"건";
-		 				//resultSummary.innerText = "검색 결과 : 총 "+data.length+"건";		 				
-		 				resultSummary.append(summaryText);
-		 				resultContainer[0].append(resultSummary);
-
-										
-						for(let i=0;i<data.length;++i){
-							
-							const container = document.createElement("div"); //1행에 콘텐츠 3개씩 담김
-							container.classList.add("search-result-contents");
-							
-							for(let j=0;j<3;j++){ //3개씩 끊어서 출력하기
-								
-								//1개 콘텐츠 구성
-								//1. div > card
-								const card = document.createElement("div");
-								card.classList.add("result-card");
-								card.classList.add("card");
-								//card.style.width="18rem";
-								const img = document.createElement("img");
-								if(data[i].firstImage!=null){
-									
-									img.src=data[i].firstImage;
-									
-								} else { //기본 이미지 출력
-									img.src= "${path}/resources/img/testPic/dorothea.png";
-								} 
-								card.append(img);
-								
-								const cardBody = document.createElement("div");
-								cardBody.classList.add("card-body");
-								const cardTitle = document.createElement("h5");
-								cardTitle.classList.add("card-title");
-								cardTitle.innerText = data[i].title;
-								cardBody.append(cardTitle);
-								
-								//주소지는 감춤
-		/* 						const cardText = document.createElement("p");
-								cardText.classList.add("card-text");
-								cardText.innerText= data[i].address;
-								cardBody.append(cardText); */
-								
-								card.append(cardBody);
-								container.append(card);
-								resultContainer[0].append(container);
-		
-									i++;													
-							}
-							
-							i--;
-								
-						}
-							
-						
-						mainContainer.append(resultContainer[0]);
-						
-						console.log(resultContainer);
-						console.log(resultContainer.nextElementSibling);
-			
-					  
-					}
-		
 			});
 
 		}
 		
-
+		const fn_searchArea = () => {
+			
+			const areaOpt = document.getElementsByClassName("area-class")[0].value;
+			const sigunguOpt = document.getElementsByClassName("sigungu-class")[0].value;
+			
+			console.log("area : ",areaOpt," sigungu : ",sigunguOpt);
+			
+			fetch('${path}/place/areaFilter.do', {
+				  method: 'POST', 
+				  headers: {
+				    'Content-Type': 'application/json',
+				  },
+				  body: JSON.stringify({"areacode":areaOpt,"sigungucode":sigunguOpt}),
+				})
+				.then((response) => response.json())
+				.then((data) => {
+				  
+					console.log("성공했니? ", data);
+					createCards(data);
+					
+					//결과 내 재검색 > '장소' 관련 필터 비활성화하기
+					document.getElementById("areaTab").classList.add("disabled");		
+					
+					
+				});
+			
+			
+		}
+		
+		
+		//결과 內 재검색 : 지역별 필터
+		const fn_areaFilter = ()=>{
+			
+			const keyword = document.getElementById("areaWord").value; //클라이언트가 입력한 텍스트 값
+			//const keyword = document.getElementById("keyword").value;
+			console.log("검색어 : ",keyword);
+			const areaCode = document.getElementsByClassName("area-class")[1].value;
+			const sigunguCode = document.getElementsByClassName("sigungu-class")[1].value;
+			console.log("필터 area : ",areaCode);
+			console.log("필터 sigungu : ",sigunguCode);
+			
+			
+			//DB 검색 : 필터 적용하기
+			fetch('${path}/place/areaFilter.do', {
+				  method: 'POST', 
+				  headers: {
+				    'Content-Type': 'application/json',
+				  },
+				  body: JSON.stringify({"title":keyword,"areacode":areaCode,"sigungucode":sigunguCode}),
+				})
+				.then((response) => response.json())
+				.then((data) => {
+				  
+					console.log("성공했니? ", data);
+					createCards(data, keyword);
+							
+				});
+			
+			
+		}
 		
 
 		//-----------------------------------------------------------------------------------------------------------------------		
 		const createAreaOption = (idx)=>{ //class名으로 지역별 옵션 생성하기
-			//alert(idx+"야!");
-		
-			//---------
+			
+			
+			//-------------------------------------------------------------------------------------------
 			//관심 지역 옵션 *생성 관련
 			const area = document.getElementsByClassName("area-class");
 			const sigungu = document.getElementsByClassName("sigungu-class");
@@ -728,7 +795,7 @@
 				} else if (e.target.value==36){ //경남
 					
 					
-					sigungu.innerHTML = "";
+					sigungu[idx].innerHTML = "";
 					let gyeongnam = ["거제시","거창군","고성군","김해시","남해군","마산시","밀양시","사천시","산청군","양산시",
 									"의령군","진주시","진해시","창녕군","창원시",
 									"통영시","하동군","함안군","함양군","합천군"]
@@ -813,9 +880,7 @@
 				});
 				
 			}
-		
-		
-		
+
 		}
 	
 	</script>

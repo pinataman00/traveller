@@ -34,4 +34,9 @@ public class PlaceServiceImpl implements PlaceService {
 		return dao.keywordResultCnt(keyword,session);
 	}
 
+	@Override
+	public List<Place> areaFilter(Map<String, Object> map) {
+		return dao.areaFilter(map,session);
+	}
+
 }

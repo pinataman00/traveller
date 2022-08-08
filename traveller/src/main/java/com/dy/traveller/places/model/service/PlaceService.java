@@ -13,4 +13,6 @@ public interface PlaceService {
 
 	int selectResultCnt(String keyword);
 
+	List<Place> areaFilter(Map<String, Object> map);
+
 }

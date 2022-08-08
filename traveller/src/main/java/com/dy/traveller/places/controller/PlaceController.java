@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -87,7 +88,19 @@ public class PlaceController {
 		return mv;
 	}
 
-	
+	@RequestMapping("/areaFilter.do")
+	@ResponseBody
+	public List<Place> areaFilter(@RequestBody Map<String,Object> map){
+		
+		System.out.println("잘 도착했니?");
+		System.out.println(map);
+
+		List<Place> list = service.areaFilter(map);
+		System.out.println("결과 : "+list);
+		System.out.println("결과 총 : "+list.size()+"개");
+		return list;
+		
+	}
 	
 	
 }

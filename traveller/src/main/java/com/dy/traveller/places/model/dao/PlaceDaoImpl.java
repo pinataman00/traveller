@@ -33,4 +33,10 @@ public class PlaceDaoImpl implements PlaceDao {
 		return session.selectOne("place.keywordResultCnt",keyword);
 	}
 
+	@Override
+	public List<Place> areaFilter(Map<String, Object> map, SqlSessionTemplate session) {
+	
+		return session.selectList("place.filterSearch",map);
+	}
+
 }
