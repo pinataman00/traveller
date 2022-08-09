@@ -15,4 +15,6 @@ public interface PlaceService {
 
 	List<Place> areaFilter(Map<String, Object> map);
 
+	Place selectPlace(Map<String, Object> map);
+
 }

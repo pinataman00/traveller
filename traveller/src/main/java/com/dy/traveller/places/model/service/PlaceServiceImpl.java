@@ -39,4 +39,9 @@ public class PlaceServiceImpl implements PlaceService {
 		return dao.areaFilter(map,session);
 	}
 
+	@Override
+	public Place selectPlace(Map<String, Object> map) {
+		return dao.selectPlace(map,session);
+	}
+
 }

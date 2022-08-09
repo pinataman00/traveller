@@ -91,6 +91,9 @@
 .recommend-container{
 	text-align:center;
 }
+.cursorEffect{
+	cursor:pointer;
+}
 
 
 </style>
@@ -184,111 +187,91 @@
 			</div>
 			<div class="collapse" id="themeSearch">
 			  <div class="card">
-			    
-			    					<div class="theme-search-container">
+			    		
+			    			<div class="theme-search-container">
 							<div class="btn-container">
-	
-							<div class="btn-group">
-								<button type="button" class="btn btn-info">자연</button>
-								<button type="button"
-									class="btn btn-info dropdown-toggle dropdown-toggle-split"
-									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">자연 관광지</a> 
-									<a class="dropdown-item" href="#">관광 자원</a>
-								</div>
-							</div>
-							
-							<div class="btn-group">
-								<button type="button" class="btn btn-info">인문</button>
-								<button type="button"
-									class="btn btn-info dropdown-toggle dropdown-toggle-split"
-									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">역사</a> 
-									<a class="dropdown-item" href="#">휴양</a>
-									<a class="dropdown-item" href="#">체험</a>
-									<a class="dropdown-item" href="#">산업</a>
-									<a class="dropdown-item" href="#">건축/조형</a>
-									<a class="dropdown-item" href="#">문화시설</a>
-									<a class="dropdown-item" href="#">축제</a>
-									<a class="dropdown-item" href="#">공연/행사</a>
-								</div>
-							</div>
-							
-							<div class="btn-group">
-								<button type="button" class="btn btn-info">추천코스</button>
-								<button type="button"
-									class="btn btn-info dropdown-toggle dropdown-toggle-split"
-									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">가족</a> 
-									<a class="dropdown-item" href="#">나홀로</a>
-									<a class="dropdown-item" href="#">힐링</a>
-									<a class="dropdown-item" href="#">도보</a>
-									<a class="dropdown-item" href="#">캠핑</a>
-									<a class="dropdown-item" href="#">맛</a>
-								</div>
-							</div>
-							
-							<div class="btn-group">
-								<button type="button" class="btn btn-info">레포츠</button>
-								<button type="button"
-									class="btn btn-info dropdown-toggle dropdown-toggle-split"
-									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">일반</a> 
-									<a class="dropdown-item" href="#">육상</a>
-									<a class="dropdown-item" href="#">수상</a>
-									<a class="dropdown-item" href="#">항공</a>
-									<a class="dropdown-item" href="#">복합</a>
-								</div>
-							</div>
-							
-							<div class="btn-group">
-								<button type="button" class="btn btn-info">숙박</button>
-								<button type="button"
-									class="btn btn-info dropdown-toggle dropdown-toggle-split"
-									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">숙박 시설</a>
-								</div>
-							</div>
-							
-							<div class="btn-group">
-								<button type="button" class="btn btn-info">쇼핑</button>
-								<button type="button"
-									class="btn btn-info dropdown-toggle dropdown-toggle-split"
-									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">쇼핑</a>
-								</div>
-							</div>
-							
-							<div class="btn-group">
-								<button type="button" class="btn btn-info">음식</button>
-								<button type="button"
-									class="btn btn-info dropdown-toggle dropdown-toggle-split"
-									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">음식점</a> 
-									<a class="dropdown-item" href="#">숙박 시설</a>
-								</div>
-							</div>
+							<input type="hidden" id="hiddenTheme">
+									<div class="btn-group">
+										<button type="button" class="btn btn-info">자연</button>
+										<button type="button"
+											class="btn btn-info dropdown-toggle dropdown-toggle-split"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="sr-only">Toggle Dropdown</span>
+										</button>
+										<div class="dropdown-menu">
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0101')">자연 관광지</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0102')">관광 자원</p>
+										</div>
+									</div>
+									
+									<div class="btn-group">
+										<button type="button" class="btn btn-info">인문</button>
+										<button type="button"
+											class="btn btn-info dropdown-toggle dropdown-toggle-split"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="sr-only">Toggle Dropdown</span>
+										</button>
+										<div class="dropdown-menu">
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0201')">역사</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0202')">휴양</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0203')">체험</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0204')">산업</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0205')">건축/조형</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0206')">문화시설</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0207')">축제</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0208')">공연/행사</p> 
+										</div>
+									</div>
+									
+									<div class="btn-group">
+										<button type="button" class="btn btn-info">추천코스</button>
+										<button type="button"
+											class="btn btn-info dropdown-toggle dropdown-toggle-split"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="sr-only">Toggle Dropdown</span>
+										</button>
+										<div class="dropdown-menu">
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('C0112')">가족</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('C0113')">나홀로</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('C0114')">힐링</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('C0115')">도보</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('C0116')">캠핑</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('C0117')">맛</p> 
+										</div>
+									</div>
+									
+									<div class="btn-group">
+										<button type="button" class="btn btn-info">레포츠</button>
+										<button type="button"
+											class="btn btn-info dropdown-toggle dropdown-toggle-split"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="sr-only">Toggle Dropdown</span>
+										</button>
+										<div class="dropdown-menu">
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0301')">일반</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0302')">육상</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0303')">수상</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0304')">항공</p> 
+											<p class="dropdown-item cursorEffect" onclick="fn_searchTheme('A0305')">복합</p> 
+										</div>
+									</div>
+									
+									<div class="btn-group">
+										<button type="button" class="btn btn-info" onclick="fn_searchTheme('B0201')">숙박</button>
+									</div>
+									
+									<div class="btn-group">
+										<button type="button" class="btn btn-info" onclick="fn_searchTheme('A0401')">쇼핑</button>
+									</div>
+									
+									<div class="btn-group">
+										<button type="button" class="btn btn-info" onclick="fn_searchTheme('A0502')">음식</button>
+									</div>
+
+									<!-- <div class="btn-container"> -->
+											<button class="btn btn-outline-success my-2 my-sm-0" style="margin-left:10px;" type="submit" onclick="fn_searchTheme();">검색</button>	
+									<!-- </div> -->
+
 
 							</div>
 			    
@@ -313,6 +296,10 @@
 						<li class="nav-item"><a class="nav-link disabled" href="#">필터</a>
 						<li class="nav-item nav-link" id="areaTab" data-toggle="modal" data-target="#areaFilter">지역별</li>
 						<li class="nav-item nav-link" id="themeTab" data-toggle="modal" data-target="#themeFilter">테마별</li>
+						<li class="nav-item"><a class="nav-link disabled" href="#">결과 내 재검색</a>
+						<li class="nav-item nav-link">
+							<input type="text" id="reSearch" placeholder="키워드" style="margin-right:10px;">
+							<button type="button" class="btn btn-outline-primary btn-sm" style="margin-top:-5px;" onclick="fn_research();">검색</button>
 						</li>
 					</ul>
 				</div>
@@ -572,8 +559,12 @@
 								img.src=data[i].firstImage;
 								
 							} else { //기본 이미지 출력
-								img.src= "${path}/resources/img/testPic/dorothea.png";
-							} 
+								img.src="${path}/resources/img/testPic/dorothea.png";
+							}
+							const contentId = data[i].contentId;
+							img.addEventListener("click",e=>{
+								location.assign("${path}/place/placeView/"+contentId);
+							});
 							card.append(img);
 							
 							const cardBody = document.createElement("div");
@@ -606,9 +597,17 @@
 			
 		}
 	
-		//검색 기능 > 키워드, 지역별, 테마별
-		const searchPlaces = ()=>{ //키워드 검색 기능
+		//검색 기능 > 키워드, 지역별, 테마별 ------------------------------------------------------------------------------------
+		const searchPlaces = ()=>{ //1. 키워드 검색 기능
+		
 			
+		//선행 작업 : 결과 내 재검색 > 재검색 조건 단일화하기
+		//지역 조건 초기화
+		document.getElementsByClassName("area-class")[0].value=0;
+		document.getElementsByClassName("sigungu-class")[0].value=0;
+		//테마 조건 초기화
+		document.getElementById("hiddenTheme").value='';
+		
 		//fetch를 사용해서 검색 결과 가져오기
 		const keyword = document.getElementById("keyword").value;
 			
@@ -622,29 +621,32 @@
 			})
 			.then((response) => response.json())
 			.then((data) => {
-			  
+			  				
+				//결과 내 재검색 필터 비활성화됐었다면, 다시 활성화하기
+				const areaTabSetting = document.getElementById("areaTab");
+				areaTabSetting.classList.remove("disabled");
+				document.getElementById("themeTab").classList.remove("disabled");
 				
-				//비활성화됐었다면, 다시 활성화하기
-				const areaTabSetting = document.getElementById("areaTab")
-				//console.log("있니? ",areaTabSetting.classList);
-				console.log(areaTabSetting)
-				areaTabSetting.classList.remove("disabled");		
-				
+				//검색 결과 화면에 출력하기
 				createCards(data,keyword);
 
-						
 			});
 
 		}
 		
-		const fn_searchArea = () => {
-			
+		const fn_searchArea = () => {//2. 지역별 검색 기능
+		
+			//다른 검색 조건 초기화하기
+			document.getElementById("keyword").value='';
+			document.getElementById("areaWord").value='';
+			document.getElementById("hiddenTheme").value='';
+		
 			const areaOpt = document.getElementsByClassName("area-class")[0].value;
 			const sigunguOpt = document.getElementsByClassName("sigungu-class")[0].value;
 			
 			console.log("area : ",areaOpt," sigungu : ",sigunguOpt);
 			
-			fetch('${path}/place/areaFilter.do', {
+			fetch('${path}/place/searchFilter.do', {
 				  method: 'POST', 
 				  headers: {
 				    'Content-Type': 'application/json',
@@ -659,7 +661,40 @@
 					
 					//결과 내 재검색 > '장소' 관련 필터 비활성화하기
 					document.getElementById("areaTab").classList.add("disabled");		
+										
+				});
+						
+		}
+		
+		const fn_searchTheme = (condition)=>{//3. 테마별 검색 기능
+			
+			//다른 검색 조건 초기화
+			document.getElementById("keyword").value='';
+			document.getElementById("areaWord").value='';
+			document.getElementsByClassName("area-class")[0].value=0;
+			document.getElementsByClassName("sigungu-class")[0].value=0;			
+		
+			//alert(condition);
+			const theme = condition;
+			fetch('${path}/place/searchFilter.do', {
+				  method: 'POST', 
+				  headers: {
+				    'Content-Type': 'application/json',
+				  },
+				  body: JSON.stringify({"theme":theme}),
+				})
+				.then((response) => response.json())
+				.then((data) => {
+				  
+					console.log("성공했니? ", data);
+
+					//결과 내 재검색 > '테마' 관련 필터 비활성화하기		
+					document.getElementById("themeTab").classList.add("disabled");
 					
+					//결과 내 재검색 > '지역별 필터 검색'을 위해서 input hidden값으로 theme를 저장해둬야 함
+					document.getElementById("hiddenTheme").value=theme;
+					
+					createCards(data);
 					
 				});
 			
@@ -667,6 +702,19 @@
 		}
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		//결과 內 재검색 : 지역/키워드/테마 필터
+		//TODO : 키워드 재검색은 기존 검색 조건에 대해, 경우 따라 유지||리셋하는 로직을 추가해야 함! 
 		//결과 內 재검색 : 지역별 필터
 		const fn_areaFilter = ()=>{
 			
@@ -677,15 +725,17 @@
 			const sigunguCode = document.getElementsByClassName("sigungu-class")[1].value;
 			console.log("필터 area : ",areaCode);
 			console.log("필터 sigungu : ",sigunguCode);
-			
+			const theme= document.getElementById("hiddenTheme").value;
+			console.log("필터 theme : ",theme);
 			
 			//DB 검색 : 필터 적용하기
-			fetch('${path}/place/areaFilter.do', {
+			
+			fetch('${path}/place/searchFilter.do', {
 				  method: 'POST', 
 				  headers: {
 				    'Content-Type': 'application/json',
 				  },
-				  body: JSON.stringify({"title":keyword,"areacode":areaCode,"sigungucode":sigunguCode}),
+				  body: JSON.stringify({"title":keyword,"areacode":areaCode,"sigungucode":sigunguCode,"theme":theme}),
 				})
 				.then((response) => response.json())
 				.then((data) => {
@@ -695,6 +745,42 @@
 							
 				});
 			
+		
+		}
+		
+		//결과 內 재검색 : 키워드 재검색
+		const fn_research = ()=>{
+			
+			const researchKeyword = document.getElementById("reSearch").value;
+			console.log("결과 내 재검색 검색어 : ",researchKeyword);
+			
+			//본래 검색 조건들
+			//1. 키워드
+			const keyword = document.getElementById("areaWord").value; //클라이언트가 입력한 텍스트 값
+			console.log("원래 검색어 : ",keyword);
+			//2. 지역
+			const areaCode = document.getElementsByClassName("area-class")[0].value;
+			const sigunguCode = document.getElementsByClassName("sigungu-class")[0].value;
+			console.log("지역 검색 후 재검색이라면? ",areaCode, sigunguCode);
+			
+			//3. 테마 (보류)
+			
+			
+			//DB 검색 : 필터 적용하기
+			fetch('${path}/place/searchFilter.do', {
+				  method: 'POST', 
+				  headers: {
+				    'Content-Type': 'application/json',
+				  },
+				  body: JSON.stringify({"title":keyword,"areacode":areaCode,"sigungucode":sigunguCode,"research":researchKeyword}),
+				})
+				.then((response) => response.json())
+				.then((data) => {
+				  
+					console.log("성공했니? ", data);
+					createCards(data, keyword);
+							
+				});
 			
 		}
 		

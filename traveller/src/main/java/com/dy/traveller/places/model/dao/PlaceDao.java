@@ -17,4 +17,6 @@ public interface PlaceDao {
 
 	List<Place> areaFilter(Map<String, Object> map, SqlSessionTemplate session);
 
+	Place selectPlace(Map<String, Object> map, SqlSessionTemplate session);
+
 }

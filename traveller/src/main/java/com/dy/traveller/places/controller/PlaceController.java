@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -88,19 +89,41 @@ public class PlaceController {
 		return mv;
 	}
 
-	@RequestMapping("/areaFilter.do")
+	@RequestMapping("/searchFilter.do")
 	@ResponseBody
-	public List<Place> areaFilter(@RequestBody Map<String,Object> map){
+	public List<Place> searchFilter(@RequestBody Map<String,Object> map){
 		
 		System.out.println("잘 도착했니?");
 		System.out.println(map);
 
 		List<Place> list = service.areaFilter(map);
-		System.out.println("결과 : "+list);
 		System.out.println("결과 총 : "+list.size()+"개");
 		return list;
 		
 	}
 	
+	@RequestMapping("/placeView/{id}")
+	public ModelAndView getPlaceView(@PathVariable String id, ModelAndView mv) {
+		
+		System.out.println("도착했니?");
+		System.out.println(id);
+		
+		mv.addObject("contentId", id);
+		mv.setViewName("/place/placeView");
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping("/placeDetail")
+	@ResponseBody
+	public Place getPlaceView(@RequestBody Map<String,Object> map) {
+		
+		System.out.println("장소 관련 정보 잘 도착했니?");
+		System.out.println(map);
+		Place p = service.selectPlace(map);
+		return p;
+		
+	}
 	
 }
