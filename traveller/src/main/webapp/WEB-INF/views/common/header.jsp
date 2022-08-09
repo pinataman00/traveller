@@ -104,7 +104,7 @@
 				  </button>
 				  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 				    <button class="dropdown-item" type="button" onclick="location.assign('${path}/member/myInfo.do')">정보 수정</button>
-				    <button class="dropdown-item" type="button" onclick="location.assign('${path}/message/openMessage.do')">메시지</button>
+				    <button class="dropdown-item" type="button" onclick="location.assign('${path}/message/openMessageMain.do')">메시지</button>
 				    <button class="dropdown-item" type="button">알림</button>
 				    <button class="dropdown-item" type="button">나의 여행</button>
 				    <div class="dropdown-divider"></div>
