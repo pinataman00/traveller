@@ -97,6 +97,10 @@
 	</dependency>
 	
 	<!-- 0809 웹 소캣 관련 -->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-websocket</artifactId>
+	</dependency>
 	
 		
 	</dependencies>

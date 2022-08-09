@@ -87,6 +87,9 @@ img.profileImg {
 	margin-top:10px;
 	margin-bottom:10px;
 }
+button#startBtn{
+	float:right;
+}
 </style>
 <section class="container">	
 	<div class="message-title-container">
@@ -110,7 +113,7 @@ img.profileImg {
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">1:1 메시지 시작하기</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="deleteText();">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -120,20 +123,17 @@ img.profileImg {
 				<div class="input-group-prepend">
 					<span class="input-group-text" id="inputGroup-sizing-sm">ID</span>
 				</div>
-					<input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+					<input id="findId_" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
 					<button type="button" class="btn btn-primary btn-sm" onclick="findId();">검색</button>
-			</div>
-			
+			</div>		
 				<div class="search-res-container">
-					<span class="guide ok">"시작하기" 버튼을 눌러보세요!</span> 
+					<span class="guide ok"><p id="friendId_"></p>
+						<button id="startBtn" type="button" class="btn btn-primary disabled" onclick="startMessage();">시작하기</button>
+					</span> 
 					<span class="guide error">존재하지 않는 회원입니다</span>
 				</div>
 
 			</div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
-	      </div>
     </div>
   </div>
 </div>
@@ -184,6 +184,50 @@ img.profileImg {
 	
 	//메시지 시작하기 > 친구 찾기
 	const findId = ()=>{
+		
+		const id = document.getElementById("findId_").value;
+		const ok = document.getElementsByClassName("ok");
+		const error = document.getElementsByClassName("error");
+		const startBtn = document.getElementById("startBtn");
+		
+		fetch('${path}/member/checkMemberId.do?memberId='+id, {
+			  method: 'POST', 
+			  headers: {
+			    'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify({memberId:id}),
+			})
+			.then((response) => response.json())
+			.then((data) => {
+			  
+				console.log('성공:', data);
+				
+			   	if(data){
+					  ok[0].style.display="block";
+					  error[0].style.display="none";
+					  
+					  document.getElementById("friendId_").innerText=id+"님과 함께 1:1대화를 시작하세요";
+					  startBtn.classList.remove("disabled");
+				  } 
+			   	  else {
+					  ok[0].style.display="none";
+					  error[0].style.display="block";
+				  }  			  
+			});
+	}
+	
+	//모달창 닫기 -> 입력했던 값들 삭제하기
+	const deleteText = ()=>{
+		
+		document.getElementById("findId_").value = "";
+		document.getElementsByClassName("ok")[0].style.display="none";
+		document.getElementsByClassName("error")[0].style.display="none";
+		
+		
+	}
+	
+	//메시지 주고받기 시작하기
+	const startMessage = ()=>{
 		
 		
 		

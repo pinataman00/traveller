@@ -91,10 +91,6 @@
 			const ok = document.getElementsByClassName("ok");
 			const error = document.getElementsByClassName("error"); 
 			
-			console.log(id);
-			console.dir(ok[0]);
-			console.log(error[0]);
-			
 			
 			fetch('${path}/member/checkMemberId.do?memberId='+id, {
 				  method: 'POST', 
