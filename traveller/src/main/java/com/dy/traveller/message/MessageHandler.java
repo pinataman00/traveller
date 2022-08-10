@@ -75,6 +75,7 @@ public class MessageHandler extends TextWebSocketHandler {
 	private void addClients(WebSocketSession session, Message message) {
 		session.getAttributes().put("msg", message);
 		clients.add(session);
+		//sessionCheck();
 	}
 	
 	

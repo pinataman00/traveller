@@ -21,7 +21,7 @@
 }
 .text-container {
 	height: 300px;
-	border : 0.3px solid black;
+	border : 0.3px solid #dcdcdc;
 	border-radius:10px;
 }
 
@@ -29,7 +29,7 @@
 	height: 50px;
     width: 313px;
     resize: none;
-	border : 0.3px solid black;
+	border : 0.3px solid #dcdcdc;
 	border-radius:5px;
 }
 img.profileImg {
@@ -40,7 +40,6 @@ img.profileImg {
     max-width: 40px;
     max-height: 40px;
     border-radius: 50px;
-/*     border: 1px solid red; */
 }
 .input-container{
 	display: flex;
@@ -53,6 +52,39 @@ img.profileImg {
     float: right;
     margin-left: 15px;
     cursor:pointer;
+}
+.text-container{
+	overflow-y: scroll;	
+}
+.text-container::-webkit-scrollbar{
+	display:none;
+}
+
+div#your-container{
+    width: 230px;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+div#your-id{
+	margin-bottom: 2px;
+}
+div#your-msg{
+	background-color: #D2D2FF;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+div#my-container{
+
+    width: 230px;
+    margin-left: 150px;
+    margin-top: 10px;
+}
+div#my-msg{
+	background-color: #FFEB46;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 </style>
@@ -68,9 +100,26 @@ img.profileImg {
 			</div>
 		</div>
 		<div class="text-container" id="textContainer">
-			메시지가 출력될 영역
+			<!-- 메시지가 출력될 영역 -->
+			
+			
+<!--
+			출력 샘플
+ 			<div id="your-container">
+				<div id="your-id">상대방</div>
+				<div id="your-msg">
+					메시지출력 메시지출력메시지출력메시지출력메시지출력메시지출력메시지출력메시지출력메시지출력
+				</div>
+			</div>
+			<div id="my-container">
+				<div id="my-msg">
+					메시지출력 메시지출력메시지출력메시지출력메시지출력메시지출력메시지출력메시지출력메시지출력
+				</div>
+			</div> -->
+			
 		</div>
 		<div class="input-container">
+			<input type="hidden" id="myId" value="${loginMember.memberId}">
 			<textarea class="text-area" id="text" rows="3"></textarea>
 			<img id="basicImg" class="msgImg" src="${path}/resources/img/icons/send-plus.svg" alt="sendImg">
 		</div>
@@ -147,22 +196,65 @@ img.profileImg {
 	});
 	//3. WebSocketHandler클래스의 sendMessage()메소드가 보낸 데이터를, 
 	//websocket객체.onmessage()메소드가 처리할 수 있음
-	websocket.onmessage = e=>{
+	websocket.onmessage = e=>{ //TODO 0810) 방, 귓속말 등 분기처리하기
 		
 		console.log(e);
 		const msg = JSON.parse(e.data); //서버에서 writeValueAsString()으로 전송한 문자열 데이터를, JS객체로 변환하기
 		const textContainer = document.getElementById("textContainer");
-		//const temp = document.getElementById("textContainer").innerHTML; //메시지 출력 컨테이너에 담긴 태그 일체 소환
 		
-		const sender = document.createElement("p");
-		sender.innerText = msg['sender'];
-		textContainer.append(sender);
+		//------------------------------------------------------------------------------------
 		
-		const msgText = document.createElement("p");
-		msgText.innerText = msg['msg'];
-		textContainer.append(msgText);
+		const myId = document.getElementById("myId").value;
 		
-		//textContainer.append(+msg['sender']+"</p>:<p>"+msg['msg']+"</p>");
+		
+		//메시지 컨테이너 구성하기
+		if(msg['receiver']==''){ //1. 일반적인 메시지 ('수신자'가 별도로 설정되지 않은 경우)
+			
+			if(msg['sender']== myId){ //발신자 메시지 처리하기
+				
+				//발신자가 '나'일 때 -> 말풍선 오른쪽에 출력하기
+				const myContainer = document.createElement("div");
+				myContainer.id="my-container";
+				const myMsg = document.createElement("div");
+				myMsg.id="my-msg";
+				
+				myMsg.innerText = msg['msg'];
+				myContainer.append(myMsg);
+				textContainer.append(myContainer);
+				
+			} else { //발신자가 '상대방'일 때 -> 말풍선 왼편에 출력하기
+				
+				const yourContainer = document.createElement("div");
+				yourContainer.id="your-container";
+				const yourId = document.createElement("div");
+				yourId.id="your-id";
+				yourId.innerText= msg['sender'];
+				yourContainer.append(yourId);
+				const yourMsg = document.createElement("div");
+				yourMsg.id="your-msg";
+				yourMsg.innerText= msg['msg'];
+				yourContainer.append(yourMsg);
+				textContainer.append(yourContainer);
+				
+			}
+			
+		} else if (msg['receiver']==myId) { //'귓속말'발신자로 지정된 경우 -> 왼쪽에 보라색 배경으로 출력. '귓속말'기능
+			
+			const yourContainer = document.createElement("div");
+			yourContainer.id="your-container";
+			const yourId = document.creataeElement("div");
+			yourId.id="your-id";
+			yourId.innerText= msg['sender'];
+			yourContainer.append(yourId);
+			const yourMsg = document.createElement("div");
+			yourMsg.id="your-msg";
+			yourMsg.innerText= msg['msg'];
+			yourContainer.append(yourMsg);
+			textContainer.append(yourContainer);
+			
+			
+		}
+		
 		
 	}
 	
