@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +26,7 @@ import com.dy.traveller.common.PageFactory;
 import com.dy.traveller.member.model.service.MemberService;
 import com.dy.traveller.member.model.vo.Member;
 import com.dy.traveller.member.model.vo.Profileimg;
+import com.dy.traveller.places.model.vo.Place;
 
 @Controller
 @RequestMapping("/member")
@@ -479,5 +482,16 @@ public class MemberController {
 		  return "common/msg";
 
 	}
+	
+	@RequestMapping("/receiverInfo/{memberId}")
+	@ResponseBody
+	public Member getReceiverInfo(@PathVariable String memberId) {
+		
+		System.out.println("잘 도착했니? : "+memberId);
+		Member receiver = service.login(Member.builder().memberId(memberId).build());
+		System.out.println("메시지 상대방 정보 : "+receiver);
+		return receiver;
+	}
 
+	
 }

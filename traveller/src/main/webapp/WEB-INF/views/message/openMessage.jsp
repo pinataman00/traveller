@@ -35,12 +35,12 @@
 img.profileImg {
 	margin-top: 8px;
     margin-bottom: 2px;
-    width: 100%;
-    height: 100%;
-    max-width: 30px;
-    max-height: 30px;
+    width: 40px;
+    height: 40px;
+    max-width: 40px;
+    max-height: 40px;
     border-radius: 50px;
-    border: 1px solid red;
+/*     border: 1px solid red; */
 }
 .input-container{
 	display: flex;
@@ -63,6 +63,7 @@ img.profileImg {
 			</div>
 			<div class="receiver-id">
 				${receiver}
+				<input type="hidden" id="receiver_id" value=${receiver}>
 			</div>
 		</div>
 		<div class="text-container">
@@ -76,4 +77,44 @@ img.profileImg {
 	</section>
 	
 </body>
+
+<script>
+
+	(()=>{ //메시지 수신자 프로필 사진 가져오기
+		
+		let receiver = document.getElementById("receiver_id").value;
+		
+		fetch('${path}/member/receiverInfo/'+receiver, {
+			  method: 'POST', 
+			  headers: {
+			    'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify({"memberId":receiver}),
+			})
+			.then((response) => response.json())
+			.then((data) => {
+			  
+				console.log('성공:', data);
+	
+ 				if(data.image.renamedFileName!=null){
+
+ 					console.log('사진 있어');
+					async function getImg(){
+						let response = await fetch("${path}/resources/member/profile/"+data.image.renamedFileName);
+						let blob = await response.blob(); //응답을 blob형태로 가져옴
+						document.getElementById("basicImg").src = URL.createObjectURL(blob);
+
+					}
+					
+					getImg();
+			
+				}
+				
+				
+			  
+			});
+		
+	})(); 
+</script>
+
 </html>
