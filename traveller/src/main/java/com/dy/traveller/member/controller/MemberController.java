@@ -487,9 +487,7 @@ public class MemberController {
 	@ResponseBody
 	public Member getReceiverInfo(@PathVariable String memberId) {
 		
-		System.out.println("잘 도착했니? : "+memberId);
 		Member receiver = service.login(Member.builder().memberId(memberId).build());
-		System.out.println("메시지 상대방 정보 : "+receiver);
 		return receiver;
 	}
 

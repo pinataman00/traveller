@@ -52,6 +52,7 @@ img.profileImg {
     height: 30px;
     float: right;
     margin-left: 15px;
+    cursor:pointer;
 }
 
 </style>
@@ -66,7 +67,7 @@ img.profileImg {
 				<input type="hidden" id="receiver_id" value=${receiver}>
 			</div>
 		</div>
-		<div class="text-container">
+		<div class="text-container" id="textContainer">
 			메시지가 출력될 영역
 		</div>
 		<div class="input-container">
@@ -79,6 +80,7 @@ img.profileImg {
 </body>
 
 <script>
+
 
 	(()=>{ //메시지 수신자 프로필 사진 가져오기
 		
@@ -98,23 +100,72 @@ img.profileImg {
 	
  				if(data.image.renamedFileName!=null){
 
- 					console.log('사진 있어');
 					async function getImg(){
 						let response = await fetch("${path}/resources/member/profile/"+data.image.renamedFileName);
 						let blob = await response.blob(); //응답을 blob형태로 가져옴
 						document.getElementById("basicImg").src = URL.createObjectURL(blob);
-
-					}
-					
-					getImg();
-			
+					}					
+					getImg();			
 				}
-				
-				
 			  
 			});
 		
-	})(); 
+	})();
+	
+	//수신자 정보 > 아이디 받아오기
+	const receiver = document.getElementById("receiver_id").value;
+	
+	class Message { //WebSocket서버 접속한 클라이언트 관련 정보 저장 객체
+		
+		constructor(type,sender,receiver,msg,room){
+			this.type=type;
+			this.sender=sender;
+			this.receiver=receiver;
+			this.msg=msg;
+			this.room=room;
+		}
+	}
+	
+	//1. WebSocket 객체 생성 
+	const websocket = new WebSocket("ws://localhost:9090/message");
+	//2. WebSocket 서버 접속 時 실행
+	websocket.onopen = e => { //-> WebSocketHandler의 afterConnectionEstablished()가 실행될 것임
+		
+		
+		console.log("수신자 : ",receiver);
+		//※ send()메소드 실행 -> WebSocketHandler의 handleTextMessage()메소드가 실행될 것임
+		websocket.send(JSON.stringify(new Message("access","${loginMember.memberId}","","")));
+				
+	}
+	//2. "메시지 (WebSocket서버로) 발송" = WebSocketHandler의 handleTextMessage()메소드가 실행될 것임
+	document.getElementsByClassName("msgImg")[0].addEventListener("click",e=>{
+		
+		const msgText = document.getElementById("text").value;
+		console.log(msgText);
+		websocket.send(JSON.stringify(new Message("msg","${loginMember.memberId}","",msgText,"")));
+		
+	});
+	//3. WebSocketHandler클래스의 sendMessage()메소드가 보낸 데이터를, 
+	//websocket객체.onmessage()메소드가 처리할 수 있음
+	websocket.onmessage = e=>{
+		
+		console.log(e);
+		const msg = JSON.parse(e.data); //서버에서 writeValueAsString()으로 전송한 문자열 데이터를, JS객체로 변환하기
+		const textContainer = document.getElementById("textContainer");
+		//const temp = document.getElementById("textContainer").innerHTML; //메시지 출력 컨테이너에 담긴 태그 일체 소환
+		
+		const sender = document.createElement("p");
+		sender.innerText = msg['sender'];
+		textContainer.append(sender);
+		
+		const msgText = document.createElement("p");
+		msgText.innerText = msg['msg'];
+		textContainer.append(msgText);
+		
+		//textContainer.append(+msg['sender']+"</p>:<p>"+msg['msg']+"</p>");
+		
+	}
+	
 </script>
 
 </html>

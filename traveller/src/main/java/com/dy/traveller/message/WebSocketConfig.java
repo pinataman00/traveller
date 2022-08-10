@@ -19,7 +19,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 		
 		//※ setAllowedOrigins("*")를 붙이면, 도메인이 다른 서버에서도 접속할 수 있다고 함
 		//EndPoint를 "/message"로 설정함
-		registry.addHandler(messageHandler, "ws/message").setAllowedOrigins("*");
+		registry.addHandler(messageHandler, "/message").setAllowedOrigins("*");
 		
 	}
 	
