@@ -28,6 +28,24 @@
 		margin-top: 20px;
 		margin-bottom: 20px;
 	}
+	div#makeGroup{
+		margin-top: 80px;
+	}
+	.groupStart-btn{
+		float:right;
+		margin-top:25px;
+	}
+	.tempList{
+		display:flex;
+		align-items:baseline;
+		border: 0.5px solid #e9e9e9;
+		border-radius:10px;
+		padding-top:10px;
+		padding-left: 20px;
+	}
+	.delBtn{
+		margin-left:20px;
+	}
 	
 </style>
 <section class="container">
@@ -38,20 +56,19 @@
 		</div>
 		<div class="planner-setting-container">
 			<form>
-			<div class="input-group input-group-sm mb-3">
-				<div class="input-group-prepend">
-					<span class="input-group-text" id="inputGroup-sizing-sm">플랜 제목</span>
+				<div class="input-group input-group-sm mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="inputGroup-sizing-sm">플랜 제목</span>
+					</div>
+					<input name="plannerTitle" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" required>
 				</div>
-				<input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-			</div>
 				<div class="theme-container">
 					<!-- 테마 -->
 					<div class="input-group-prepend">
-						<span class="input-group-text" id="inputGroup-sizing-sm"
-							style="height: 31px; font-size: 14px;">테마</span>
+						<span class="input-group-text" id="inputGroup-sizing-sm" style="height: 31px; font-size: 14px;">테마</span>
 					</div>
-					<select class="theme-select-one custom-select custom-select-sm">
-						<option selected>여행 테마를 선택해보세요</option>
+					<select class="theme-select-one custom-select custom-select-sm" required>
+						<option value="none">여행 테마를 선택해보세요</option>
 						<option value="A01">자연</option>
 						<option value="A02">인문</option>
 						<option value="C01">추천 코스</option>
@@ -60,15 +77,15 @@
 						<option value="food">음식</option>
 						<option value="free">자유여행</option>
 					</select> 
-					<select class="theme-select-two custom-select custom-select-sm">
+					<select name="theme" class="theme-select-two custom-select custom-select-sm" required>
 						<!-- 테마 카테고리 상세 -->
-					</select>			
+					</select>
 				</div>
 				<div class="area-container">
 					<!-- 지역 -->
-					<p style="text-align:left;">주요 여행 지역</p>
+					<p style="text-align: left;">주요 여행 지역</p>
 					<select class="custom-select custom-select-sm area-class"
-						name="areaCode" id="areacode_" onclick="createAreaOption();">
+						name="areacode" id="areacode_" onclick="createAreaOption();" required>
 						<option value="0">-- 선택 --</option>
 						<option value="1">서울</option>
 						<option value="2">인천</option>
@@ -87,74 +104,122 @@
 						<option value="37">전라북도</option>
 						<option value="38">전라남도</option>
 						<option value="39">제주도</option>
-					</select> <select class="custom-select custom-select-sm sigungu-class" name="sigunguCode" id="sigungucode_">
-						<option selected value="0">-- 선택 --</option>
+					</select> <select class="custom-select custom-select-sm sigungu-class"
+						name="sigungucode" id="sigungucode_" required>
+						<option value="0">-- 선택 --</option>
 					</select>
-					
+
 					<div class="select-days input-group input-group-sm mb-3">
 						<div class="input-group-prepend">
 							<span class="input-group-text" id="inputGroup-sizing-sm">여행 일자</span>
 						</div>
-						<input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						<input name="travelDays" type="text" class="form-control" aria-label="Small"
+							aria-describedby="inputGroup-sizing-sm" required>
 					</div>
-					
-				</div>
-				<div class="btn-container" style="float:right;">
-					<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#makeGroup">그룹 만들기</button>
-					<button type="submit" class="btn btn-outline-primary">플래너 만들기</button>
-				</div>
-			</form>
 
-		</div>
+				</div>
+				<div class="btn-container" style="float: right;">
+					<button id="makeGroupBtn" type="button" class="btn btn-outline-primary"
+						data-toggle="collapse" data-target="#makeGroup"
+						aria-expanded="false" aria-controls="collapseExample" onclick="btnSetting();">그룹 만들기</button>
+					<button id="startBtn" type="submit" class="btn btn-outline-primary">플래너 만들기</button>
+				</div>
+				
+				<!-- collapse : 그룹 만들기 -->
+				<div class="collapse" id="makeGroup">
+					<div class="card card-body" style="text-align:initial;margin-bottom:30px;">
+						<p>친구들과 함께 그룹을 만들어보세요!</p>
+						<p>친구 찾기</p>
+						<div class="input-group input-group-sm mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="inputGroup-sizing-sm">ID</span>
+							</div>
+							<input id="findId_" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+							<button type="button" class="btn btn-primary btn-sm" onclick="findId();">검색</button>
+						</div>
+						<div class="search-res-container">
+						<span class="guide ok">
+							<div id="friendsList">
+								<p>* 친구 리스트</p>
+
+								<!-- 검색된 아이디를 append로 추가함 -->
+
+									<div class="tempList">
+											<p class="temp-id">pinataman</p>
+											<button type="button" class="delBtn btn btn-outline-danger btn-sm">삭제하기</button>
+									</div>
+
+
+									<div class="groupStart-btn">
+									<button type="submit" class="btn btn-primary">그룹으로 플래너 시작하기</button>
+								</div>
+			
+							</div>
+							</span>
+			</form> 
+			<span class="guide error">존재하지 않는 회원입니다</span>
 	</div>
+
 </section>
 
 
-<!-- Modal : 그룹 만들기-->
-<div class="modal fade" id="makeGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">그룹 만들기</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-	        	<p>친구들과 함께 그룹을 만들어보세요!</p>
-	        	<div class="input-group input-group-sm mb-3">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="inputGroup-sizing-sm">플랜 제목</span>
-					</div>
-					<input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-				</div>
-	        	<p>친구 찾기</p>
-				<div class="input-group input-group-sm mb-3">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="inputGroup-sizing-sm">ID</span>
-					</div>
-						<input id="findId_" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-						<button type="button" class="btn btn-primary btn-sm" onclick="findId();">검색</button>
-				</div>		
-					<div class="search-res-container">
-						<span class="guide ok"><p id="friendId_"></p>
-							<!-- TODO 0810) 그룹 관련 설정 구현하기 -->
-							<button id="startBtn" type="button" class="btn btn-outline-primary" onclick="openMsg();">시작하기</button>
-							<!-- <span class="guide start-setting">시작하기</span> -->
-						</span> 
-						<span class="guide error">존재하지 않는 회원입니다</span>
-					</div>
-	  </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">만들기</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 <script>
+	
+	//그룹 만들기 ---------------------------------------------------------------------------------------
+	//1. "그룹 만들기" 버튼 클릭 여부에 따라, "플래너 만들기"버튼 출력 옵션 설정
+	const btnSetting = (()=>{
+		
+		const target = document.getElementById("startBtn");
+		//TODO 0812) 그룹 관련 입력 값들도 form으로 넘어가면 안 되니까 초기화해야 함 
+		//const groupSetting = document.getElementById
+		let cnt = 0;
+		
+		return()=>{
+			
+			if(++cnt%2!=0){ //숨기기
+				target.style.display="none";
+			} else { //드러내기
+				target.style.display="";
+				
+			}
+			
+		}
+		
+	})();
+	
+	
+	const findId = ()=>{
+	
+	const id = document.getElementById("findId_").value;
+	const ok = document.getElementsByClassName("ok");
+	const error = document.getElementsByClassName("error");
+	
+	fetch('${path}/member/checkMemberId.do?memberId='+id, {
+		  method: 'POST', 
+		  headers: {
+		    'Content-Type': 'application/json',
+		  },
+		  body: JSON.stringify({memberId:id}),
+		})
+		.then((response) => response.json())
+		.then((data) => {
+		  
+			console.log('성공:', data);
+			
+		   	if(data){ //검색한 아이디로 가입한 회원이 존재하는 경우
+				  ok[0].style.display="block";
+				  error[0].style.display="none";
+				  
+				  //체크 박스 하나씩 추가하기
+				  //document.getElementById("foundFriends").append();
+			  } else { //회원이 존재하지 않는 경우
+				  ok[0].style.display="none";
+				  error[0].style.display="block";
+			  }  			  
+		});
+}
+	
 	
 	//지역 옵션 구성하기
 			const createAreaOption = ()=>{ //class名으로 지역별 옵션 생성하기
@@ -347,6 +412,10 @@
 		//alert(e.target.value);
 		const opt = e.target.value;
 		
+		if(opt=='none'){
+			document.getElementsByClassName("theme-select-two")[0].innerHTML="";
+		}
+		
 		if(opt=='A01'){			
 			let nature = ["자연 관광지","관광 자원"];
 			let val = ["A0101","A0102"];
@@ -406,6 +475,10 @@
 			themeTwo[0].appendChild(option);			
 		});
 	}
+	
+
+	
+	
 </script>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
