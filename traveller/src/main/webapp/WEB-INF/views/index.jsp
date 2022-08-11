@@ -84,7 +84,7 @@ div.planner-btn-container a{
 			<div class="textBox">
 				<h5>먼저, 검색해보세요</h5>
 				<p>언젠가 꿈꿔본 적 있던 여행지로 떠나요</p>
-				<button type="button" class="btn btn-primary btn-sm">검색하기</button>
+				<button type="button" class="btn btn-primary btn-sm" onclick="location.assign('${path}/place/placesMain')">검색하기</button>
 			</div>
 		</div>
 		</div>
@@ -129,7 +129,7 @@ div.planner-btn-container a{
 <div class="row planners-big-container">
   <div class="planner-container">
 <div class="card planner-info" style="width: 18rem;">
-  <img class="card-img-top plannerImg" src="${path}/resources/img/testPic/dorothea.png" alt="Card image cap">
+  <img class="card-img-top plannerImg" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title">Card title</h5>
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -140,7 +140,7 @@ div.planner-btn-container a{
   </div>
 </div>
 <div class="card planner-info" style="width: 18rem;">
-  <img class="card-img-top plannerImg" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
+  <img class="card-img-top plannerImg" src="${path}/resources/img/testPic/ggobugi.png" alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title">Card title</h5>
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -151,7 +151,7 @@ div.planner-btn-container a{
   </div>
 </div>
 <div class="card planner-info" style="width: 18rem;">
-  <img class="card-img-top plannerImg" src="${path}/resources/img/testPic/edelgard.png" alt="Card image cap">
+  <img class="card-img-top plannerImg" src="${path}/resources/img/testPic/pairi.png" alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title">Card title</h5>
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>

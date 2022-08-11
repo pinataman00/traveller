@@ -183,7 +183,8 @@ div#my-msg{
 		
 		console.log("수신자 : ",receiver);
 		//※ send()메소드 실행 -> WebSocketHandler의 handleTextMessage()메소드가 실행될 것임
-		websocket.send(JSON.stringify(new Message("access","${loginMember.memberId}","","")));
+		//TODO 0811) 전체 발송 : websocket.send(JSON.stringify(new Message("access","${loginMember.memberId}","","")));
+		websocket.send(JSON.stringify(new Message("access","${loginMember.memberId}",receiver,"","")));
 				
 	}
 	//2. "메시지 (WebSocket서버로) 발송" = WebSocketHandler의 handleTextMessage()메소드가 실행될 것임
@@ -191,7 +192,12 @@ div#my-msg{
 		
 		const msgText = document.getElementById("text").value;
 		console.log(msgText);
-		websocket.send(JSON.stringify(new Message("msg","${loginMember.memberId}","",msgText,"")));
+		console.log("수신자? ", receiver);
+		//const msg = new Message("msg","${loginMember.memberId}",receiver,msgText,"");
+		//websocket.send(JSON.stringify(new Message("msg","${loginMember.memberId}","",msgText,"")));
+		//console.log("객체?",msg)
+		//websocket.send(JSON.stringify(msg));
+		websocket.send(JSON.stringify(new Message("msg","${loginMember.memberId}",receiver,msgText,"")));
 		
 	});
 	//3. WebSocketHandler클래스의 sendMessage()메소드가 보낸 데이터를, 
@@ -249,6 +255,7 @@ div#my-msg{
 			const yourMsg = document.createElement("div");
 			yourMsg.id="your-msg";
 			yourMsg.innerText= msg['msg'];
+			yourMsg.color=red;
 			yourContainer.append(yourMsg);
 			textContainer.append(yourContainer);
 			

@@ -21,8 +21,6 @@ public class MessageHandler extends TextWebSocketHandler {
 	//※ 프론트의 WebSocket객체.onopen()실행 -> 본 메소드가 실행될 것임
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		
-		System.out.println("접속 완료!");
-		System.out.println(session.getId());
 		clients.add(session);
 		System.out.println("현재 접속자 수? : "+clients.size());
 		sessionCheck();
@@ -49,7 +47,9 @@ public class MessageHandler extends TextWebSocketHandler {
 		
 		switch(msg.getType()) { //클라이언트의 type에 따라서 (※type은 이용 시점에 따라 분류됨)
 			//case "access" : addClients(session,msg);break; //접속 時 실행
+			case "access" : addClients(session,msg);break;
 			case "msg" : sendMsg(msg);break; //메시지 발송 時 실행
+
 		}
 	
 	}
@@ -60,14 +60,38 @@ public class MessageHandler extends TextWebSocketHandler {
 		//receiver, room을 기준으로 메시지 발송 작업을 분기처리하여 수행할 수 있음!
 		ObjectMapper mapper = new ObjectMapper();
 		
-		System.out.println("몇 번이나 반복되나보자"+clients.size());
+		//JSON → Java객체化하기
+		/*
+		 * for(WebSocketSession client : clients) {
+		 * 
+		 * Message data = (Message)client.getAttributes().get("msg");
+		 * System.out.println("확인///////////"+data); client.sendMessage(new
+		 * TextMessage(mapper.writeValueAsString(message))); }
+		 */
+		System.out.println("접속자 수? "+clients.size());
 		
-		for (WebSocketSession client : clients) {
+		
+		for(WebSocketSession client : clients) {
 
-			Message data = (Message)client.getAttributes().get("msg");
-			client.sendMessage(new TextMessage(mapper.writeValueAsString(message)));
+			
+			//websocket객체.send()로 보낸 클라이언트를 앞서 WebsocketSession에 msg라는 key값으로 추가했음
+			//따라서 해당 key값으로 value소환하기
+			Message data=(Message)client.getAttributes().get("msg"); 
 
+			
+			System.out.println("///////////////"+data);
+			
+			if(!message.getReceiver().isEmpty()) { //수신자가 지정되어 있음 -> 1:1통신
+
+				
+			
+			}
+			
 		}
+		 
+		
+		//TODO ROOM 관련해서도 분기 처리 가능!
+		
 		
 		
 	}

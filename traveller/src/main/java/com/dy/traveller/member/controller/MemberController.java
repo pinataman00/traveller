@@ -44,16 +44,11 @@ public class MemberController {
 
 		Member loginMember = service.login(m); // 1. 클라이언트 입력 아이디-DB 아이디 대조
 
-		//DB에서 loginMember객체를 가져오니까, images는 못 가져올 수밖에...
-		System.out.println("로그인 멤버 확인 "+loginMember);
 
 		String viewName = "redirect:/";
 
 		if (loginMember != null && pwEncoder.matches(m.getMemberPwd(),
 		 loginMember.getMemberPwd())) {
-
-			System.out.println("클라이언트 입력 값 : " + m.getMemberPwd());
-			System.out.println("DB에 저장된 값 : " + loginMember.getMemberPwd());
 
 			model.addAttribute("loginMember", loginMember);
 

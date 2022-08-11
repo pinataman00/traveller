@@ -234,10 +234,7 @@ button#startBtn{
 		const id = document.getElementById("findId_").value;
 		//document.getElementsByClassName("start-setting")[0].style.display="block";
 		open("${path}/message/openMessage/"+id,"_blank","width=400,height=450");
-		
-		
-		
-		
+
 	}
 	
 </script>

@@ -153,7 +153,7 @@ div#map{
 					photo.src=data.firstImage;
 			
 				} else { //기본 이미지 출력
-					photo.src= "${path}/resources/img/testPic/dorothea.png";
+					photo.src= "${path}/resources/img/testPic/doraemon.png";
 				}
 				
 				//지도 (좌표 정보)
@@ -162,7 +162,13 @@ div#map{
 				//테마 정보
 				
 				//루트 정보
-				routeStarter(data.title,data.mapy,data.mapx);
+				
+				const routeTitle = data.title;
+				const mapy = data.mapy;
+				const mapx = data.mapx;
+				console.log("/////////////////", routeTitle, mapy, mapx);
+				
+				routeStarter(routeTitle,mapy,mapx);
 				//https://map.kakao.com/link/to/카카오판교오피스,37.402056,127.108212
 				
 				

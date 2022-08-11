@@ -94,7 +94,24 @@
 .cursorEffect{
 	cursor:pointer;
 }
+img.heart{
+	width:15px;
+	height:15px;
+	border-radius:0px;
+	margin-bottom:10px;
+	margin-right:5px;
+	float:right;
+}
+div.likes-main-container{
+	width: 400px;
+    align-items: initial;
+}
 
+button#addCat{
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
 </style>
 
@@ -382,31 +399,43 @@
 				
 				
 				<!-- 검색 결과 화면 예시 : 1행에 카드 3장씩 출력하기 -->
-
+				
+				<div class="best-choice-title">
+				<hr>
+					<h5>인기 여행지 TOP3</h5>
+ 					<c:if test="${loginMember!=null}">
+						<p>${loginMember.memberId}님이 관심 있는 지역의 인기 여행지</p>
+ 					</c:if>
+				</div>
+			<!-- 클라이언트의 관심사 > 조회수||좋아요 순 베스트 장소 출력하기 -->
 				<div class="basic-contents-container">
 
+
 						<div class="result-card card" style="width: 18rem;">
-							<img class="card-img-top" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
+							<img class="card-img-top" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
+							<div class="card-body">							
+								<h5 class="card-title">Card title</h5>
+								<p class="card-text">인기 여행지 1순위</p>
+								<img class="heart" src="${path}/resources/img/icons/heart.svg" onclick="alert('좋아요!');">				
+								
+							</div>
+							
+						</div>
+						
+						<div class="result-card card" style="width: 18rem;">
+							<img class="card-img-top" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
 							<div class="card-body">
 								<h5 class="card-title">Card title</h5>
-								<p class="card-text">Some quick example text to build on the
-									card title and make up the bulk of the card's content.</p>
+								<p class="card-text">인기 여행지 2순위</p>
+								<img class="heart" src="${path}/resources/img/icons/heart.svg" onclick="alert('좋아요!');">
 							</div>
 						</div>
 						<div class="result-card card" style="width: 18rem;">
-							<img class="card-img-top" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
+							<img class="card-img-top" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
 							<div class="card-body">
 								<h5 class="card-title">Card title</h5>
-								<p class="card-text">Some quick example text to build on the
-									card title and make up the bulk of the card's content.</p>
-							</div>
-						</div>
-						<div class="result-card card" style="width: 18rem;">
-							<img class="card-img-top" src="${path}/resources/img/testPic/dimitri.png" alt="Card image cap">
-							<div class="card-body">
-								<h5 class="card-title">Card title</h5>
-								<p class="card-text">Some quick example text to build on the
-									card title and make up the bulk of the card's content.</p>
+								<p class="card-text">인기 여행지 3순위</p>
+								<img class="heart" src="${path}/resources/img/icons/heart.svg" onclick="alert('좋아요!');">
 							</div>
 						</div>					
 				 </div> 
@@ -446,7 +475,48 @@
 				
 				
 				
-				
+<!-- Modal : 좋아요 목록 추가 관련 -->
+<div class="modal fade" id="addLikesList" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content likes-main-container">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle" style="float:left;"><p class="likedPlace"></p></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	
+        	<input type="hidden" id="placeCode"> 
+        	<select
+				class="custom-select custom-select-sm">
+				<option selected>나만의 '좋아요' 목록 추가하기</option>
+				<option value="1">가족여행!</option>
+				<option value="2">여름 휴가</option>
+			</select>
+			<button id="addCat" type="button" class="btn btn-outline-primary btn-sm" onclick="addCat();">카테고리 +</button>
+			
+			<span class="guide ok">
+				<!-- TODO 0810) 좋아요 카테고리 추가하기 -->
+				<div class="input-group input-group-sm mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="inputGroup-sizing-sm">제목</span>
+					</div>
+					<input type="text" class="form-control" aria-label="Small"
+						aria-describedby="inputGroup-sizing-sm" placeholder="카테고리 제목을 작성하세요" required>
+				</div>
+				<button type="button" class="btn btn-outline-primary btn-sm" style="float:right;">저장하기</button>
+			</span> 
+			
+			
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="liked-btn" type="button" class="btn btn-primary" data-dismiss="modal">추가하기</button>
+      </div>
+    </div>
+  </div>
+</div>		
 				
 				
 				
@@ -485,6 +555,8 @@
 			//검색 결과 출력 영역
 			const resultContainer = document.getElementsByClassName("search-result-container");
 			resultContainer[0].innerHTML=""; //이전 검색 결과는 화면에서 제거
+			const bestContainer = document.getElementsByClassName("best-choice-title");
+			bestContainer[0].innerHTML="";
 			
 			const basicContentsContainer = document.getElementsByClassName("basic-contents-container");
 			basicContentsContainer[0].innerHTML="";
@@ -559,7 +631,7 @@
 								img.src=data[i].firstImage;
 								
 							} else { //기본 이미지 출력
-								img.src="${path}/resources/img/testPic/dorothea.png";
+								img.src="${path}/resources/img/testPic/doraemon.png";
 							}
 							const contentId = data[i].contentId;
 							img.addEventListener("click",e=>{
@@ -573,7 +645,17 @@
 							cardTitle.classList.add("card-title");
 							cardTitle.innerText = data[i].title;
 							cardBody.append(cardTitle);
-
+							
+							const heart = document.createElement("img");
+							heart.src = "${path}/resources/img/icons/heart.svg";
+							heart.classList.add("heart");
+							cardBody.append(heart);
+							addLikes(heart,data[i]);
+							
+							//heart.dataToggle="modal";
+							//heart.dataTarget="#addLikesList";
+							
+							
 							card.append(cardBody);
 							container.append(card);
 							resultContainer[0].append(container);
@@ -588,14 +670,61 @@
 					
 					mainContainer.append(resultContainer[0]);
 					
-					console.log(resultContainer);
-					console.log(resultContainer.nextElementSibling);
 		
 				  
 				}
 			
 			
 		}
+		
+		//'좋아요' 리스트에 추가하기
+		const addLikes = (heart,data) => {
+			
+			heart.addEventListener("click",e=>{
+				
+				if(${loginMember!=null}){
+		
+					//좋아요 목록에 추가하기
+										
+					heart.setAttribute('data-toggle','modal');
+					heart.setAttribute('data-target','#addLikesList');
+					//heart.data-toggle="modal";
+					//heart.data-target="#addLikesList";
+					//좋아요 색상 변경하기
+					//heart.src =  "${path}/resources/img/icons/heart-fill.svg";
+					
+					document.getElementsByClassName("likedPlace")[0].innerText=data.title;
+					document.getElementById("placeCode").value=data.contentId;
+					
+					document.getElementById("liked-btn").onclick = ()=>{
+						heart.src =  "${path}/resources/img/icons/heart-fill.svg";
+					}
+					//heart.setAttribute('heartId',data[i]);
+										
+				} else alert('로그인 먼저!');
+			
+			});
+			
+		}
+
+
+		//좋아요 카테고리 추가 관련
+		
+		
+		
+		
+		const addCat = ()=>{
+			
+			const ok = document.getElementsByClassName("ok");
+			ok[0].style.display="block";
+			
+		}
+
+
+		
+		
+		
+		
 	
 		//검색 기능 > 키워드, 지역별, 테마별 ------------------------------------------------------------------------------------
 		const searchPlaces = ()=>{ //1. 키워드 검색 기능

@@ -51,7 +51,7 @@
           플래너
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">플래너 만들기</a>
+          <a class="dropdown-item" href="${path }/planner/startPlanner">플래너 만들기</a>
           <a class="dropdown-item" href="#">크리에이터 구경하기</a>
 <!--           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a> -->
