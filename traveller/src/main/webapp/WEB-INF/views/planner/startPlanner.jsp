@@ -138,26 +138,25 @@
 							<button type="button" class="btn btn-primary btn-sm" onclick="findId();">검색</button>
 						</div>
 						<div class="search-res-container">
+						<span class="guide error">존재하지 않는 회원입니다</span>
 						<span class="guide ok">
 							<div id="friendsList">
 								<p>* 친구 리스트</p>
 
 								<!-- 검색된 아이디를 append로 추가함 -->
-
+								<!-- 데이터를 서버로 넘기기 위해서는... 다중 값을 넘길 때는 역시 체크박스로 구성해야 하나? -->
+<!-- 								출력 예시	
 									<div class="tempList">
 											<p class="temp-id">pinataman</p>
 											<button type="button" class="delBtn btn btn-outline-danger btn-sm">삭제하기</button>
-									</div>
-
-
-									<div class="groupStart-btn">
+									</div> -->
+							</div>
+								<div class="groupStart-btn">
 									<button type="submit" class="btn btn-primary">그룹으로 플래너 시작하기</button>
 								</div>
-			
-							</div>
 							</span>
 			</form> 
-			<span class="guide error">존재하지 않는 회원입니다</span>
+			
 	</div>
 
 </section>
@@ -194,6 +193,7 @@
 	const id = document.getElementById("findId_").value;
 	const ok = document.getElementsByClassName("ok");
 	const error = document.getElementsByClassName("error");
+	const friendsList = document.getElementById("friendsList");
 	
 	fetch('${path}/member/checkMemberId.do?memberId='+id, {
 		  method: 'POST', 
@@ -211,14 +211,49 @@
 				  ok[0].style.display="block";
 				  error[0].style.display="none";
 				  
-				  //체크 박스 하나씩 추가하기
+				  //리스트에 하나씩 추가하기
 				  //document.getElementById("foundFriends").append();
+				  const tempList = document.createElement("div");
+				  tempList.classList.add("tempList");
+				  const tempId = document.createElement("p");
+				  tempId.classList.add("temp-id");
+				  tempId.innerText = id;
+				  tempList.append(tempId);
+				  const delBtn = document.createElement("button");
+				  delBtn.classList.add("delBtn");
+				  delBtn.classList.add("btn");
+				  delBtn.classList.add("btn-outline-danger");
+				  delBtn.classList.add("btn-sm");
+				  delBtn.innerText = "삭제하기";
+				  tempList.append(delBtn);
+				  
+				  friendsList.append(tempList);
+
+				  delBtn.addEventListener("click",e=>{
+					  //alert('안녕?');
+					  e.preventDefault();
+					  console.log(e.target.parentElement);
+					  e.target.parentElement.style.display="none";
+					  //e.target.previousElementSibling.innerText="";
+					  
+					  
+					  e.target.parentElement.innerHTML="";
+					  
+				  });
+				  
+				  
 			  } else { //회원이 존재하지 않는 경우
-				  ok[0].style.display="none";
+				  //ok[0].style.display="none";
 				  error[0].style.display="block";
 			  }  			  
 		});
-}
+	}
+/* 	//친구 리스트 > "삭제하기"버튼 클릭 시, 리스트에서 제거
+	const delBtn = document.getElementsByClassName("delBtn");
+	delBtn.addEventListener("click",e=>{
+		//alert("삭제하기!");
+		e.parentElement.style.backgroundColor="red";
+	}) */
 	
 	
 	//지역 옵션 구성하기
