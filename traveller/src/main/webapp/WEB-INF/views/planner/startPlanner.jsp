@@ -41,6 +41,7 @@
 		border: 0.5px solid #e9e9e9;
 		border-radius:10px;
 		padding-top:10px;
+		padding-bottom:10px;
 		padding-left: 20px;
 	}
 	.delBtn{
@@ -50,17 +51,20 @@
 </style>
 <section class="container">
 	<div class="planner-container">
+
+	<form action="${path }/planner/setting" method="post">
 		<div class="planner-title-container">
 			<h4 style="text-align: left;">플래너를 시작해보세요</h4>
+			<input type="hidden" name="memberId" id="memberId_" value=${loginMember.memberId}>
 			<hr>
 		</div>
 		<div class="planner-setting-container">
-			<form>
+			
 				<div class="input-group input-group-sm mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="inputGroup-sizing-sm">플랜 제목</span>
 					</div>
-					<input name="plannerTitle" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" required>
+					<input name="plannerTitle" id="plannerTitle_" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" required>
 				</div>
 				<div class="theme-container">
 					<!-- 테마 -->
@@ -77,7 +81,7 @@
 						<option value="food">음식</option>
 						<option value="free">자유여행</option>
 					</select> 
-					<select name="theme" class="theme-select-two custom-select custom-select-sm" required>
+					<select name="theme" id="theme_" class="theme-select-two custom-select custom-select-sm" required>
 						<!-- 테마 카테고리 상세 -->
 					</select>
 				</div>
@@ -85,7 +89,7 @@
 					<!-- 지역 -->
 					<p style="text-align: left;">주요 여행 지역</p>
 					<select class="custom-select custom-select-sm area-class"
-						name="areacode" id="areacode_" onclick="createAreaOption();" required>
+						name="areaCode" id="areacode_" onclick="createAreaOption();" required>
 						<option value="0">-- 선택 --</option>
 						<option value="1">서울</option>
 						<option value="2">인천</option>
@@ -105,7 +109,7 @@
 						<option value="38">전라남도</option>
 						<option value="39">제주도</option>
 					</select> <select class="custom-select custom-select-sm sigungu-class"
-						name="sigungucode" id="sigungucode_" required>
+						name="sigunguCode" id="sigungucode_" required>
 						<option value="0">-- 선택 --</option>
 					</select>
 
@@ -113,7 +117,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text" id="inputGroup-sizing-sm">여행 일자</span>
 						</div>
-						<input name="travelDays" type="text" class="form-control" aria-label="Small"
+						<input name="travelDays" id="travelDays_" type="text" class="form-control" aria-label="Small"
 							aria-describedby="inputGroup-sizing-sm" required>
 					</div>
 
@@ -122,13 +126,22 @@
 					<button id="makeGroupBtn" type="button" class="btn btn-outline-primary"
 						data-toggle="collapse" data-target="#makeGroup"
 						aria-expanded="false" aria-controls="collapseExample" onclick="btnSetting();">그룹 만들기</button>
+						<!-- "플래너 만들기" 버튼만 클릭한 경우에는, 그룹 관련 작업은 수행하지 않음 -->
 					<button id="startBtn" type="submit" class="btn btn-outline-primary">플래너 만들기</button>
 				</div>
-				
+			
 				<!-- collapse : 그룹 만들기 -->
 				<div class="collapse" id="makeGroup">
 					<div class="card card-body" style="text-align:initial;margin-bottom:30px;">
-						<p>친구들과 함께 그룹을 만들어보세요!</p>
+						<p>함께 여행가고 싶은 친구들과 그룹을 만들어보세요!</p>
+						<p style="color:red;font-size:13px;">* 주의 * <br> "그룹 만들기" 버튼을 재클릭할 경우, 작성 내용은 모두 소멸됩니다! </p>
+						<div class="input-group input-group-sm mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="inputGroup-sizing-sm">그룹 이름</span>
+							</div>
+							<input name="crewTitle" id="crewTitle_" type="text" class="form-control"
+								aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+						</div>
 						<p>친구 찾기</p>
 						<div class="input-group input-group-sm mb-3">
 							<div class="input-group-prepend">
@@ -141,25 +154,54 @@
 						<span class="guide error">존재하지 않는 회원입니다</span>
 						<span class="guide ok">
 							<div id="friendsList">
-								<p>* 친구 리스트</p>
-
+								<p>* 멤버 리스트</p>
+								
+								<!-- crewMember를 선택하지 않을 경우에는 @RequestParam에서 에러가 발생함... 가짜 데이터를 넣어줘야 할 거 같음 -->
+								<input type="hidden" name="crewMember" value="fakeData">
 								<!-- 검색된 아이디를 append로 추가함 -->
-								<!-- 데이터를 서버로 넘기기 위해서는... 다중 값을 넘길 때는 역시 체크박스로 구성해야 하나? -->
-<!-- 								출력 예시	
-									<div class="tempList">
-											<p class="temp-id">pinataman</p>
+								<!-- 데이터를 서버로 넘기기 위해서는... 다중 값을 넘길 때는 역시 체크박스로 구성해야 하나? 
+								     : 배열로 넘기면 될듯...
+								-->
+									
+<!-- 									<div class="tempList">
+											<p class="temp-id" name="crewMember" value="pinataman">pinataman</p>
 											<button type="button" class="delBtn btn btn-outline-danger btn-sm">삭제하기</button>
-									</div> -->
+										</div>  
+								-->
 							</div>
 								<div class="groupStart-btn">
-									<button type="submit" class="btn btn-primary">그룹으로 플래너 시작하기</button>
+									<!-- 그룹으로 플래너 시작하기, 버튼 클릭 시 플래너 기본 정보+그룹 관련 정보를 저장함 -->
+									<button id="startAsGroupBtn" type="submit" class="btn btn-primary">그룹으로 플래너 시작하기</button>
 								</div>
 							</span>
-			</form> 
+				</form>	
 			
 	</div>
 
 </section>
+
+
+<!-- "그룹으로..." 버튼 재클릭 시, 관련 작성 내용은 소멸된다는 내용의 경고창 띄우기 -->
+<div id="testModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">경고!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+          <span id="isOk" aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>"그룹 만들기" 버튼을 다시 클릭할 경우, 그룹 관련 작성 내용은 모두 소멸됩니다. 괜찮을까요?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="delOk" type="button" class="btn btn-primary">삭제돼도 괜찮아요</button>
+        <button id="delNo" type="button" class="btn btn-secondary" data-dismiss="modal">삭제되면 안 돼요</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 
@@ -177,9 +219,27 @@
 		return()=>{
 			
 			if(++cnt%2!=0){ //숨기기
+			
+				
 				target.style.display="none";
+			
+			
 			} else { //드러내기
+				
+				
 				target.style.display="";
+				
+				//alert("버튼을 클릭할 경우, 지금껏 작성했던 그룹 관련 데이터는 삭제됩니다");
+/* 				$('#testModal').modal('show');
+				
+				document.getElementById("delOk").addEventListener("click",e=>{
+					--cnt;
+					target.style.display="";
+				});
+				document.getElementById("delNo").addEventListener("click",e=>{
+					//$('#testModal').modal('show');
+					--cnt;
+				}); */
 				
 			}
 			
@@ -215,9 +275,21 @@
 				  //document.getElementById("foundFriends").append();
 				  const tempList = document.createElement("div");
 				  tempList.classList.add("tempList");
-				  const tempId = document.createElement("p");
+				  
+				  
+				  //TODO 0812) p태그 대신 input태그로 바꿔봄...
+/* 				  const tempId = document.createElement("p");
 				  tempId.classList.add("temp-id");
-				  tempId.innerText = id;
+				  tempId.innerText = id; */
+				  
+				  
+				  const tempId = document.createElement("input");
+				  tempId.classList.add("temp-id");
+				  tempId.name="crewMember";
+				  tempId.value=id;
+				  tempId.readOnly=true;
+				  
+				  
 				  tempList.append(tempId);
 				  const delBtn = document.createElement("button");
 				  delBtn.classList.add("delBtn");
@@ -248,12 +320,7 @@
 			  }  			  
 		});
 	}
-/* 	//친구 리스트 > "삭제하기"버튼 클릭 시, 리스트에서 제거
-	const delBtn = document.getElementsByClassName("delBtn");
-	delBtn.addEventListener("click",e=>{
-		//alert("삭제하기!");
-		e.parentElement.style.backgroundColor="red";
-	}) */
+
 	
 	
 	//지역 옵션 구성하기
@@ -512,6 +579,40 @@
 	}
 	
 
+	//데이터 전송 관련 ----------------------------------------------------------------------------------
+	const startBtn = document.getElementById("startBtn");
+	const startAsGroupBtn = document.getElementById("startAsGroupBtn");
+	
+
+	//이 부분에서 너무 오래 막힘... 보류
+	
+/*  	startBtn.addEventListener("click",e=>{
+		
+		//받아올 데이터
+		const plannerTitle = document.getElementById("plannerTitle_").value;
+		const theme = document.getElementById("theme_").value;
+		const areacode = document.getElementById("areacode_").value;
+		const sigungucode = document.getElementById("sigungucode_").value;
+		const travelDays = document.getElementById("travelDays_").value;
+		const memberId = document.getElementById("memberId_").value;
+		
+		fetch('${path}/planner/basicSetting', {
+			  method: 'POST', 
+			  headers: {
+			    'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify({"plannerTitle":plannerTitle,"theme":theme,"memberId":memberId,"areaCode":areacode,"sigunguCode":sigungucode,"travelDays":travelDays,"theme":theme}),
+			})
+/* 			
+  				.then((response) => response.json())
+    			.then((data)=>{
+			  
+				console.log('성공:', data)
+ 			  	location.replace("${path}/planner/plannerEditor")
+				
+    		}) 
+
+	}); */
 	
 	
 </script>
