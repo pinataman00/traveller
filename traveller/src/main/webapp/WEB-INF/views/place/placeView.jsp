@@ -40,6 +40,7 @@ p#theme{
 .jumbotron{
 	background-image:url("${path}/resources/img/background02.jpg");
 	border-radius:25px;
+	text-align:left;
 }
 img#photo{
 
@@ -58,15 +59,29 @@ div#map{
 	border-radius:10px;
 	margin-right:10px;
 }
+button#routeBtn{
+	margin-top:15px;
+	float:left;
+}
+.info-container{
+    text-align: justify;
+    display: block;
+    margin-left: 51px;
+    width: 1000px;
+}
 </style>
 
 <body>
-	<section>
+	<section class="container">
 		<div class="container view-main-container">
 
  			<div class="jumbotron title-container">
 			    <p class="display-4" id="title">장소명</p>
+				<input type="hidden" id="contentId">
 			    <p class="lead address-container" id="address">주소</p>
+			    <div class="lead address-container" id="homepage">
+			    	<!-- 홈페이지 (없을 수도 있음) -->
+			    </div>			    
 			    <p class="lead address-container" id="theme">테마</p>
 			    <p class="star-container">★★★★★</p>
 			    <hr class="my-4">
@@ -76,7 +91,9 @@ div#map{
 				</p>
 
 			</div>
-
+			<div class="info-container">
+				<!-- 장소 관련 설명 (없을 수도 있음) -->
+			</div>
 			<div class="content-container">
 
 				<div class="map-container">
@@ -84,7 +101,7 @@ div#map{
 						<div id="map"></div>
 					</div>
 					<!-- <button type="button" class="btn btn-primary" style="margin-top:15px;">길 찾기</button> -->
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchRoute" style="margin-top:15px;">
+					<button id="routeBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchRoute">
 						길 찾기
 					</button>
 				</div>
@@ -122,10 +139,10 @@ div#map{
 
 <script>
 
-
+	const id = ${contentId}; //클라이언트가 클릭한 장소의 고유 ID
 	(()=>{ //상세화면 출력하기
 		
-		const id = ${contentId}; //클라이언트가 클릭한 장소의 고유 ID
+
 		console.log(id);
 		
 		fetch('${path}/place/placeDetail', {
@@ -214,7 +231,23 @@ div#map{
 
  	}
  
+ 	//장소 관련 상세 정보 --------------------------------------------------------------
+ 	console.log(id); //contentId 토대로 공공API에서 관련 상세 정보 글 가져오기
  	
+	const url = "https://apis.data.go.kr/B551011/KorService/detailCommon?serviceKey=elB%2BRI1Qb32rIFvCv63J%2FI7Tc7CNydheC6%2BgTHJNP3TAiREJhR6WkEu5GXN8OGWj9Fcwzdvw7z72B6hQRKHdGw%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&contentId=${contentId}&contentTypeId=12&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y";
+	//fetch(url).then(res=>console.log(res));
+	fetch(url)
+	.then(res=>res.json())
+	.then(myJson=>{
+		console.log(myJson);
+		const obj = myJson.response.body.items.item[0]; //개별 아이템 가져오기
+		//obj.overview
+		console.log(obj);
+		
+		document.getElementsByClassName("info-container")[0].innerHTML = obj.overview;
+		document.getElementById("homepage").innerHTML = obj.homepage;
+		
+	})
 
 
 	

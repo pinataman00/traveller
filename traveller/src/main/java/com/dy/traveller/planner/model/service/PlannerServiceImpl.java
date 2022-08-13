@@ -30,8 +30,10 @@ public class PlannerServiceImpl implements PlannerService {
 			
 			//先 CREW테이블 : CREW 관련 총체적인 정보 저장 
 			res = dao.insertCrew(session,crew); //selectkey가 안 되네 왤까?
-			System.out.println("여기는 올 수 있어?");
-			System.out.println("갓 생성된 Crew테이블의 시퀀스 넘버 확인하기 "+crew.getCrewId());
+			/*
+			 * System.out.println("여기는 올 수 있어?");
+			 * System.out.println("갓 생성된 Crew테이블의 시퀀스 넘버 확인하기 "+crew.getCrewId());
+			 */
 			
 			if(res>0) {
 				//list에 저장된 멤버들을 하나씩 Friends테이블에 저장하기

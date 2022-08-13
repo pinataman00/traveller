@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 
 <style>
+
 	.planner-container{
 		/* margin-top: 100px; */
 	    width: 700px;
@@ -51,8 +52,8 @@
 		margin-top : 100px;
 		border-radius : 10px;
 		text-align:left;
-		width:800px;
-		display:inline-block;
+		/* width:800px; */
+		/* display:inline-block; */
 	}
 	.planner-title{
 		margin-left:30px;
@@ -75,13 +76,25 @@
 
 <section class="container">
 
-				<div class="jumbotron jumbotron-fluid planner-title-container">
+<!-- 				<div class="jumbotron jumbotron-fluid planner-title-container">
 					<div class="container planner-title">
 						<h5 class="display-4 main-title">플래너 만들기</h5>
 						<p class="lead sub-title">혼자서, 또는 여럿이 함께 떠나는 여행 계획을 세워보세요</p>
 					</div>
-				</div>
-				<hr>
+				</div> -->
+
+	<div class="planner-title-container">
+		<div class="jumbotron" onclick="alert('여름!');">
+			<h1 class="display-4">플래너 만들기</h1>
+			<p class="lead">손끝에서 시작되는 여행</p>
+			<hr class="my-4">
+			<p>혼자서, 또는 친구와 함께 여행 계획을 세워보세요!</p>
+		</div>
+	</div>
+
+
+
+	<hr>
 
 	<div class="planner-container">
 
