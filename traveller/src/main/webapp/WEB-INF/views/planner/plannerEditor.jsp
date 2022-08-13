@@ -87,28 +87,24 @@
 	#myLikes{
 		height: 600px;
 	}
+	.title-container{
+		font-weight:300;
+	}
 </style>
 
 <section>
 
-<%-- 	${tempPlanner.plannerTitle}
-	${tempCrew.crewTitle} --%>
 	<div class="main-container">
 		<div class="editor-container">
 			<div class="title-container">
 				${tempPlanner.plannerTitle}
-				플래너 제목
 			</div>
 			<div class="planner-container">
 					<div class="daysOpt input-group mb-3">
 						  <div class="input-group-prepend">
 						    <label class="input-group-text" for="inputGroupSelect01">여행일자</label>
 						  </div>
-						  <select class="custom-select" id="inputGroupSelect01">
-						    <option selected>Choose...</option>
-						    <option value="1">One</option>
-						    <option value="2">Two</option>
-						    <option value="3">Three</option>
+						  <select class="custom-select" id="travelDaysOpt">
 						  </select>
 					</div>
 				
@@ -212,6 +208,19 @@
 
 
 	<script>
+	
+		//● 사용자 입력 값 토대로 옵션 구성하기
+		const travelDaysOpt = document.getElementById("travelDaysOpt");
+		
+		const inputDays = ${tempPlanner.travelDays};
+		
+		for(let i=1;i<=inputDays;i++){
+			const opt = document.createElement("option");
+			opt.value=i;
+			opt.innerText=i;
+			travelDaysOpt.append(opt);
+		}
+		
 	
 		//● "사용자 편의 콘테이너" 기능 관련 함수들
 		const showList = (()=>{ //"검색하기" 버튼 클릭 時, "검색 리스트"가 보이거나, 보이지 않도록 구현함

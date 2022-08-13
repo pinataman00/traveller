@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="crew">
+
+ 	<resultMap id="crewMap" type="crew">
+		<id column="crew_id" property="crewId"/>
+		<result column="crew_title" property="crewTitle"/>
+		<result column="created_date" property="createdDate"/>
+<!-- 	↑ CREW객체가 기본적으로 보유한 것
+		FRIENDS 관련 ↓ -->
+		<collection property="friends" ofType="friends">
+			<id column="friends_no" property="friendsNo"/>
+			<result column="crew_id" property="crewId"/>
+			<result column="member_id" property="memberId"/>
+		</collection>
+	</resultMap> 
+
+	<insert id="insertCrew" parameterType="crew">
+		INSERT INTO CREW VALUES('C'||SEQ_CREW.NEXTVAL,#{crewTitle},DEFAULT)
+ 		<selectKey keyProperty="crewId" resultType="string" order="AFTER">
+			SELECT SEQ_CREW.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertFriends" parameterType="friends">
+		INSERT INTO FRIENDS VALUES('F'||SEQ_FRIENDS.NEXTVAL,'C'||#{crewId},#{memberId})
+	</insert>
+</mapper>

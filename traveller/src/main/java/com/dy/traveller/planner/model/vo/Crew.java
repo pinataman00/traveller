@@ -1,6 +1,7 @@
 package com.dy.traveller.planner.model.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,5 +18,6 @@ public class Crew {
 	//private Friends f
 	private String crewTitle;
 	private Date createdDate;
+	private List<Friends> friends;
 	
 }

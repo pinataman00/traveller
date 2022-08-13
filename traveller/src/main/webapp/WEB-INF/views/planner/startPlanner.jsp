@@ -85,19 +85,21 @@
 
 	<div class="planner-container">
 
-	<form action="${path }/planner/setting" method="post">
+	<form action="${path }/planner/setting" method="post" onsubmit="return fn_planValidate();">
 <!-- 		<div class="planner-title-container">
 			<h4 style="text-align: left;">플래너를 시작해보세요</h4>
 			<input type="hidden" name="memberId" id="memberId_" value=${loginMember.memberId}>
 			<hr>
 		</div> -->
+		
+		<input type="hidden" name="memberId" value="${loginMember.memberId}">
 		<div class="planner-setting-container">
-			
+				
 				<div class="input-group input-group-sm mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="inputGroup-sizing-sm">플랜 제목</span>
 					</div>
-					<input name="plannerTitle" id="plannerTitle_" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" required>
+					<input placeholder="띄어쓰기 포함 최대 15글자" name="plannerTitle" id="plannerTitle_" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" required>
 				</div>
 				<div class="theme-container">
 					<!-- 테마 -->
@@ -150,7 +152,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text" id="inputGroup-sizing-sm">여행 일자</span>
 						</div>
-						<input name="travelDays" id="travelDays_" type="text" class="form-control" aria-label="Small"
+						<input name="travelDays" id="travelDays_" type="number" class="form-control" aria-label="Small"
 							aria-describedby="inputGroup-sizing-sm" required>
 					</div>
 
@@ -190,7 +192,7 @@
 								<p>* 멤버 리스트</p>
 								
 								<!-- crewMember를 선택하지 않을 경우에는 @RequestParam에서 에러가 발생함... 가짜 데이터를 넣어줘야 할 거 같음 -->
-								<input type="hidden" name="crewMember" value="fakeData">
+								<input type="hidden" id="fakeInput" name="crewMember" value="fakeData">
 								<!-- 검색된 아이디를 append로 추가함 -->
 								<!-- 데이터를 서버로 넘기기 위해서는... 다중 값을 넘길 때는 역시 체크박스로 구성해야 하나? 
 								     : 배열로 넘기면 될듯...
@@ -207,6 +209,7 @@
 									<button id="startAsGroupBtn" type="submit" class="btn btn-primary">그룹으로 플래너 시작하기</button>
 								</div>
 							</span>
+							</div>
 				</form>	
 			
 	</div>
@@ -309,6 +312,8 @@
 				  const tempList = document.createElement("div");
 				  tempList.classList.add("tempList");
 				  
+				  //기존의 fakeData는 지우기
+				  document.getElementById("fakeInput").name="";
 				  
 				  //TODO 0812) p태그 대신 input태그로 바꿔봄...
 /* 				  const tempId = document.createElement("p");
@@ -610,6 +615,35 @@
 			themeTwo[0].appendChild(option);			
 		});
 	}
+	
+	//form태그 유효성 체크 -----------------------------------------------------------------------------
+	const fn_planValidate = ()=>{
+		
+		//플래너 제목은 띄어쓰기 포함 15글자로 제한함
+		const plannerTitle = document.getElementById("plannerTitle_").value;
+		if(plannerTitle.length>16){
+			alert("플래너 제목은 15글자 이하로 입력해주세요!");
+			//document.getElementById().focus("plannerTitle_");
+			return false;
+		}
+		
+		//여행 장소 선택을 안 했을 경우
+		const areacode = document.getElementById("areacode_").value;
+		console.log("////////////지역/////////////",areacode);
+		if(areacode.value==0){
+			alert("지역 관련 옵션을 선택해주세요");
+			return false;
+		}
+		
+		const sigungucode = document.getElementById("sigungucode_").value;
+		console.log("////////////지역2/////////////",sigungucode);
+		if(sigungucode.value==0){
+			alert("지역 관련 옵션을 선택해주세요");
+			return false;
+		}
+		
+	}
+	
 	
 
 	//데이터 전송 관련 ----------------------------------------------------------------------------------

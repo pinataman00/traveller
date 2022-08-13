@@ -1,8 +1,11 @@
 package com.dy.traveller.planner.controller;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,12 +13,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dy.traveller.planner.model.service.PlannerService;
 import com.dy.traveller.planner.model.vo.Crew;
+import com.dy.traveller.planner.model.vo.Friends;
 import com.dy.traveller.planner.model.vo.Planner;
 
 @Controller
 @RequestMapping("/planner")
 public class PlannerController {
+	
+	@Autowired
+	private PlannerService service;
 
 	@RequestMapping("/startPlanner")
 	public String startPlanner() {
@@ -23,29 +31,59 @@ public class PlannerController {
 	}
 	
 	@RequestMapping("/setting")
-	public ModelAndView setting(Planner p, Crew c, @RequestParam(value="crewMember") String[]crewMember, ModelAndView mv) {
-	//public ModelAndView setting(Map<String,Object>param, ModelAndView mv) {
-		System.out.println("될까? "+p);
-		
-		//if(c!=null)
-		System.out.println("될까? "+c);
-		//System.out.println(crewMember[0]);
-		
-		if(crewMember.length>0) {
-			for(int i=0;i<crewMember.length;i++) {
-				System.out.println(crewMember[i]);
+	public ModelAndView setting(Planner planner, Crew crew, @RequestParam(value="crewMember") String[]crewMember, ModelAndView mv) {
+
+		System.out.println("될까? "+planner);
+		System.out.println("될까? "+crew);
+
+		if(crewMember[0].equals("fakeData")) { //크루가 없는 경우
+			System.out.println("크루 입력 값이 존재하지 않습니다!");
+			
+			mv.addObject("tempPlanner", planner);
+			//mv.addObject("tempCrew",crew);
+			mv.setViewName("/planner/plannerEditor");
+			
+			return mv;
+			
+			
+		} else { //crewMember 저장하기 -> (부모)Crew테이블에 저장하기 -> (자식)Friends에 저장하기 
+			
+			//클라이언트가 입력한 멤버들 list에 저장하기
+			List<Friends> list = new ArrayList();
+		    for(int i=0;i<crewMember.length;i++) { //입력했던 멤버들 전원 저장하기
+		    	list.add(new Friends().builder().memberId(crewMember[i]).build());
+		    }
+		    
+		    //클라이언트 본인도 멤버에 추가하기
+		    list.add(new Friends().builder().memberId(planner.getMemberId()).build());
+			System.out.println("멤버들 확인하기 : "+list);
+			crew.setFriends(list);
+
+			try {
+				
+				service.inputCrew(crew); //crew저장 성공 時
+				mv.addObject("tempPlanner", planner);
+				mv.addObject("tempCrew",crew);
+				mv.setViewName("/planner/plannerEditor");
+				
+				return mv;
+				
+			} catch (RuntimeException e) {
+				
+				System.out.println("저장 실패!!!!!!");
+				mv.setViewName("/"); //실패 시 메인화면으로 이동
+				return mv;
 			}
+			
+			
 		}
 		
-		//쿠키로 넘겨보자...
-		
-		mv.addObject("tempPlanner", p);
-		mv.addObject("tempCrew",c);
-		mv.setViewName("/planner/plannerEditor");
-		
-		return mv;
-		
-		
+
+//		mv.addObject("tempPlanner", planner);
+//		mv.addObject("tempCrew",crew);
+//		mv.setViewName("/planner/plannerEditor");
+//		
+//		return mv;
 		
 	}
 	
@@ -71,49 +109,6 @@ public class PlannerController {
 		mv.setViewName("/");
 		return mv;
 		
-		//return new Planner().builder().memberId(memberId).plannerTitle(plannerTitle).travelDays(travelDays).theme(theme).areaCode(areaCode).sigunguCode(sigunguCode).build();
-		
-//		String travelDays = (String.valueOf(map.get("travelDays")));
-//		
-//		System.out.println("테스트 : "+plannerTitle+" "+theme+" "+memberId+" "+areaCode+" "+sigunguCode+" "+travelDays);
-//		
-//		//cookie에 임시 저장하기  (사유 : 작성 취소할 수 있으므로)
-//		//※ cookie에는 String형만 저장할 수 있음!
-//		
-//		  Cookie forOption = new Cookie("forOption",travelDays);
-//		  forOption.setMaxAge(20*60*60); //Cookie, 하루 동안 유지하기
-//		  response.addCookie(forOption);
-//		  
-//		  Cookie forTheme = new Cookie("forTheme",theme); forTheme.setMaxAge(20*60*60);
-//		  response.addCookie(forTheme);
-//		 
-//		
-//		//제목에 공백이 포함된 경우, 이스케이프 처리하기
-//		
-//		  String temp = plannerTitle; 
-//		  String title = ""; 
-//		  if(temp.contains(" ")) { 
-//			  title = temp.replace(" ", "_"); 
-//		  } else { title = temp; }
-//		 
-//		System.out.println("플래너 제목 (이스케이프 처리 확인하기) : "+title); 
-//		Cookie forTitle = new Cookie("forTitle",title);
-//		forTitle.setMaxAge(24*60*60);
-//		response.addCookie(forTitle);
-//		
-//		//클라이언트 정의 "주요 방문 지역" 정보
-//		//1. areaCode (대분류)
-//		
-//		  Cookie forArea = new Cookie("forArea",areaCode); forArea.setMaxAge(20*60*60);
-//		  response.addCookie(forArea); 
-//		  //2. sigunguCode (소분류) 
-//		  Cookie forSigungu = new Cookie("forSigungu",sigunguCode); 
-//		  forSigungu.setMaxAge(20*60*60);
-//		  response.addCookie(forSigungu);
-//		  
-//		  //return "redirect:/";
-//		  //response.sendRedirect(request.getContextPath()+"/planner/plannerEditor");
-//		  return "redirect:/";
 	}
 	
 	@RequestMapping("/plannerEditor")
