@@ -4,7 +4,7 @@
 
 <style>
 	.planner-container{
-		margin-top: 100px;
+		/* margin-top: 100px; */
 	    width: 700px;
 	    display: inline-block;
 	}
@@ -47,17 +47,50 @@
 	.delBtn{
 		margin-left:20px;
 	}
-	
+	.planner-title-container{
+		margin-top : 100px;
+		border-radius : 10px;
+		text-align:left;
+		width:800px;
+		display:inline-block;
+	}
+	.planner-title{
+		margin-left:30px;
+	}
+	.main-title{
+		font-weight:500;
+		font-size:30px;
+	}
+	.sub-title{
+		font-size:15px;
+	}
+	.jumbotron{
+		background-image:url("${path}/resources/img/planner_main_img.jpg");
+	}
 </style>
+
+
+
+
+
 <section class="container">
+
+				<div class="jumbotron jumbotron-fluid planner-title-container">
+					<div class="container planner-title">
+						<h5 class="display-4 main-title">플래너 만들기</h5>
+						<p class="lead sub-title">혼자서, 또는 여럿이 함께 떠나는 여행 계획을 세워보세요</p>
+					</div>
+				</div>
+				<hr>
+
 	<div class="planner-container">
 
 	<form action="${path }/planner/setting" method="post">
-		<div class="planner-title-container">
+<!-- 		<div class="planner-title-container">
 			<h4 style="text-align: left;">플래너를 시작해보세요</h4>
 			<input type="hidden" name="memberId" id="memberId_" value=${loginMember.memberId}>
 			<hr>
-		</div>
+		</div> -->
 		<div class="planner-setting-container">
 			
 				<div class="input-group input-group-sm mb-3">
