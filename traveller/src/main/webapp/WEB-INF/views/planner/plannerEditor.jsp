@@ -213,6 +213,78 @@
 
 
 	<script>
+	//플래너 기본 구성 관련 함수들 ===========================================================================================================================
+		
+		(()=>{
+			
+			//● 사용자 입력 값 토대로 기본 검색창 결과 구성하기
+			const tempItem = ${tempPlanner.areaCode};
+			let searchItem = "";
+			
+			switch(tempItem){
+			
+			case 1 : searchItem="서울";break;
+			case 2 : searchItem="인천";break;
+			case 3 : searchItem="대전";break;
+			case 4 : searchItem="대구";break;
+			case 5 : searchItem="광주";break;
+			case 6 : searchItem="부산";break;
+			case 7 : searchItem="울산";break;
+			case 8 : searchItem="세종특별자치시";break;
+			case 31 : searchItem="경기도";break;
+			case 32 : searchItem="강원도";break;
+			case 33 : searchItem="충청북도";break;
+			case 34 : searchItem="충청남도";break;
+			case 35 : searchItem="경상북도";break;
+			case 36 : searchItem="경상남도";break;
+			case 37 : searchItem="전라북도";break;
+			case 38 : searchItem="전라남도";break;
+			case 39 : searchItem="제주도";break;
+			
+			}
+			
+			document.getElementById("keyword").value= searchItem;
+			
+		})();
+	
+
+		//● 사용자 입력 값 토대로 옵션 구성하기
+		const daysOption = document.getElementById("travelDaysOpt");
+		
+		const inputDays = ${tempPlanner.travelDays};
+		
+		for(let i=1;i<=inputDays;i++){
+			const opt = document.createElement("option");
+			opt.value=i;
+			opt.innerText=i;
+			daysOption.append(opt);
+		}
+		
+	
+		//● "사용자 편의 콘테이너" 기능 관련 함수들
+		const showList = (()=>{ //"검색하기" 버튼 클릭 時, "검색 리스트"가 보이거나, 보이지 않도록 구현함
+	
+		const searchList = document.getElementById("menu_wrap");
+	
+	 	let cnt = 1;
+		return()=>{
+			
+			if(++cnt%2!=0){
+				searchList.style.display="";
+			} else {
+				searchList.style.display="none";
+			}
+			
+		}
+		
+		})();
+		
+		//기타 오류 대처 ----------------------------------------------------------------------------------------
+		window.onbeforeunload = (e)=>{
+			let warning = '새로고침 시, 변경사항이 적용되지 않을 수 있습니다'; //※ 경고 메시지는 이렇게 출력되지는 않음...
+			e.returnValue = warning;
+			return warning;
+		}
 	
 	//플래너 리스트 관련 함수들 ==============================================================================================================================
 	//옵션 변경 관련 기능
@@ -227,11 +299,150 @@
 	
 	*/
 	
-	//0. 클라이언트가 선택한 일자 정보 가져오기 : select > option
+	
+	//1. 불러오기 관련 로직 -------------------------------------------------------------------------------------------
+	
+	
+		//● 공통함수 : printMyLog() => 옵션 변경으로 선택한 일자에 저장된 이정이 존재한다면, 해당 정보 불러오기!
+	const thisDay = document.querySelector("#travelDaysOpt>option").value;
+	let markersArr = []; //* (저장된 내용을 기반으로) 앞으로 생성될 마커들을 저장할 배열
+	
+	function printMyLog(myLog, logArr){ //공통 function : 저장 이력 출력하기
+	//매개변수?
+	//myLog : localStorage에 JS객체로서 일자별 일정이 저장된 데이터의 배열
+	//logArr : localStorage로부터 추출한 좌표 정보 (printMyLog함수에서 가공해서 저장할 것임)
+		
+		for(let i=0;i<myLog.length;i++){ //card의 개수 만큼 반복
+			
+			//1. 마커 출력하기
+			//마커 생성부터
+		    // 마커 이미지의 이미지 크기 입니다
+		    var imageSize = new kakao.maps.Size(36, 37); 
+		    
+		    // 마커 이미지를 생성합니다    
+		    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+		    
+		    // 마커를 생성합니다
+		    var marker = new kakao.maps.Marker({
+		        map: map, // 마커를 표시할 지도
+		        position: new kakao.maps.LatLng(myLog[i].latitude, myLog[i].longitude), //사용자의 저장 기록을 토대로 마커 위치를 설정함
+		        title : myLog[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+		        image : markerImage // 마커 이미지 
+		    });
+		    
+		    infoOverlay(marker); //마커 클릭 시, 커스텀 오버레이 출력할 것임
+		    
+		    //마커 간 선으로 연결하기 위해, 각 배열 (logArr, markersArr에 저장하기)
+		    //logArr : 
+		    //markersArr : 
+			logArr.push(new kakao.maps.LatLng(myLog[i].latitude, myLog[i].longitude));
+		    markersArr.push(marker); //이전에 저장됐던 마커들을 저장함. 이를 기반으로 쭉쭉 새로운 마커들을 추가해 나갈 수도 있음!
+		    console.log("마커들 잘 저장이 됐는지 : ", markersArr);			    
+	
+		}
+	
+	
+		//마커 간 선 연결하기
+	    // 지도에 표시할 선을 생성합니다
+	    var polyline = new kakao.maps.Polyline({
+	        path: logArr, //logArr을 기준으로 출력할 것임 (logArr : 이전에 저장한 마커의 배열 !=markersArr : 이전에 저장한 마커+앞으로 편집을 통해 추가할 마커들이 저장될 배열)
+	        strokeWeight: 5, 
+	        strokeColor: '#e61919',
+	        strokeOpacity: 0.7, 
+	        strokeStyle: 'solid', 
+	        endArrow:'true' //화살표 표시할 것임
+	    });
+
+	    // 지도에 선을 표시합니다 
+	    polyline.setMap(map);   
+	
+		//---------------------------------------------------------------------------------------------
+			daysOption.addEventListener("change",e=>{ //옵션 변경 시, 현재 일정에 해당하는 선과 마커를 지움!
+			
+			
+					if(polyline!=null&&polyline.setMap()!=null){ //지도상에 출력된 선이 있다면, 일괄 숨기기
+						polyline.setMap(null);
+					}
+
+					if(markersArr!=null&&markersArr.length!=0){ 
+						
+						 markersArr.forEach(e=>{
+							 //TODO 0624) 일단 null처리함...
+							 //e.setVisible(false);
+						 });
+					
+					} 										
+		});	
+
+	} //printMyLog함수 종료
+	
+	
+	//여행의 첫 번째 일자에 저장된 정보 불러오기
+	const dayOnePlan = JSON.parse(localStorage.getItem(1)); //JS객체를 JSON문자열로 변환 후 localStorage에 저장했었으므로, 저장 데이터를 불러올 때는 다시 JS객체로 parsing함
+	var imageSrc = 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-256.png'; //마커 이미지
+	var linePath = []; //"선"을 이어주기 위해 배열을 만듦		
+
+	if(dayOnePlan!=null&&thisDay==1){ //만약, 1일자 관련 여행 일정 데이터가 존재한다면!
+		
+		console.log("1일차 데이터 있어", dayOnePlan);
+		
+		//1. 리스트 > 장소 카드 관련
+		//> 데이터가 있다면, 새로고침 시에도 해당 장소 데이터가 출력되도록 로직 구현하기
+		
+		document.getElementById("dropZone").innerHTML=""; //계속 appendChild하면 카드가 무한히 누적되므로, 먼저 해당 영역을 비워주기
+		
+		for(let i=0;i<dayOnePlan.length;i++){				
+		
+			const div = document.createElement("div"); //태그 만들기
+			
+			div.setAttribute("day", 1);
+			div.setAttribute("id", dayOnePlan[i].id);
+			div.setAttribute("placeName", dayOnePlan[i].placeName);
+			div.setAttribute("latitude", dayOnePlan[i].latitude);
+			div.setAttribute("longitude", dayOnePlan[i].longitude);
+			div.setAttribute("memo", dayOnePlan[i].memo);
+			
+			div.innerText = dayOnePlan[i].placeName;
+			div.classList.add("box_drag");
+			div.setAttribute("draggable",true);
+			document.getElementById("dropZone").appendChild(div); 
+												
+			deletePlace(div);
+			moveMap(div);
+			 
+		}
+		
+		printMyLog(dayOnePlan,linePath);
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//2. 클라이언트가 선택한 일자 정보 가져오기 : select > option
 	let preCho = ""; //선택 前 일자
 	let nowCho = ""; //선택한 일자 (열람||편집 희망 일자)
 	
-	const daysOption = document.getElementById("travelDaysOpt");
+	//const daysOption = document.getElementById("travelDaysOpt");
 	
 	daysOption.addEventListener("focus",e=>{
 		daysOption.blur();
@@ -246,11 +457,61 @@
 		//존재 : 해당 일자에 저장된 일정 정보 출력
 		//부재 : 아무것도 출력하지 않는다
 		
-		//---------------------------------------------
+
+		
+		//선택한 일자에 해당하는 일정 편집 및 저장 관련 로직 ▼ ---------------------------------------------------------------------------------
 		nowCho = daysOption.value;
 
 		const cards = document.querySelectorAll("div#dropZone>div");
-		console.log("현재 dropZone에 추가된 장소 카드 : ", cards);
+		console.log("현재 dropZone에 추가된 장소 카드 : (현재 선택 일자에 해당하는 저장 데이터가 없는 경우에는, 존재하지 않을 수도 있음!)", cards);
+		
+		//-> 따라서, card의 존재 여부에 따라서 *데이터savedPlan 불러오기, 로직을 구현할 수도 있음
+		const savedPlan = JSON.parse(localStorage.getItem(nowCho)); //현재 선택한 일자로 저장된 데이터가 있을까?
+		let lineArr = []; //저장된 데이터 기준으로 경로를 그려주기 위해서, 마커가 저장될 배열을 만듦
+		
+		if(savedPlan!=null&&savedPlan.length!=0){ //저장된 데이터가 존재한다면!
+			console.log("배열로 받아온, ",nowCho,"의 일정 : ",savedPlan);
+			
+			//1. 작성 기록이 존재한다면, 리스트에 출력해주기
+			//먼저, 리스트 깨끗이 비워주기
+			document.getElementById("dropZone").innerHTML="";
+				
+			for(let i=0;i<savedPlan.length;i++){
+				
+				const div = document.createElement("div");
+				
+				//div에 플래너 관련 *속성 생성하고 저장하기
+				if(nowCho!=null){
+					div.setAttribute("day",nowCho);					
+				} else {
+					div.setAttribute("day",1);
+				}
+				
+				div.setAttribute("id", savedPlan[i].id);
+				div.setAttribute("placeName", savedPlan[i].placeName);
+				div.setAttribute("latitude", savedPlan[i].latitude);
+				div.setAttribute("longitude", savedPlan[i].longitude);
+				div.setAttribute("memo", savedPlan[i].memo);
+				
+				div.innerText = savedPlan[i].placeName;
+				div.classList.add("box_drag");
+				div.setAttribute("draggable",true);
+				document.getElementById("dropZone").appendChild(div); 
+				
+				//deletePlace(div); //TODO0815) 더블클릭 시, 리스트에서 장소 삭제됨
+				moveMap(div);
+	
+			}
+			
+			printMyLog(savedPlan,lineArr); //리스트에 로그 출력하기
+			clearDragEvent();
+			addDragEvent();
+			
+		} else { //선택한 일자에 해당하는 여행 일정이 부재하는 경우
+			document.getElementById("dropZone").innerHTML=""; //편집을 새로 시작하는 것이므로, 영역 비워주기
+		}
+		
+		
 		
 		//플래너 내용 작성 -> 장소 방문 순서 편집 관련 로직
 		let arr = []; //card에 저장된 정보 일체 (아이디, 장소명, 위도, 경도 등을 *객체화함) arr배열에 저장하기
@@ -272,7 +533,7 @@
 				arr.push(new Places(
 						
 									//cards[i].getAttribute("day"),
-									preCho,
+									preCho, //일자 정보 : 선택 일자로 저장하기
 									cards[i].getAttribute("id"),
 									cards[i].getAttribute("placeName"),
 						            cards[i].getAttribute("latitude"),
@@ -288,15 +549,6 @@
 		console.log("현재 편집한 일정이 잘 저장됐는지 확인하기 : ", JSON.parse(localStorage.getItem(preCho)));
 		
 	});
-	
-	//1. localStorage 객체 > 카드에 저장된 장소 관련 정보 일체 (장소 정보, 방문 순서)는 '임시 저장' 개념으로 localStorage객체를 사용한다
-	
-	//기본 생성자 함수 만들기 
-	
-	
-	
-	
-	
 	
 	//플래너 지도 관련 함수들 ==================================================================================================================================
 	//마커 클릭 시 출력될 커스텀 오버레이
@@ -355,16 +607,6 @@
 		//-------------------------------------------------------------------
 	
 		//장소 카드의 "속성"을 새로 생성해, 해당 장소의 정보를 저장하기--------------------
-		
-		
-		//addPlan.setAttribute("day",nowCho);
-		//TODO 0814 nowCho가 뭐지?
-/* 		if(nowCho!=""){
-			addPlan.setAttribute("day",nowCho);
-		} else{
-			addPlan.setAttribute("day", 1);	
-		}  */
-		
 		
 		addPlan.setAttribute("id",addPlan.id);
 		addPlan.setAttribute("placeName",placeName);
@@ -483,76 +725,7 @@
  		}   
    
             
-		(()=>{
-			
-			//● 사용자 입력 값 토대로 기본 검색창 결과 구성하기
-			const tempItem = ${tempPlanner.areaCode};
-			let searchItem = "";
-			
-			switch(tempItem){
-			
-			case 1 : searchItem="서울";break;
-			case 2 : searchItem="인천";break;
-			case 3 : searchItem="대전";break;
-			case 4 : searchItem="대구";break;
-			case 5 : searchItem="광주";break;
-			case 6 : searchItem="부산";break;
-			case 7 : searchItem="울산";break;
-			case 8 : searchItem="세종특별자치시";break;
-			case 31 : searchItem="경기도";break;
-			case 32 : searchItem="강원도";break;
-			case 33 : searchItem="충청북도";break;
-			case 34 : searchItem="충청남도";break;
-			case 35 : searchItem="경상북도";break;
-			case 36 : searchItem="경상남도";break;
-			case 37 : searchItem="전라북도";break;
-			case 38 : searchItem="전라남도";break;
-			case 39 : searchItem="제주도";break;
-			
-			}
-			
-			document.getElementById("keyword").value= searchItem;
-			
-		})();
-	
 
-		//● 사용자 입력 값 토대로 옵션 구성하기
-		const travelDaysOpt = document.getElementById("travelDaysOpt");
-		
-		const inputDays = ${tempPlanner.travelDays};
-		
-		for(let i=1;i<=inputDays;i++){
-			const opt = document.createElement("option");
-			opt.value=i;
-			opt.innerText=i;
-			travelDaysOpt.append(opt);
-		}
-		
-	
-		//● "사용자 편의 콘테이너" 기능 관련 함수들
-		const showList = (()=>{ //"검색하기" 버튼 클릭 時, "검색 리스트"가 보이거나, 보이지 않도록 구현함
-	
-		const searchList = document.getElementById("menu_wrap");
-	
-	 	let cnt = 1;
-		return()=>{
-			
-			if(++cnt%2!=0){
-				searchList.style.display="";
-			} else {
-				searchList.style.display="none";
-			}
-			
-		}
-		
-		})();
-		
-		//기타 오류 대처 ----------------------------------------------------------------------------------------
-		window.onbeforeunload = (e)=>{
-			let warning = '새로고침 시, 변경사항이 적용되지 않을 수 있습니다'; //※ 경고 메시지는 이렇게 출력되지는 않음...
-			e.returnValue = warning;
-			return warning;
-		}
 	
 	
 		//● "지도" 기능 관련 함수들
@@ -818,18 +991,18 @@
 			        title : placeName, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
 			        image : tempMarkerImg // 마커 이미지 
 			    });
-			   
-			    console.log("마커를 모르니 왜 ",marker);
+					
 			    
-/* 			    kakao.maps.event.addEventListener('click',marker,function(){
-			    	alert("안녕");
-			    }) */
-/* 			    marker.addEventListener("click",e=>{
-			    	alert('안녕');
-			    }) */
-			    
+				infoOverlay(marker); //커스텀 오버레이 출력
+				myMarkers.push(marker); //배열에 저장하기!
+				drawLines(myMarkers); //마커 간 선 그리기
 
-
+			}  
+		 
+		 
+		 	//리스트에 추가된 장소 대상 커스텀 오버레이 (공통 function)
+		 	function infoOverlay(marker){
+		 		
 			 	//사람 모양의 마커 위로 출력될 커스텀 오버레이 만들기
 				var content = '<div class="wrap">' + 
 				            '    <div class="info">' + 
@@ -874,19 +1047,15 @@
 					}
 					
 					})();
-
-			    myMarkers.push(marker); //배열에 저장하기!
-			    
-			    
-			    //console.log("////// 안녕 ////////",myMarkers[0].getPosition().getLat());
-			    drawLines(myMarkers);
-			    
-			    
-		    
-			}  
+		 		
+		 		
+		 	}
+		 
+		 
+		 
 
 		 	
-			//TODO 
+			//TODO0814 
 		    function deleteThisMarker(){
 		    	console.log("삭제 버튼 누르면 해당 마커를 삭제해야 함");
 		    }
