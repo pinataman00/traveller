@@ -252,8 +252,42 @@
 		const cards = document.querySelectorAll("div#dropZone>div");
 		console.log("현재 dropZone에 추가된 장소 카드 : ", cards);
 		
+		//플래너 내용 작성 -> 장소 방문 순서 편집 관련 로직
+		let arr = []; //card에 저장된 정보 일체 (아이디, 장소명, 위도, 경도 등을 *객체화함) arr배열에 저장하기
 		
-	})
+		function Places(day,id,placeName,latitude,longitude,memo){ //생성자 함수 : 장소 정보 저장 객체
+			
+			this.day = day;
+			this.id = id;
+			this.placeName = placeName;
+			this.latitude = latitude;
+			this.longitude = longitude;
+			this.memo = memo;			
+			
+		}
+		
+		for(let i=0;i<cards.length;i++){	
+			
+			//생성자 함수로 "장소"객체 생성 후, 배열arr에 저장하기
+				arr.push(new Places(
+						
+									//cards[i].getAttribute("day"),
+									preCho,
+									cards[i].getAttribute("id"),
+									cards[i].getAttribute("placeName"),
+						            cards[i].getAttribute("latitude"),
+						            cards[i].getAttribute("longitude"),
+						            cards[i].getAttribute("memo")));
+			
+		}
+		
+		console.log("카드 리스트 확인하기 : ",arr);
+		
+		//다음 option으로 전환되기 前 마무리 작업
+		localStorage.setItem(preCho,JSON.stringify(arr)); //일자 별로 해당 일정을 확인할 수 있도록, arr객체를 JSON문자열로 저장함
+		console.log("현재 편집한 일정이 잘 저장됐는지 확인하기 : ", JSON.parse(localStorage.getItem(preCho)));
+		
+	});
 	
 	//1. localStorage 객체 > 카드에 저장된 장소 관련 정보 일체 (장소 정보, 방문 순서)는 '임시 저장' 개념으로 localStorage객체를 사용한다
 	
