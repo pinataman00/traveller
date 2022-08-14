@@ -124,13 +124,17 @@
 					</div>
 				
 					<div id="dropZone">
+<!-- 						
+
+						드래그 앤 드롭 카드 출력 예시
+
 						<div id="p1" class="box_drag" draggable="true" >plan 1</div>
 				        <div id="p2" class="box_drag" draggable="true" >plan 2</div>
 				        <div id="p3" class="box_drag" draggable="true" >plan 3</div>
 				        <div id="p4" class="box_drag" draggable="true" >plan 4</div>
 				        <div id="p5" class="box_drag" draggable="true" >plan 5</div>
 				        <div id="p6" class="box_drag" draggable="true" >plan 6</div>
-				        <div id="p7" class="box_drag" draggable="true" >plan 7</div> 
+				        <div id="p7" class="box_drag" draggable="true" >plan 7</div>  -->
 					</div>
 			 </div>
 				<div class="btn-container">
@@ -140,18 +144,10 @@
 			</div>
 		<!-- 지도 영역 -->	
 		<div id="map" class="map-container">
+			<!-- 이 영역에 지도가 출력될 것임 -->
 		</div>
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		    <div id="menu_wrap" class="bg_white">
 		        <div class="option">
 		            <div>
@@ -174,19 +170,17 @@
 		
 				<!-- dropdown : 사용자 아이템 드롭다운 -->
 			  <div class="dropdown-menu">
-			    <a class="dropdown-item" href="#">나의 좋아요</a>
-			    <a class="dropdown-item" href="#">나의 그룹</a>
-			    <a class="dropdown-item" href="#">나의 체크 리스트</a>
-			    <div class="dropdown-divider"></div>
-			    <a class="dropdown-item" href="#">날씨</a>
-			    <a class="dropdown-item" href="#">길 찾기</a>
+				    <a class="dropdown-item" href="#">나의 좋아요</a>
+				    <a class="dropdown-item" href="#">나의 그룹</a>
+				    <a class="dropdown-item" href="#">나의 체크 리스트</a>
+			  		<div class="dropdown-divider"></div>
+				    <a class="dropdown-item" href="#">날씨</a>
+				    <a class="dropdown-item" href="#">길 찾기</a>
 			  </div>
-
-		</div>
-		
-		
-	</div>
+	   </div>
 	
+	</div>
+	<!-- 컨트롤러 관련 div 끝 -->
 
   
 <!-- Modal : 좋아요 -->
@@ -220,6 +214,57 @@
 
 	<script>
 	
+	//플래너 리스트 관련 함수들 ==============================================================================================================================
+	//옵션 변경 관련 기능
+
+	/*
+		○ 저장 내용 불러오기
+		1. 카드, 선 불러오기
+		2. 저장 내용을 편집할 경우에는, 해당 선을 토대로 실시간으로 이어주는 함수 새로 만들어야 함
+		
+		○ (해당 옵션에 저장된 데이터가 없다면) 새로운 편집 페이지 열어주기
+		1. 카드, 선 리셋하기
+	
+	*/
+	
+	//0. 클라이언트가 선택한 일자 정보 가져오기 : select > option
+	let preCho = ""; //선택 前 일자
+	let nowCho = ""; //선택한 일자 (열람||편집 희망 일자)
+	
+	const daysOption = document.getElementById("travelDaysOpt");
+	
+	daysOption.addEventListener("focus",e=>{
+		daysOption.blur();
+		preCho = daysOption.value; //옵션 영역 선택 당시의 일자 값
+		
+	});
+	
+	daysOption.addEventListener("change",e=>{ //옵션 전환 시
+		
+		//TODO0814) 다음 기능은 나중에 구현할 것
+		//선택한 옵션 일자에 저장된 일정이 존재하는가?
+		//존재 : 해당 일자에 저장된 일정 정보 출력
+		//부재 : 아무것도 출력하지 않는다
+		
+		//---------------------------------------------
+		nowCho = daysOption.value;
+
+		const cards = document.querySelectorAll("div#dropZone>div");
+		console.log("현재 dropZone에 추가된 장소 카드 : ", cards);
+		
+		
+	})
+	
+	//1. localStorage 객체 > 카드에 저장된 장소 관련 정보 일체 (장소 정보, 방문 순서)는 '임시 저장' 개념으로 localStorage객체를 사용한다
+	
+	//기본 생성자 함수 만들기 
+	
+	
+	
+	
+	
+	
+	//플래너 지도 관련 함수들 ==================================================================================================================================
 	//마커 클릭 시 출력될 커스텀 오버레이
 	var customContent = '<div class="wrap">' + 
             '    	 <div class="info">' + 
@@ -402,14 +447,7 @@
  		    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
  		    map.panTo(moveLatLon);            
  		}   
-            
-            
-            
-            
-            
-            
-            
-            
+   
             
 		(()=>{
 			
@@ -498,13 +536,13 @@
 		map.addControl(btnController[0], kakao.maps.ControlPosition.TOPLEFT);
 		
 		//3. 클릭 시, 해당 위치에 마커 꽂기 ---------------------------------------------------------------------------
-		// 지도를 클릭한 위치에 표출할 마커입니다
-		var marker = new kakao.maps.Marker({ 
+		// 지도를 클릭한 위치에 표출할 마커입니다 //TODO 0814) 이 부분은 보류... 오버레이 닫힘 버튼을 누를 때도 마커가 찍힘...
+ 		var marker = new kakao.maps.Marker({ 
 		    // 지도 중심좌표에 마커를 생성합니다 
 		    position: map.getCenter() 
 		}); 
 		// 지도에 마커를 표시합니다
-		marker.setMap(map);
+		//marker.setMap(map); //...그래서 여기를 주석처리해둠. 전체를 또 주석처리하면 지도 이동이 안 되기 때문임
 		
 		// 지도에 클릭 이벤트를 등록합니다
 		// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
@@ -716,12 +754,16 @@
 		    map.setBounds(bounds);
 		}
 		
-		
 
-		
-		
-		
-		 //"추가하기" 버튼 클릭을 눌렀을 때, 어떤 일이 벌어질까?
+		 //"추가하기" 버튼 클릭을 눌렀을 때
+		 //기능 리스트
+		 /*
+		 
+		 	1. 마커 모양 차별화 : "사람"모양의 마커
+		 	2. 커스텀 오버레이 차별화 : 해당 마커에 대한 간단한 설명과 더불어, 리스트로부터 마커를 삭제할 수 있음 (구현 예정)
+		    3. 실시간 선 그리기 : 마커가 추가되는 대로 자동 선 그리기 (* setInterval())
+		 
+		 */
 		 let myMarkers = []; //리스트에 추가된 마커들을 저장할 배열
 		 
 		 const addMarkerFunc = (lat,lng,placeName)=>{
@@ -1031,12 +1073,7 @@
 		            	          //console.dir('///////////////dragstart_handler////////////////');
 			            	         console.dir(ev);
 		            	        }
-		            	      
-		            	      /*   window.addEventListener('DOMContentLoaded', () => {
-		            	          // id를 통해 element를 가져옵니다.
-		            	          const elements = document.querySelectorAll(".box_drag");
-		            	          elements.forEach(e => e.addEventListener("dragstart", dragstart_handler));
-		            	        }); */
+
 		
 		            	        function dragover_handler(ev) {
 		            	         ev.preventDefault();
@@ -1045,14 +1082,9 @@
 		
 		            	        function drop_handler(ev) {
 		            	         ev.preventDefault();
-		            	         //console.dir('///////////////drop////////////////');
 		            	         console.dir(ev);
 		            	         const data = ev.dataTransfer.getData("text/plain");
-		            	         
-		            	         //console.log(ev.target.indexOf);
 		            	         const divItems = document.querySelectorAll("div#dropZone>div");
-		            	         // console.log(divItems.length);
-		            	         //console.dir(ev.target.nextElementSibling);
 		            	         
 		            	         //태그 상 마지막 노드에 카드를 추가하고자 할 때, "insertBefore"함수 구현하기
 		            	         if(ev.target.nextElementSibling!=null){
