@@ -38,7 +38,8 @@ p#theme{
 	font-size:15px;
 }
 .jumbotron{
-	background-image:url("${path}/resources/img/background02.jpg");
+	/* background-image:url("${path}/resources/img/background02.jpg"); */
+	background-color:#f5f5f5;
 	border-radius:25px;
 	text-align:left;
 }

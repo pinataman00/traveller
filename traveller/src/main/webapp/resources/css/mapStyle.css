@@ -7,19 +7,10 @@
 	font-weight:600;
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
+div.placeName{
+	margin:20px;
+	font-size:15px;
+}
 
 
 #listTitle {font-size:25px;text-align:left;padding:10px;margin-bottom:0px;margin-left:5px;}
