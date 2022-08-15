@@ -303,7 +303,7 @@
 	//1. 불러오기 관련 로직 -------------------------------------------------------------------------------------------
 	
 	
-		//● 공통함수 : printMyLog() => 옵션 변경으로 선택한 일자에 저장된 이정이 존재한다면, 해당 정보 불러오기!
+	//● 공통함수 : printMyLog() => 옵션 변경으로 선택한 일자에 저장된 이정이 존재한다면, 해당 정보 불러오기!
 	const thisDay = document.querySelector("#travelDaysOpt>option").value;
 	let markersArr = []; //* (저장된 내용을 기반으로) 앞으로 생성될 마커들을 저장할 배열
 	
@@ -326,7 +326,7 @@
 		    var marker = new kakao.maps.Marker({
 		        map: map, // 마커를 표시할 지도
 		        position: new kakao.maps.LatLng(myLog[i].latitude, myLog[i].longitude), //사용자의 저장 기록을 토대로 마커 위치를 설정함
-		        title : myLog[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+		        title : myLog[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다 (TODO0815 표시 안 됨)
 		        image : markerImage // 마커 이미지 
 		    });
 		    
@@ -354,25 +354,27 @@
 	    });
 
 	    // 지도에 선을 표시합니다 
-	    polyline.setMap(map);   
-	
-		//---------------------------------------------------------------------------------------------
-			daysOption.addEventListener("change",e=>{ //옵션 변경 시, 현재 일정에 해당하는 선과 마커를 지움!
-			
-			
-					if(polyline!=null&&polyline.setMap()!=null){ //지도상에 출력된 선이 있다면, 일괄 숨기기
-						polyline.setMap(null);
-					}
-
-					if(markersArr!=null&&markersArr.length!=0){ 
-						
-						 markersArr.forEach(e=>{
-							 //TODO 0624) 일단 null처리함...
-							 //e.setVisible(false);
-						 });
-					
-					} 										
-		});	
+	    polyline.setMap(map);
+	    
+	    daysOption.addEventListener("change",e=>{
+	    	
+	    	//TODO0815) 사람 모양 마커와 그와 연계된 선을 지우는 것도 구현해야 함...
+	    	polyline.setMap(null);
+	    	
+ 			for(let i=0;i<markersArr.length;i++){
+ 				//markersArr[i].setMap(null); //마커를 지우면, 헷갈려...
+			}
+ 			
+ 			
+ 			//사람 모양의 마커를 확인할 수 있을까? -> 한 번에는 안 됨. 옵션을 두 번 전환해야 확인됨
+/*  			console.log("직전 옵션에서 추가한 마커들 ", myMarkers); //일단 myMarkers에 저장하긴 했었음...
+ 			for(let i=0;i<myMarkers.length;i++){
+ 				myMarkers[i].setMap(null);
+ 			} */
+ 			
+	    	
+	    });
+	    
 
 	} //printMyLog함수 종료
 	
@@ -419,23 +421,7 @@
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	//2. 클라이언트가 선택한 일자 정보 가져오기 : select > option
@@ -452,13 +438,26 @@
 	
 	daysOption.addEventListener("change",e=>{ //옵션 전환 시
 		
-		//TODO0814) 다음 기능은 나중에 구현할 것
 		//선택한 옵션 일자에 저장된 일정이 존재하는가?
 		//존재 : 해당 일자에 저장된 일정 정보 출력
 		//부재 : 아무것도 출력하지 않는다
 		
-
+		//선택 前 선택 직전 option에서 편집한 일자의 마커 및 선 지우기 ------------------------------------------------------------------------
+		//console.log("저장한 옵션 확인하기! //////////////", myMarkers); //플랜에 저장된 일체 장소 리스트가 출력됨
+/* 		console.log("선택 前 옵션 확인 : ",preCho);
+		const previousPlan = JSON.parse(localStorage.getItem(preCho));
+		console.log("직전 옵션에서 저장한 장소들 확인하기 : ",previousPlan); //옵션 전환 직후는 localStorage에 저장이 안 되는 걸까? 1회는 확인이 잘 안 되네
 		
+		myMarkers.forEach(e=>{
+			
+			console.log("마커 구성 ",e);
+			
+		}); */
+		
+		
+		
+		
+	
 		//선택한 일자에 해당하는 일정 편집 및 저장 관련 로직 ▼ ---------------------------------------------------------------------------------
 		nowCho = daysOption.value;
 
@@ -548,6 +547,28 @@
 		localStorage.setItem(preCho,JSON.stringify(arr)); //일자 별로 해당 일정을 확인할 수 있도록, arr객체를 JSON문자열로 저장함
 		console.log("현재 편집한 일정이 잘 저장됐는지 확인하기 : ", JSON.parse(localStorage.getItem(preCho)));
 		
+
+		
+	});
+	
+	//다음 option으로 전환되기 전, 당해 option에서 저장했던 마커, 선 등은 모두 감추기
+	daysOption.addEventListener("change",e=>{
+		
+		const preChoices = JSON.parse(localStorage.getItem(preCho));
+		//console.log("내가 저장했던 것들!!!!!!!!!!!!!!!!!!! ",preChoices);
+	
+		console.log("내가 저장했던 것들!!!!!!!!!!!!!!!!!!! ",myMarkers);
+ 		
+		for(let i=0;i<myMarkers.length;i++){			
+ 			myMarkers[i].setMap(null); //마커 전체 삭제 			
+ 		}
+		myMarkers = [];
+		console.log("삭제 잘 됐는가? ", myMarkers);
+		
+		//선은 어떻게 지우지?
+ 		//clickLine.setMap(null); //선 지우기
+ 		
+	
 	});
 	
 	//플래너 지도 관련 함수들 ==================================================================================================================================
@@ -1067,7 +1088,8 @@
 				var clickLine = new kakao.maps.Polyline({
 				    map: map,
 				    strokeWeight: 3, // 선의 두께입니다
-				    strokeColor: '#db4040', // 선의 색깔입니다
+				    //strokeColor: '#db4040', // 선의 색깔입니다
+				    strokeColor: 'blue', // 확정되기 전에는 파란색
 				    strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
 				    strokeStyle: 'solid' // 선의 스타일입니다
 				});
@@ -1084,6 +1106,11 @@
  				setInterval(function() {
 				    clickLine.setPath(path);
 				}, 100);
+ 				
+ 				//옵션이 전환될 때 path를 어떻게 삭제할까?
+ 				daysOption.addEventListener("change",e=>{
+ 					clickLine.setMap(null);
+ 				})
 			
 			}
 		
