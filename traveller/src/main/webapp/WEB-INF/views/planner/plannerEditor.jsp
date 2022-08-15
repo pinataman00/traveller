@@ -281,9 +281,10 @@
 		
 		//기타 오류 대처 ----------------------------------------------------------------------------------------
 		window.onbeforeunload = (e)=>{
-			let warning = '새로고침 시, 변경사항이 적용되지 않을 수 있습니다'; //※ 경고 메시지는 이렇게 출력되지는 않음...
-			e.returnValue = warning;
-			return warning;
+			
+			//TODO0815 화면이 전환될 경우에는...
+			localStorage.clear(); //로컬 스토리지에 저장된 내용 제거하기
+		
 		}
 	
 	//플래너 리스트 관련 함수들 ==============================================================================================================================
@@ -303,7 +304,7 @@
 	//1. 불러오기 관련 로직 -------------------------------------------------------------------------------------------
 	
 	
-	let lastIdx; //마지막 인덱스에 해당되는 마커 정보
+
 	let myMarkers = []; //편집 중에 클라이언트가 리스트에 추가할 마커 관련 배열 (전역에서 사용하기 위해서 여기에 선언함...)
 	
 	//● 공통함수 : printMyLog() => 옵션 변경으로 선택한 일자에 저장된 이정이 존재한다면, 해당 정보 불러오기!
@@ -342,13 +343,9 @@
 		    //markersArr : 
 			logArr.push(new kakao.maps.LatLng(myLog[i].latitude, myLog[i].longitude));
 		    markersArr.push(marker); //이전에 저장됐던 마커들을 저장함. 이를 기반으로 쭉쭉 새로운 마커들을 추가해 나갈 수도 있음!
-		    console.log("마커들 잘 저장이 됐는지 : ", markersArr);			    
 	
 		}
 	
-	    //lastIdx = new kakao.maps.LatLng(myLog[myLog.length-1].latitude, myLog[myLog.length-1].longitude);
-	    //console.log("이게 되나???????????????", lastIdx);
-	    addLastIdx(myLog[myLog.length-1].latitude, myLog[myLog.length-1].longitude, myLog[myLog.length-1].title,markerImage);
 		
 	
 		//마커 간 선 연결하기
@@ -366,22 +363,9 @@
 	    polyline.setMap(map);
 	    
 	    daysOption.addEventListener("change",e=>{
-	    	
-	    	//TODO0815) 사람 모양 마커와 그와 연계된 선을 지우는 것도 구현해야 함...
+	    	    	
 	    	polyline.setMap(null);
-	    	
- 			for(let i=0;i<markersArr.length;i++){
- 				//markersArr[i].setMap(null); //마커를 지우면, 헷갈려...
-			}
- 			
- 			
- 			//사람 모양의 마커를 확인할 수 있을까? -> 한 번에는 안 됨. 옵션을 두 번 전환해야 확인됨
-/*  			console.log("직전 옵션에서 추가한 마커들 ", myMarkers); //일단 myMarkers에 저장하긴 했었음...
- 			for(let i=0;i<myMarkers.length;i++){
- 				myMarkers[i].setMap(null);
- 			} */
- 			
-	    	
+
 	    });
 	    
 
@@ -506,7 +490,7 @@
 				div.setAttribute("draggable",true);
 				document.getElementById("dropZone").appendChild(div); 
 				
-				//deletePlace(div); //TODO0815) 더블클릭 시, 리스트에서 장소 삭제됨
+				deletePlace(div); //TODO0815) 더블클릭 시, 리스트에서 장소 삭제됨
 				moveMap(div);
 	
 			}
@@ -643,13 +627,13 @@
 		moveMap(addPlan);
 	} 
             
-            
+     
+     
+     
      function deletePlace(e){
  		
      	let dropZone = document.getElementById("dropZone");
 
-     	//console.log(e.target);
-     	
      	e.addEventListener("dblclick",e=>{ //삭제 대상 카드 클릭 시 (카드 및 마커가 삭제됨)	
      	
      		alert("삭제!");
@@ -657,18 +641,10 @@
      		let placeLat = e.target.getAttribute("latitude"); //카드의 위도
      		let placeLng = e.target.getAttribute("longitude"); //카드의 경도
      		
-         	//console.log(placeLat,placeLng);
-         	
-     		//0617) 카드 삭제 시, 좌표 정보에 대응되는 마커도 삭제됨
-     		//console.log("내가 생성한 마커들 : ", myMarkers); //내가 생성한 마커들
-     		
-     		//0618) printMyLog()에서 생성된 마커도 해당 메소드가 적용되어야 함
-     		//console.log("///////////확인//////////////", markersArr);
      		
      		//마커 삭제 1) 작성 中, 내가 생성한 마커 지우기
      		for(let i=0;i<myMarkers.length;i++){
      			
-     			//myMarkers[i].setMap(null); //마커 전체 삭제
      			let mkLat = myMarkers[i].getPosition().getLat();
      			let mkLng = myMarkers[i].getPosition().getLng();
      			console.log(mkLat, mkLng);
@@ -695,8 +671,22 @@
  				}    			
      		}
      		
+     		//TODO 0815 마커에 대응되는 선 또한 삭제해야 함 -> 이것도 setInterval()을 사용하면 실시간으로 삭제할 수 있을까?
+     		//지도에 표시된 폴리 라인 일체를 삭제한 다음에, 남은 마커들을 기준으로 선을 그리면 되지 않을까?
+     		//flag = true;
      		
-     		dropZone.removeChild(e.target);
+     		
+/*      		if(polyline!=null){
+     			polyline.setMap(null);
+     		} */
+     		
+     		
+     		
+     		dropZone.removeChild(e.target); //방문 리스트에서 선택한 장소 카드 삭제
+     		
+     		
+     		
+     		
 
      	});
   	
@@ -994,24 +984,7 @@
 		    3. 실시간 선 그리기 : 마커가 추가되는 대로 자동 선 그리기 (* setInterval())
 		 
 		 */
-		 //let myMarkers = []; //리스트에 추가된 마커들을 저장할 배열
-		 //myMarkers.push(lastIdx);
-		 //console.log("확인 ",lastIdx);
-			
-		
-		function addLastIdx(lat,lng,name,img){
-			
- 		    var marker = new kakao.maps.Marker({
-		        map: map,
-		        position: new kakao.maps.LatLng(lat,lng),
-		        title : name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-		        image : img // 마커 이미지 
-		    });
-			
- 		   myMarkers.push(marker);
- 		   console.log("가장 마지막 인덱스가 잘 저장됐나? ", myMarkers[0]);
-			
-		} 
+
 		 
 		 
 		 const addMarkerFunc = (lat,lng,placeName)=>{
@@ -1036,7 +1009,53 @@
 			    
 				infoOverlay(marker); //커스텀 오버레이 출력
 				
+				
+				//myMarkers를 카카오 좌표 객체化해서 보내야 작업이 간단하겠다...
 				myMarkers.push(marker); //배열에 저장하기!
+				
+				
+				//================================================================================
+				
+				
+				let cards = document.querySelectorAll("div#dropZone>div");
+
+     			[].forEach.call(cards,function(card){
+     				card.addEventListener("dblclick",click,false);
+     			});
+     			
+     			function click(e){ //deletePlace()와 같이, 리스트 카드 클릭 시 파란 선과 사람 모양 마커 삭제하기
+     				
+     				let lat = e.target.getAttribute('latitude');
+     				let lng = e.target.getAttribute('longitude');
+     				let target = new kakao.maps.LatLng(lat,lng);
+				
+     				//----------------------------------------------------------------------------------------
+     				//myMarkers에서도 해당 좌표 값은 삭제해야 함
+     				console.log("원본 확인 : ", myMarkers.length);
+     				console.log("갑자기 왜 이래 : ",myMarkers);
+					console.log("구성 확인 : ", myMarkers[0].getPosition().getLat());
+     				
+					console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+					console.log(target.Ma); //latitude
+					console.log(target.La); //longitude
+					console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+					
+					//필터 적용이 왜 안 될까?
+					//return (v.La != target.La&&v.Ma!=target.Ma)
+					
+      				let tempArr = myMarkers.filter(function(v,i,ori){
+     					return (v.getPosition().getLat()!=target.Ma&&v.getPosition().getLng()!=target.La);
+     				});
+     				
+     				myMarkers = tempArr.slice();
+     				
+     				console.log("필터 적용 확인 : ", myMarkers.length); 
+     				
+     			}
+				
+
+				//=================================================================================
+				
 				drawLines(myMarkers); //마커 간 선 그리기
 
 			}  
@@ -1053,7 +1072,9 @@
 				            '        </div>' + 
 				            '        <div class="body">' + 
 				    		'            <div style="position:relative;margin:10px;display:block">' + 
-				    		'                <div style="font-size:15px;margin-right:30px;">장소명</div>' + 
+				    		'                <div id="listedName" style="font-size:15px;margin-right:30px;">장소명</div>' + 
+				    		'                <div id="visitDay" style="font-size:15px;margin-right:30px;">방문 일자</div>' + 
+				    		'                <div id="memo" style="font-size:15px;margin-right:30px;"><input placeholder="메모">저장된 메모가 없습니다</div>' + 
 				   			'                <div style="float:right;margin-right:15px;"><button onclick="deleteThisMarker();">삭제하기</button></div>' +  
 				            '            </div>' + 
 				            '        </div>' + 
@@ -1104,34 +1125,32 @@
 		
 			//실시간으로 선 그리기 ------------------------------------------------------------------------------
 			
+			
+
+			
 			function drawLines(myMarkers){
 
+				console.log("필터 적용된 마커 아니야? ", myMarkers.length);
 				
+				var path =  []; 
 				//만약에, 저장 내용이 있다면 마지막 마커에서부터 라인 그리기를 시작할 수도 있겠지
 				const savedPlan = JSON.parse(localStorage.getItem(nowCho));
 				console.log("저장된 내용이 있습니까? ",savedPlan);
 				
 				let savedLat, savedLng = "";
 				
- 				if(savedPlan!=null){
+ 				if(savedPlan!=null&&savedPlan.length!=0){
 					
  					savedLat = savedPlan[savedPlan.length-1].latitude;
  					savedLng = savedPlan[savedPlan.length-1].longitude;
-
+ 					path.push(new kakao.maps.LatLng(savedLat,savedLng));
 				}
  				
 				console.log("lat : ", savedLat);				
 				console.log("lat : ", savedLng);				
-				
-
-				var path =  []; 
-				path.push(new kakao.maps.LatLng(savedLat,savedLng));
-				
-
 
 				
-				
-				var clickLine = new kakao.maps.Polyline({
+ 				var clickLine = new kakao.maps.Polyline({
 				    map: map,
 				    strokeWeight: 3, // 선의 두께입니다
 				    //strokeColor: '#db4040', // 선의 색깔입니다
@@ -1140,31 +1159,82 @@
 				    strokeStyle: 'solid' // 선의 스타일입니다
 				});
 
+						
+						myMarkers.forEach(e=>{
+							//클라이언트가 추가하는 마커 정보들 족족 path에 저장하기
+							path.push(new kakao.maps.LatLng(e.getPosition().getLat(),e.getPosition().getLng()));
+							
+						});
 				
-				myMarkers.forEach(e=>{
-					//클라이언트가 추가하는 마커 정보들 족족 path에 저장하기
-					path.push(new kakao.maps.LatLng(e.getPosition().getLat(),e.getPosition().getLng()));
-					
-				});
+				//deletePlace() 관련, path에서 다시 클라이언트가 클릭했던 장소에 해당되는 마커는 배열에서 삭제해야 함
 				
-				console.log("두 번째 idx : ",path.length," path구성 : ",path);
+				
 
  				setInterval(function() {
 				    clickLine.setPath(path);
 				}, 100);
  				
+ 				//파란 path 삭제 관련 ---------------------------------------------------------------------
+ 				//삭제돼야 하는 경우 : 옵션 전환 시, deletePlace()실행 시
  				//옵션이 전환될 때 path 삭제하기
  				daysOption.addEventListener("change",e=>{
- 					
- 					
- 					clickLine.setMap(null);
- 				
+
+ 					clickLine.setMap(null); 				
  				})
+ 				
+				//---------------------------------------------------------------------------------------
+				
+				
+				let cards = document.querySelectorAll("div#dropZone>div");
+
+     			[].forEach.call(cards,function(card){
+     				card.addEventListener("dblclick",click,false);
+     			});
+     			
+     			function click(e){ //deletePlace()와 같이, 리스트 카드 클릭 시 파란 선과 사람 모양 마커 삭제하기
+     				
+     				let lat = e.target.getAttribute('latitude');
+     				let lng = e.target.getAttribute('longitude');
+     				console.log("위도 경도 확인 : ",lat,lng);
+     				let target = new kakao.maps.LatLng(lat,lng);
+     				console.log("객체 확인 : ",target);
+     				//path[] 전체 삭제 후, 대상 좌표만 제거한 다음 다시
+     				
+     				
+     				console.log("원본 배열 : ", path);
+     				let tempPathArr = path.filter(function(v,i,ori){
+
+     					return (v.La != target.La&&v.Ma!=target.Ma); //삭제 대상을 제외한 새로운 배열을 반환함
+     				}); 
+     				
+     				//console.log("필터 적용되나? ", tempArr);
+     				//원본 파란 선은 모두 삭제하고, temp기준으로 polyline다시 그리기   				
+     				path = tempPathArr.slice();
+     				//console.log("복사 잘 됐나? ",path);
+     				
+     				
+     				//----------------------------------------------------------------------------------------
+     				//myMarkers에서도 해당 좌표 값은 삭제해야 함
+/*      				console.log("원본 확인 : ", myMarkers.length);
+					console.log("구성 확인 : ", myMarkers[0].getPosition().getLat());
+     				
+     				let tempArr = myMarkers.filter(function(v){
+     					return (v.getPosition().getLat()!=target.Ma&&v.getPosition().getLng()!=target.La);
+     				});
+     				
+     				myMarkers = tempArr.slice();
+     				
+     				console.log("필터 적용 확인 : ", myMarkers.length); */
+     				
+     			}
+ 				
 			
 			}
 		
-		
-		
+			//폴리라인 제거 관련
+			function deleteBlueLine(polyLine){
+				polyLine.setMap(null);
+			}
 		
 		
 		
