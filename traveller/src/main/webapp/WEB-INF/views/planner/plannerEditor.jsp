@@ -303,6 +303,9 @@
 	//1. 불러오기 관련 로직 -------------------------------------------------------------------------------------------
 	
 	
+	let lastIdx; //마지막 인덱스에 해당되는 마커 정보
+	let myMarkers = []; //편집 중에 클라이언트가 리스트에 추가할 마커 관련 배열 (전역에서 사용하기 위해서 여기에 선언함...)
+	
 	//● 공통함수 : printMyLog() => 옵션 변경으로 선택한 일자에 저장된 이정이 존재한다면, 해당 정보 불러오기!
 	const thisDay = document.querySelector("#travelDaysOpt>option").value;
 	let markersArr = []; //* (저장된 내용을 기반으로) 앞으로 생성될 마커들을 저장할 배열
@@ -330,6 +333,8 @@
 		        image : markerImage // 마커 이미지 
 		    });
 		    
+
+		    
 		    infoOverlay(marker); //마커 클릭 시, 커스텀 오버레이 출력할 것임
 		    
 		    //마커 간 선으로 연결하기 위해, 각 배열 (logArr, markersArr에 저장하기)
@@ -341,6 +346,10 @@
 	
 		}
 	
+	    //lastIdx = new kakao.maps.LatLng(myLog[myLog.length-1].latitude, myLog[myLog.length-1].longitude);
+	    //console.log("이게 되나???????????????", lastIdx);
+	    addLastIdx(myLog[myLog.length-1].latitude, myLog[myLog.length-1].longitude, myLog[myLog.length-1].title,markerImage);
+		
 	
 		//마커 간 선 연결하기
 	    // 지도에 표시할 선을 생성합니다
@@ -551,23 +560,16 @@
 		
 	});
 	
-	//다음 option으로 전환되기 전, 당해 option에서 저장했던 마커, 선 등은 모두 감추기
+	//다음 option으로 전환되기 전, 당해 option에서 저장했던 마커 삭제 및 myMarkers[] 리셋
+	//-> myMarkers[] 리셋해야, 옵션 무관하게 해당 배열을 기준으로 선이 그어지는 현상을 막을 수 있음!!!
 	daysOption.addEventListener("change",e=>{
-		
-		const preChoices = JSON.parse(localStorage.getItem(preCho));
-		//console.log("내가 저장했던 것들!!!!!!!!!!!!!!!!!!! ",preChoices);
-	
-		console.log("내가 저장했던 것들!!!!!!!!!!!!!!!!!!! ",myMarkers);
  		
-		for(let i=0;i<myMarkers.length;i++){			
+ 		for(let i=0;i<myMarkers.length;i++){			
  			myMarkers[i].setMap(null); //마커 전체 삭제 			
  		}
 		myMarkers = [];
 		console.log("삭제 잘 됐는가? ", myMarkers);
-		
-		//선은 어떻게 지우지?
- 		//clickLine.setMap(null); //선 지우기
- 		
+
 	
 	});
 	
@@ -992,7 +994,25 @@
 		    3. 실시간 선 그리기 : 마커가 추가되는 대로 자동 선 그리기 (* setInterval())
 		 
 		 */
-		 let myMarkers = []; //리스트에 추가된 마커들을 저장할 배열
+		 //let myMarkers = []; //리스트에 추가된 마커들을 저장할 배열
+		 //myMarkers.push(lastIdx);
+		 //console.log("확인 ",lastIdx);
+			
+		
+		function addLastIdx(lat,lng,name,img){
+			
+ 		    var marker = new kakao.maps.Marker({
+		        map: map,
+		        position: new kakao.maps.LatLng(lat,lng),
+		        title : name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+		        image : img // 마커 이미지 
+		    });
+			
+ 		   myMarkers.push(marker);
+ 		   console.log("가장 마지막 인덱스가 잘 저장됐나? ", myMarkers[0]);
+			
+		} 
+		 
 		 
 		 const addMarkerFunc = (lat,lng,placeName)=>{
 			 
@@ -1015,6 +1035,7 @@
 					
 			    
 				infoOverlay(marker); //커스텀 오버레이 출력
+				
 				myMarkers.push(marker); //배열에 저장하기!
 				drawLines(myMarkers); //마커 간 선 그리기
 
@@ -1081,10 +1102,35 @@
 		    	console.log("삭제 버튼 누르면 해당 마커를 삭제해야 함");
 		    }
 		
-			//0814) 실시간으로 선 그리기
+			//실시간으로 선 그리기 ------------------------------------------------------------------------------
+			
 			function drawLines(myMarkers){
 
+				
+				//만약에, 저장 내용이 있다면 마지막 마커에서부터 라인 그리기를 시작할 수도 있겠지
+				const savedPlan = JSON.parse(localStorage.getItem(nowCho));
+				console.log("저장된 내용이 있습니까? ",savedPlan);
+				
+				let savedLat, savedLng = "";
+				
+ 				if(savedPlan!=null){
+					
+ 					savedLat = savedPlan[savedPlan.length-1].latitude;
+ 					savedLng = savedPlan[savedPlan.length-1].longitude;
+
+				}
+ 				
+				console.log("lat : ", savedLat);				
+				console.log("lat : ", savedLng);				
+				
+
 				var path =  []; 
+				path.push(new kakao.maps.LatLng(savedLat,savedLng));
+				
+
+
+				
+				
 				var clickLine = new kakao.maps.Polyline({
 				    map: map,
 				    strokeWeight: 3, // 선의 두께입니다
@@ -1093,23 +1139,26 @@
 				    strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
 				    strokeStyle: 'solid' // 선의 스타일입니다
 				});
+
 				
 				myMarkers.forEach(e=>{
-					
+					//클라이언트가 추가하는 마커 정보들 족족 path에 저장하기
 					path.push(new kakao.maps.LatLng(e.getPosition().getLat(),e.getPosition().getLng()));
 					
 				});
 				
-				console.log("path??????????",path);
-				
-				
+				console.log("두 번째 idx : ",path.length," path구성 : ",path);
+
  				setInterval(function() {
 				    clickLine.setPath(path);
 				}, 100);
  				
- 				//옵션이 전환될 때 path를 어떻게 삭제할까?
+ 				//옵션이 전환될 때 path 삭제하기
  				daysOption.addEventListener("change",e=>{
+ 					
+ 					
  					clickLine.setMap(null);
+ 				
  				})
 			
 			}
