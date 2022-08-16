@@ -361,10 +361,16 @@
 
 	    // 지도에 선을 표시합니다 
 	    polyline.setMap(map);
+    	markersArr.forEach(e=>{
+    		e.setMap(map);
+    	})
 	    
 	    daysOption.addEventListener("change",e=>{
 	    	    	
 	    	polyline.setMap(null);
+	    	markersArr.forEach(e=>{
+	    		e.setMap(null);
+	    	})
 
 	    });
 	    
@@ -457,7 +463,6 @@
 		}
 		
     	//2. 카드 순서 변경 (drag) ==================================================================================================================
-		//TODO0816
   			[].forEach.call(cards,function(card){
  				card.addEventListener("dragend",drag,false);
  			});
@@ -610,25 +615,7 @@
 	
 	daysOption.addEventListener("change",e=>{ //옵션 전환 시
 		
-		//선택한 옵션 일자에 저장된 일정이 존재하는가?
-		//존재 : 해당 일자에 저장된 일정 정보 출력
-		//부재 : 아무것도 출력하지 않는다
-		
-		//선택 前 선택 직전 option에서 편집한 일자의 마커 및 선 지우기 ------------------------------------------------------------------------
-		//console.log("저장한 옵션 확인하기! //////////////", myMarkers); //플랜에 저장된 일체 장소 리스트가 출력됨
-/* 		console.log("선택 前 옵션 확인 : ",preCho);
-		const previousPlan = JSON.parse(localStorage.getItem(preCho));
-		console.log("직전 옵션에서 저장한 장소들 확인하기 : ",previousPlan); //옵션 전환 직후는 localStorage에 저장이 안 되는 걸까? 1회는 확인이 잘 안 되네
-		
-		myMarkers.forEach(e=>{
-			
-			console.log("마커 구성 ",e);
-			
-		}); */
-		
-		
-		
-		
+
 	
 		//선택한 일자에 해당하는 일정 편집 및 저장 관련 로직 ▼ ---------------------------------------------------------------------------------
 		nowCho = daysOption.value;
@@ -675,6 +662,7 @@
 			}
 			
 			printMyLog(savedPlan,lineArr); //리스트에 로그 출력하기
+			//TODO 0816) 저장 내용 토대로 마커를 출력하긴 해야할 거 같기도...
 			clearDragEvent();
 			addDragEvent();
 			
@@ -1434,7 +1422,18 @@
  				
  					console.log("////////////////////////",tempArr);
  					path = tempArr.slice();
- 				} 
+ 				}
+ 				
+ 				
+ 				//옵션 변경 시 마커 제거 무조건이다
+ 			    daysOption.addEventListener("change",e=>{
+	    	    	
+ 			    	polyline.setMap(null);
+ 			    	markersArr.forEach(e=>{
+ 			    		e.setMap(null);
+ 			    	})
+
+ 			    });
 
 			
 			}
