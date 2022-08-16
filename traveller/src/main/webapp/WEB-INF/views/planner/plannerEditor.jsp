@@ -368,8 +368,134 @@
 
 	    });
 	    
+	    
+	    changeRed(polyline,logArr,myMarkers); //변동상황 발생 시, poly라인 재조정하기
 
 	} //printMyLog함수 종료
+	
+	//let flag = false;
+	function changeRed(line,arr,myMarkers){
+	//매개변수
+	//line, arr : (삭제/수정)내용 반영해 빨간 선 그리기 관련
+	//myMarkers : drawLines()관련, 차후 편집 내용 적용될 배열 또한 수정해야 함
+		
+		let cards = document.querySelectorAll("div#dropZone>div");
+		console.log("변경 전! : 이벤트 적용 대상 : ",cards);
+		
+		
+		//1. 카드 삭제 (더블 클릭) ========================================================================================================================
+		
+		[].forEach.call(cards,function(card){
+			card.addEventListener("dblclick",click,false);
+		});
+		
+		function click(e){
+			
+			let changedCards = document.querySelectorAll("div#dropZone>div"); //이벤트 적용 대상 설정하기
+		
+			let tempArr = [];	
+			let forStorage = [];
+			
+			changedCards.forEach(v=>{ //더블 클릭-> 삭제되어 재구성된 카드 토대로 path[] 내용 재구성하기
+				
+				let lat = v.getAttribute('latitude');
+				let lng = v.getAttribute('longitude');
+				let key = v.getAttribute('day');
+				console.log("key확인 : ",key);
+				
+				tempArr.push(new kakao.maps.LatLng(lat,lng));
+				
+				//-------------------------------------------------------------------------
+				//localStorage에 수정 내용 저장하기...
+				
+				//생성자 함수로 "장소"객체 생성 후, 배열arr에 저장하기
+				function Places(day,id,placeName,latitude,longitude,memo){ //생성자 함수 : 장소 정보 저장 객체
+					
+					this.day = day;
+					this.id = id;
+					this.placeName = placeName;
+					this.latitude = latitude;
+					this.longitude = longitude;
+					this.memo = memo;			
+					
+				}
+				
+				forStorage.push(new Places(							
+											//cards[i].getAttribute("day"),
+											v.getAttribute('day'), //일자 정보 : 선택 일자로 저장하기
+											v.getAttribute("id"),
+											v.getAttribute("placeName"),
+								            v.getAttribute("latitude"),
+								            v.getAttribute("longitude"),
+								            v.getAttribute("memo")));
+	
+				console.log("카드 리스트 확인하기 : ",forStorage);
+				
+				localStorage.removeItem(key); //기존 저장 값은 삭제
+				localStorage.setItem(key,JSON.stringify(forStorage));
+	
+				//--------------------------------------------------------------------------
+			
+			});
+		
+				arr = tempArr.slice();		
+
+				line.setMap(null); //기존의 선은 없애기
+				
+	    		line = new kakao.maps.Polyline({ //새로운 선 구성하기
+	            path: arr, //새로운 내용 반영한 배열 적용하기
+	            strokeWeight: 5, 
+	            strokeColor: '#e61919',
+	            strokeOpacity: 0.7, 
+	            strokeStyle: 'solid', 
+	            endArrow:'true'
+	    	    });
+	        	
+	    		line.setMap(map); //수정 내용 반영하여 최종적으로 선 다시 그리기
+	    		
+	    		
+	    	//----------------------------------------------------------------------------------
+	    	//myMarkers[]도 다시 만들어야 함...
+	    	
+	    	let markerArr = [];
+
+		    var imageSize = new kakao.maps.Size(36, 37); 
+		    var imageSrc = 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-256.png';
+		    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+	    		
+			changedCards.forEach(v=>{ //더블 클릭-> 삭제되어 재구성된 카드 토대로 path[] 내용 재구성하기
+				
+				let lat = v.getAttribute('latitude');
+				let lng = v.getAttribute('longitude');
+				let name = v.getAttribute('placename');
+				
+			    var marker = new kakao.maps.Marker({
+				        map: map,
+				        position: new kakao.maps.LatLng(lat,lng),
+				        title : name, 
+				        image : markerImage
+				        
+				});
+					
+				markerArr.push(marker);
+			
+			});
+			
+			myMarkers = markerArr.slice();
+	    	console.log("마커야!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",myMarkers.length);
+	    	
+	    	//flag = true;
+	    	drawLines(myMarkers); //왜 적용이 또 안 되는 걸까...정말 슬프다 -> 왜냐면 localStorage에 저장된 게 우선이기 때문임...
+	    	
+		}
+		
+		
+		
+		
+	
+	}
+	
+	
 	
 	
 	//여행의 첫 번째 일자에 저장된 정보 불러오기
@@ -1012,6 +1138,7 @@
      			
      			function click(e){ //deletePlace()와 같이, 리스트 카드 클릭 시 파란 선과 사람 모양 마커 삭제하기
      				
+     				
      				let lat = e.target.getAttribute('latitude');
      				let lng = e.target.getAttribute('longitude');
      				let target = new kakao.maps.LatLng(lat,lng);
@@ -1145,16 +1272,33 @@
 				var path =  []; 
 				
 				const savedPlan = JSON.parse(localStorage.getItem(nowCho));
-				console.log("저장된 내용이 있습니까? ",savedPlan);
+				console.log("저장된 내용이 있습니까? ",savedPlan==null?'없어요':'있어요');
 				
 				let savedLat, savedLng = "";
 				
- 				if(savedPlan!=null&&savedPlan.length!=0){ //가장 최근에 저장된 장소 정보(마지막 index)
+				//flag를 지우고... changeRed할 때 그냥 localStorage에 변경 내용을 저장해버려야 겠다...
+ 				if(savedPlan!=null&&savedPlan.length!=0) { //가장 최근에 저장된 장소 정보(마지막 index)
 					
+ 					console.log("저장된 내용을 적용할 거예요")
  					savedLat = savedPlan[savedPlan.length-1].latitude;
  					savedLng = savedPlan[savedPlan.length-1].longitude;
  					path.push(new kakao.maps.LatLng(savedLat,savedLng));
+				
+ 				} 
+ 				
+ 				/*
+ 				else if (flag==true) {
+					
+ 					console.log("구성 확인 : ", myMarkers);
+ 					console.log("lat 확인 : ", myMarkers[0].getPosition().getLat());
+ 					console.log("lng 확인 : ", myMarkers[0].getPosition().getLng());
+				
+ 					savedLat = myMarkers[myMarkers.length-1].getPosition().getLat();
+ 					savedLng = myMarkers[myMarkers.length-1].getPosition().getLng();
+ 					path.push(new kakao.maps.LatLng(savedLat,savedLng));
+
 				}
+ 				*/
  				
 				console.log("lat : ", savedLat);				
 				console.log("lat : ", savedLng);				
@@ -1169,6 +1313,8 @@
 				    strokeStyle: 'solid' // 선의 스타일입니다
 				});
 
+						console.log("path 확인", path);
+						console.log("myMarkers 확인", myMarkers);
 						
 						myMarkers.forEach(e=>{
 							//클라이언트가 추가하는 마커 정보들 족족 path에 저장하기
