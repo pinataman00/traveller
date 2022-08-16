@@ -32,7 +32,7 @@
 <body>
 <style>
 	.main-container{
-		border:1px solid red;
+		/* border:1px solid red; */
 		/* margin-top : 50px; */
 		display:flex;
 		overflow:hidden;
@@ -40,7 +40,7 @@
 	}
 	.editor-container{
 		float:left;
-		border: 1px solid blue;
+		/* border: 1px solid blue; */
 		width: 300px;
 		background-color: #E6F0F8;
 		padding:10px;
@@ -48,7 +48,7 @@
 	}
 	.map-container{
 		float:right;
-		border:1px solid red;
+		/* border:1px solid red; */
 		width:100%;
 		margin-right:-300px;
 		padding-right:300px;
@@ -60,7 +60,7 @@
 	}
 	
 	.planner-container{
-		border:1px solid red;
+		/* border:1px solid red; */
 		height: 75vh;
 		overflow-y:scroll;
 	}
@@ -71,7 +71,7 @@
 		margin-top:15px;
 	}
 	div#dropZone{
-		border:1px solid blue;
+		/* border:1px solid blue; */
 		padding: 25px;
 	}
 	.btn-controller{
@@ -567,9 +567,9 @@
             '        </div>' + 
             '        <div class="body">' + 
             '            <div class="desc">' + 
-            '                <div class="ellipsis" style="font-size:50;margin-bottom:8px;">장소를 플랜에 추가할까요?</div>' +
-            '                <input type="text" id="memo" placeholder="메모를 작성해주세요">'+ //☆ 해당 장소에 대한 정보를 이미 사용자가 작성했다면, value에 값을 넣어도 되지 않을까
-            '                <button id="addBtn" onclick="addList();" class="addToList" style="font-size:12px;margin-left:20px;width:80px;">추가하기</button>' + 
+            '                <div class="ellipsis" style="margin-top:30px;margin-bottom:8px;"><p style="font-size:18px;">장소를 플랜에 추가할까요?</p></div>' +
+            '                <input type="text" id="memo" style="width:225px; "placeholder="메모를 작성해주세요">'+ //☆ 해당 장소에 대한 정보를 이미 사용자가 작성했다면, value에 값을 넣어도 되지 않을까
+            '                <div style="margin-top:10px;margin-left:125px;"><button id="addBtn" onclick="addList();" class="addToList" style="font-size:12px;margin-left:20px;width:80px;">추가하기</button></div>' + 
             '        	 </div>' + 
             '    </div>' +    
             '</div>'+
@@ -630,7 +630,7 @@
      
      
      
-     function deletePlace(e){
+     function deletePlace(e){ //리스트에서 특정 장소 삭제 시 구현될 이벤트
  		
      	let dropZone = document.getElementById("dropZone");
 
@@ -642,7 +642,7 @@
      		let placeLng = e.target.getAttribute("longitude"); //카드의 경도
      		
      		
-     		//마커 삭제 1) 작성 中, 내가 생성한 마커 지우기
+     		//마커 삭제 1) (localStorage에 저장되지 않은 내용, 사람 모양 마커)작성 中, 내가 생성한 마커 지우기
      		for(let i=0;i<myMarkers.length;i++){
      			
      			let mkLat = myMarkers[i].getPosition().getLat();
@@ -656,7 +656,7 @@
  				}    			
      		}
      		
-     		//마커 삭제 2) printMyLog()메소드로부터 생성된 마커(=localStorage에 저장된 마커) 지우기
+     		//마커 삭제 2) printMyLog()메소드로부터 생성된 마커(=localStorage에 저장된 마커, 빨간 마커) 지우기
      		for(let i=0;i<markersArr.length;i++){
      			
      			//myMarkers[i].setMap(null); //마커 전체 삭제
@@ -671,22 +671,11 @@
  				}    			
      		}
      		
-     		//TODO 0815 마커에 대응되는 선 또한 삭제해야 함 -> 이것도 setInterval()을 사용하면 실시간으로 삭제할 수 있을까?
-     		//지도에 표시된 폴리 라인 일체를 삭제한 다음에, 남은 마커들을 기준으로 선을 그리면 되지 않을까?
-     		//flag = true;
-     		
-     		
-/*      		if(polyline!=null){
-     			polyline.setMap(null);
-     		} */
-     		
-     		
+     		//TODO 0816 마커에 대응되는 선 또한 삭제해야 함 (0815 사람모양 마커-파란 선은 수정 완료)
+     		//지도에 표시된 폴리 라인 일체를 삭제한 다음에, 남은 마커들을 기준으로 선을 다시 그리면 됨
+			
      		
      		dropZone.removeChild(e.target); //방문 리스트에서 선택한 장소 카드 삭제
-     		
-     		
-     		
-     		
 
      	});
   	
@@ -1014,9 +1003,7 @@
 				myMarkers.push(marker); //배열에 저장하기!
 				
 				
-				//================================================================================
-				
-				
+				//장소 삭제 관련, 삭제 내용 반영해 myMarkers 재구성하기 ==============================================
 				let cards = document.querySelectorAll("div#dropZone>div");
 
      			[].forEach.call(cards,function(card){
@@ -1031,31 +1018,51 @@
 				
      				//----------------------------------------------------------------------------------------
      				//myMarkers에서도 해당 좌표 값은 삭제해야 함
-     				console.log("원본 확인 : ", myMarkers.length);
-     				console.log("갑자기 왜 이래 : ",myMarkers);
-					console.log("구성 확인 : ", myMarkers[0].getPosition().getLat());
-     				
-					console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+
 					console.log(target.Ma); //latitude
 					console.log(target.La); //longitude
-					console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-					
-					//필터 적용이 왜 안 될까?
-					//return (v.La != target.La&&v.Ma!=target.Ma)
 					
       				let tempArr = myMarkers.filter(function(v,i,ori){
      					return (v.getPosition().getLat()!=target.Ma&&v.getPosition().getLng()!=target.La);
      				});
      				
+					console.log("tempArr의 유형 /////////////////////",tempArr);
      				myMarkers = tempArr.slice();
      				
-     				console.log("필터 적용 확인 : ", myMarkers.length); 
-     				
      			}
+     			
+     			//장소 방문 순서 변경 관련, 수정 내용 반영해 myMarkers 재구성하기 ==========================================
+      			[].forEach.call(cards,function(card){
+     				card.addEventListener("dragend",drag,false);
+     			});
 				
-
-				//=================================================================================
-				
+ 				function drag(e){ //드래그가 완료된 시점에, 카드에 저장된 내용을 바탕으로 myMarkers재구성하기!
+ 				
+ 					
+ 					let cards = document.querySelectorAll("div#dropZone>div");
+ 					let tempArr = [];	
+ 				
+ 					cards.forEach(v=>{ //순서 변경으로 재배열된 카드 토대로 path배열 재구성하기
+ 						
+ 						let lat = v.getAttribute('latitude');
+ 						let lng = v.getAttribute('longitude');
+ 						let name = v.getAttribute('placename');
+ 						
+ 					    var marker = new kakao.maps.Marker({
+ 					        map: map,
+ 					        position: new kakao.maps.LatLng(lat,lng),
+ 					        title : name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+ 					        image : tempMarkerImg // 마커 이미지 
+ 					    });
+ 						
+ 						tempArr.push(marker);
+ 					
+ 					});
+ 				
+ 					console.log("////////////////////////",tempArr);
+ 					myMarkers = tempArr.slice();
+ 				} 
+		
 				drawLines(myMarkers); //마커 간 선 그리기
 
 			}  
@@ -1071,11 +1078,11 @@
 				            '            리스트에 추가된 장소' + 
 				            '        </div>' + 
 				            '        <div class="body">' + 
-				    		'            <div style="position:relative;margin:10px;display:block">' + 
-				    		'                <div id="listedName" style="font-size:15px;margin-right:30px;">장소명</div>' + 
-				    		'                <div id="visitDay" style="font-size:15px;margin-right:30px;">방문 일자</div>' + 
-				    		'                <div id="memo" style="font-size:15px;margin-right:30px;"><input placeholder="메모">저장된 메모가 없습니다</div>' + 
-				   			'                <div style="float:right;margin-right:15px;"><button onclick="deleteThisMarker();">삭제하기</button></div>' +  
+				    		'            <div style="position:relative;margin:10px;padding:10px;display:block">' + 
+				    		'                <div id="listedName" style="font-size:15px;margin-right:30px;">장소명</div>' +
+				    		'                <div id="listedMemo" style="font-size:15px;margin-right:30px;"><input style="margin-top:10px;margin-bottom:10px;" placeholder="메모"></div>' + 
+				    		'                <input id="listedDay" style="font-size:15px;margin-right:30px;" placeholder="방문일자"></div>' +
+/* 				   			'                <div style="float:right;margin-right:20px;"><button onclick="deleteThisMarker();">삭제하기</button></div>' +  */ 
 				            '            </div>' + 
 				            '        </div>' + 
 				            '    </div>' +    
@@ -1091,9 +1098,9 @@
 		        overlay.setMap(null); //디폴트 : 출력 안 함
 
 		        // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-		        kakao.maps.event.addListener(marker, 'click', function() {		        	
-		            //overlay.setMap(map);		            
-		        	showOverlay();
+		        kakao.maps.event.addListener(marker, 'click', function() {
+		            
+		        	showOverlay(); //오버레이 출력 관련 설정
 		        });
 
 			    
@@ -1105,7 +1112,15 @@
 						if(++cnt%2!=0){
 							overlay.setMap(null);
 						} else {
-							overlay.setMap(map);
+							overlay.setMap(map); //오버레이 표시하기
+							console.log(document.getElementById("listedName"));
+							
+							//마커에 저장된 정보 확인하기
+							let lat = marker.getPosition().getLat();
+							let lng = marker.getPosition().getLng();
+							let title = marker.getTitle();
+							
+							document.getElementById("listedName").innerText = title;
 						}						
 					}
 					
@@ -1114,13 +1129,9 @@
 		 		
 		 	}
 		 
-		 
-		 
 
-		 	
-			//TODO0814 
-		    function deleteThisMarker(){
-		    	console.log("삭제 버튼 누르면 해당 마커를 삭제해야 함");
+		    function deleteThisMarker(marker){
+		    	alert(marker.getTitle());
 		    }
 		
 			//실시간으로 선 그리기 ------------------------------------------------------------------------------
@@ -1130,16 +1141,15 @@
 			
 			function drawLines(myMarkers){
 
-				console.log("필터 적용된 마커 아니야? ", myMarkers.length);
 				
 				var path =  []; 
-				//만약에, 저장 내용이 있다면 마지막 마커에서부터 라인 그리기를 시작할 수도 있겠지
+				
 				const savedPlan = JSON.parse(localStorage.getItem(nowCho));
 				console.log("저장된 내용이 있습니까? ",savedPlan);
 				
 				let savedLat, savedLng = "";
 				
- 				if(savedPlan!=null&&savedPlan.length!=0){
+ 				if(savedPlan!=null&&savedPlan.length!=0){ //가장 최근에 저장된 장소 정보(마지막 index)
 					
  					savedLat = savedPlan[savedPlan.length-1].latitude;
  					savedLng = savedPlan[savedPlan.length-1].longitude;
@@ -1168,8 +1178,6 @@
 				
 				//deletePlace() 관련, path에서 다시 클라이언트가 클릭했던 장소에 해당되는 마커는 배열에서 삭제해야 함
 				
-				
-
  				setInterval(function() {
 				    clickLine.setPath(path);
 				}, 100);
@@ -1211,23 +1219,39 @@
      				//원본 파란 선은 모두 삭제하고, temp기준으로 polyline다시 그리기   				
      				path = tempPathArr.slice();
      				//console.log("복사 잘 됐나? ",path);
-     				
-     				
-     				//----------------------------------------------------------------------------------------
-     				//myMarkers에서도 해당 좌표 값은 삭제해야 함
-/*      				console.log("원본 확인 : ", myMarkers.length);
-					console.log("구성 확인 : ", myMarkers[0].getPosition().getLat());
-     				
-     				let tempArr = myMarkers.filter(function(v){
-     					return (v.getPosition().getLat()!=target.Ma&&v.getPosition().getLng()!=target.La);
-     				});
-     				
-     				myMarkers = tempArr.slice();
-     				
-     				console.log("필터 적용 확인 : ", myMarkers.length); */
-     				
+		
      			}
+     			
+     			
+     			
+ 				//----------------------------------------------------------------------------------------
+				//리스팅된 방문 장소의 순서가 변경될 때도, '선' 표기가 변경되어야만 함
+ 				//카드가 drag되는 상황을 감지할 수 있어야 함
+				
  				
+ 				
+      			[].forEach.call(cards,function(card){
+     				card.addEventListener("dragend",drag,false);
+     			});
+				
+ 				function drag(e){ //드래그가 완료된 시점에, 카드에 저장된 내용을 바탕으로 myMarkers재구성하기!
+ 				
+ 					
+ 					let cards = document.querySelectorAll("div#dropZone>div");
+ 					let tempArr = [];	
+ 				
+ 					cards.forEach(v=>{ //순서 변경으로 재배열된 카드 토대로 path배열 재구성하기
+ 						
+ 						let lat = v.getAttribute('latitude');
+ 						let lng = v.getAttribute('longitude');
+ 						tempArr.push(new kakao.maps.LatLng(lat,lng));
+ 					
+ 					});
+ 				
+ 					console.log("////////////////////////",tempArr);
+ 					path = tempArr.slice();
+ 				} 
+
 			
 			}
 		
@@ -1236,15 +1260,7 @@
 				polyLine.setMap(null);
 			}
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		// 검색결과 항목을 Element로 반환하는 함수입니다
 		function getListItem(index, places) {
 		

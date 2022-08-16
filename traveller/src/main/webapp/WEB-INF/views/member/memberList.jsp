@@ -6,7 +6,7 @@
 
 <style>
 	.admin-container{
-		border:1px solid red;
+		/* border:1px solid red; */
 		margin-top : 70px;
 		display:flex;
 		overflow:hidden;
@@ -14,13 +14,13 @@
 	}
 	.menu-container{
 		float:left;
-		border:1px solid blue;
+		/* border:1px solid blue; */
 		width:200px;
 		background-color:#333333;
 	}
 	.contents-container{
 		float:right;
-		border:1px solid orange;	
+		/* border:1px solid orange; */	
 		width:100%;
 		margin-right:-200px;
 		padding-right:200px;

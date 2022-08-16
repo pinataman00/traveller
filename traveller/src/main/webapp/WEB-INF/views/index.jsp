@@ -94,7 +94,7 @@ div.planner-btn-container a{
 	      		<div class="textBox">
 				    <h5>잘 만든 플래너 하나</h5>
 					<p>혼자, 또는 누군가와 함께 가슴 설레는 여행 계획을 세워보세요</p>
-					<button type="button" class="btn btn-primary btn-sm" onclick="alert('안녕!');">플래너 만들기</button>
+					<button type="button" class="btn btn-primary btn-sm" onclick="location.assign('${path }/planner/startPlanner')">플래너 만들기</button>
 				</div>
 		</div>
     </div>
