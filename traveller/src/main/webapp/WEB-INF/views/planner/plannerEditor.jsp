@@ -289,6 +289,36 @@ div#dropZone {
 				</div>
 			</div>
 		</div>
+		
+		
+		<!-- Modal 지도에 클릭해서 생성한 마커 관련 설정하기 -->
+		<div class="modal fade" id="plusMarker" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLongTitle">나만의 장소 추가하기</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+							<input id="myTitle" style="font-size: 25px; margin-bottom: 2px; border-radius: 7px; " placeholder="장소명을 입력하세요" required>
+							<div id="myAddr" style="margin-bottom: 25px;">주소</div>
+							<input id="myLat" type="hidden">
+							<input id="myLng" type="hidden">
+							<input id="myId" type="hidden">
+							<div style="align-items: center;">
+								<input id="myMemo" style="font-size: 15px; margin-bottom: 2px; width:295px; border-radius: 7px; " placeholder="메모를 입력하세요">
+								<!-- <input id="placeMemo" style="width: 259px; border-radius: 7px;" placeholder="메모를 입력하세요"> -->
+							</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		        <button id="addListBtn" type="button" class="btn btn-primary" onclick="addMyPlace()">리스트에 추가하기</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
 
 
@@ -545,7 +575,7 @@ div#dropZone {
 	    	
 		}
 		
-		//TODO0817) 모달에서 "삭제하기" 버튼 클릭 시 삭제하는 로직으로 변경함 --------------------------------------------------------
+		//0817) 모달에서 "삭제하기" 버튼 클릭 시 삭제하는 로직으로 변경함 --------------------------------------------------------
 		const delPlaceBtn = document.getElementById("delPlace");
 		delPlaceBtn.addEventListener("click",e=>{
 
@@ -978,16 +1008,6 @@ div#dropZone {
 		addPlan.classList.add("box_drag");
 		addPlan.setAttribute("draggable",true);
 		
-		//ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ
-/* 		const infoBtn = document.createElement("button");
- 		infoBtn.classList.add("btn");
-		infoBtn.classList.add("btn-secondary");
-		infoBtn.classList.add("btn-sm"); 
-		infoBtn.innerText = "+";
-		infoBtn.id = "forInfoBtn"; */
-		//ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ
-		
-		//addPlan.innerText = placeName;
 	
 		//index를 식별하기 위해, 현재 dropZone에 자식 태그들이 몇 개 있는지 확인하기	
 		
@@ -1003,8 +1023,6 @@ div#dropZone {
 		//dropZone.append(document.createElement("button"));
 		
 		addPlan.innerText = placeName;
-		//document.getElementById("p"+tempNo).append(infoBtn);
-		//document.getElementById("p"+tempNo).insertAdjacentElement("afterbegin",infoBtn);
 		//-------------------------------------------------------------------
 	
 		//장소 카드의 "속성"을 새로 생성해, 해당 장소의 정보를 저장하기--------------------
@@ -1014,26 +1032,15 @@ div#dropZone {
 		addPlan.setAttribute("latitude",lat);
 		addPlan.setAttribute("longitude",lng);
 		addPlan.setAttribute("memo",memo);
-		
 
-		
 		//deletePlace(addPlan); //더블클릭 시, 편집 시점에 생성된 마커와 카드가 삭제됨
 		//deletePlaceMarker(addPlan);
 		moveMap(addPlan);
 		printInfo(addPlan);
-		//test(infoBtn);
+		
 	}
-     
-     function test(btn){
-    	 btn.addEventListener("click",e=>{
-    		alert("ㅎㅇ"); 
-    	 });
-     }
-     
-     
-/*      document.getElementById("forInfoBtn").addEventListener("click",e=>{
-    	 alert("클릭하셨네요...");
-     }) */
+
+
      
      
      function printInfo(e){ //리스트에서 특정 장소 삭제 시 구현될 이벤트
@@ -1079,6 +1086,7 @@ div#dropZone {
       			console.log("////////", target);
       			target.setAttribute("memo", memoContainer.value);
       			console.log("수정 잘 됐나?",target.getAttribute('memo'));
+      			$('#addedPlace').modal('hide'); //모달창 닫기
 
       		});
       		
@@ -1252,28 +1260,112 @@ div#dropZone {
 		const btnController = document.getElementsByClassName("btn-controller");
 		map.addControl(btnController[0], kakao.maps.ControlPosition.TOPLEFT);
 		
-		//3. 클릭 시, 해당 위치에 마커 꽂기 ---------------------------------------------------------------------------
-		// 지도를 클릭한 위치에 표출할 마커입니다 //TODO 0814) 이 부분은 보류... 오버레이 닫힘 버튼을 누를 때도 마커가 찍힘...
+		//3. TODO0817) 클릭 시, 해당 위치에 마커 꽂기 ---------------------------------------------------------------------------
+		//러브다이브
+		// 지도를 클릭한 위치에 표출할 마커입니다
  		var marker = new kakao.maps.Marker({ 
 		    // 지도 중심좌표에 마커를 생성합니다 
 		    position: map.getCenter() 
 		}); 
+		
 		// 지도에 마커를 표시합니다
-		//marker.setMap(map); //...그래서 여기를 주석처리해둠. 전체를 또 주석처리하면 지도 이동이 안 되기 때문임
+		marker.setMap(map); 
 		
 		// 지도에 클릭 이벤트를 등록합니다
 		// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
-		kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+		kakao.maps.event.addListener(map, 'dblclick', function(mouseEvent) {        
 		    
 		    // 클릭한 위도, 경도 정보를 가져옵니다 
 		    var latlng = mouseEvent.latLng; 
 		    
+		    // 클릭한 마커의 위도, 경도 정보를 변수에 저장하기
+		    let lat = latlng.getLat(); //위도
+		    let lng = latlng.getLng(); //경도
+		    
+		    document.getElementById("myLat").value = lat;
+		    document.getElementById("myLng").value = lng;
+		    
+		    
+		    //장소 정보 받아오기
+		    let addr = document.getElementById("myAddr");
+		    getAddress(lat,lng,addr);
 		    // 마커 위치를 클릭한 위치로 옮깁니다
 		    marker.setPosition(latlng);
 		    
-		    //alert("위도 "+latlng.getLat()+" "+"경도 "+latlng.getLng());
+		    //"나만의 장소 추가하기" 설정 모달창 띄워주기
+		    $('#plusMarker').modal('show');
+		    
+		    document.getElementById("addListBtn").addEventListener("click",e=>{
+		    
+		    	marker.setMap(null);
+			    
+		    });
+		    
 		    
 		});
+		
+		//bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+		//"나만의 장소", 리스트에 추가하기!
+		function addMyPlace(){
+		
+			
+			//alert("등록");
+			
+ 			clearDragEvent();
+	       	
+			const placeName = document.getElementById("myTitle").value;
+			const lng = document.getElementById("myLng").value;
+		 	const lat = document.getElementById("myLat").value;
+		 	const memo = document.getElementById("myMemo").value;
+		 	
+		 	
+			console.log("위도 : ",lat,"경도 : ",lng,"타이틀 : ",placeName,"메모 : ",memo);
+		
+			//장소 카드 생성해, 플랜 리스트에 추가하기 -----------------------------------
+			const dropZone = document.getElementById("dropZone");
+			
+			const addPlan = document.createElement("div"); //div생성하기
+			addPlan.classList.add("box_drag");
+			addPlan.setAttribute("draggable",true);
+			
+		
+			//index를 식별하기 위해, 현재 dropZone에 자식 태그들이 몇 개 있는지 확인하기	
+			
+			const cards = document.querySelectorAll("div#dropZone div");
+			console.log("현재 카드 개수 : ",cards.length);
+			let tempNo = cards.length+1;
+			addPlan.id="p"+tempNo;
+			
+			dropZone.insertAdjacentElement("beforeend",addPlan);
+			addDragEvent();
+			
+			console.log(addPlan);
+			//dropZone.append(document.createElement("button"));
+			
+			addPlan.innerText = placeName;
+			//-------------------------------------------------------------------
+		
+			//장소 카드의 "속성"을 새로 생성해, 해당 장소의 정보를 저장하기--------------------
+			
+			addPlan.setAttribute("id",addPlan.id);
+			addPlan.setAttribute("placeName",placeName);
+			addPlan.setAttribute("latitude",lat);
+			addPlan.setAttribute("longitude",lng);
+			addPlan.setAttribute("memo",memo);
+
+			//deletePlace(addPlan); //더블클릭 시, 편집 시점에 생성된 마커와 카드가 삭제됨
+			//deletePlaceMarker(addPlan);
+			moveMap(addPlan);
+			printInfo(addPlan);
+			
+			addMarkerFunc(lat,lng,placeName);
+			
+			$('#plusMarker').modal('hide');
+			
+			
+			
+		}		
+		//bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 		
 		
 		//4. 마커 및 검색 기능 ----------------------------------------------------------------------------------------
@@ -1397,30 +1489,9 @@ div#dropZone {
 							let lng = marker.getPosition().getLng(); //경도
 		          			//1-2. 오버레이에 저장하기
 							document.getElementById("hiddenLat").innerText=lat;
-							document.getElementById("hiddenLng").innerText=lng;
-							
+							document.getElementById("hiddenLng").innerText=lng;						
 							document.getElementById("hiddenTitle").innerText=title;	
-							
-							//TODO 0814) 저장해둔 메모가 있다면, 해당 메모를 input창의 value에 출력하기
-							//아직 localStorage를 미구현해 주석처리함...
-							//저장해둔 "메모"가 있다면, 해당 메모를 input창의 value에 출력해주기
-							/*
-							const savedData = JSON.parse(localStorage.getItem(document.getElementById("dayTitle").innerText));
-							
-							
-							if(savedData!=null){
-									console.log(savedData, title);
-					
-									const memo = document.getElementById("memo");
-									
-									
-					 				savedData.forEach(e=>{					
-										if(title===e.title&&e.memo!=''){
-											memo.value = e.memo;
-										}					
-									});
-							}
-							*/
+
 							
 							//추가하기 버튼 클릭 時, 해당 마커의 이미지 변경
 							const isAdded = document.getElementById("addBtn");
@@ -1481,7 +1552,6 @@ div#dropZone {
 		    3. 실시간 선 그리기 : 마커가 추가되는 대로 자동 선 그리기 (* setInterval())
 		 
 		 */
-
 		 
 		 
 		 const addMarkerFunc = (lat,lng,placeName)=>{
@@ -1803,8 +1873,8 @@ div#dropZone {
      			
      			
      			
-     			//ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
-     			//TODO0817 deletePlace()가 아닌, delPlace버튼으로부터 장소가 삭제된 경우, 마커 제거하기 (잘 안 됨...)
+     			
+     			//0817 deletePlace()가 아닌, delPlace버튼으로부터 장소가 삭제된 경우, 마커 제거하기
      			document.getElementById("delPlace").addEventListener("click",e=>{
      				
      				
@@ -1834,7 +1904,7 @@ div#dropZone {
 
      				
      			});
-     			//ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
+     			
      			
  				//----------------------------------------------------------------------------------------
 				//리스팅된 방문 장소의 순서가 변경될 때도, '선' 표기가 변경되어야만 함
@@ -1865,7 +1935,7 @@ div#dropZone {
  					const daysOption = document.getElementById("travelDaysOpt");
  					daysOption.addEventListener("change",e=>{
 
- 						line.setMap(null);
+ 						//line.setMap(null);
  				    	markersArr.forEach(e=>{
  				    		e.setMap(null);
  				    	})
