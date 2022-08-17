@@ -40,6 +40,9 @@
 					  ON M.MEMBER_ID=P.MEMBER_ID
 			     WHERE M.MEMBER_ID=#{memberId}		
 	</select>
+	
+
+	
 
 <!-- 	<select id="login" parameterType="member" resultType="member">
 		SELECT * FROM MEMBER WHERE MEMBER_ID=#{memberId}

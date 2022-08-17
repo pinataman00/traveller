@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="path" value="${pageContext.request.contextPath}" />
 
 
 
@@ -11,122 +11,160 @@
 <head>
 <meta charset="UTF-8">
 <title>traveller</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<link
+	href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap"
+	rel="stylesheet">
 <!-- bootstrap css -->
-<link rel="stylesheet" href="${path }/resources/css/bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/headerStyle.css"/>
-<link rel="stylesheet" type="text/css" href="${path }/resources/css/mapStyle.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="${path }/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="${path}/resources/css/headerStyle.css" />
+<link rel="stylesheet" type="text/css"
+	href="${path }/resources/css/mapStyle.css" />
+<link
+	href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,800&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap"
+	rel="stylesheet">
 <%-- <script src="${path}/resources/js/bootstrap.js"></script> --%>
 <script src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
-	<!-- 지도 관련 스크립트 -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69ad1295dea4b05c5c134dce63cc80fc&libraries=services"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69ad1295dea4b05c5c134dce63cc80fc&libraries=LIBRARY"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69ad1295dea4b05c5c134dce63cc80fc&libraries=services,clusterer,drawing"></script>
+<!-- 지도 관련 스크립트 -->
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69ad1295dea4b05c5c134dce63cc80fc&libraries=services"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69ad1295dea4b05c5c134dce63cc80fc&libraries=LIBRARY"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69ad1295dea4b05c5c134dce63cc80fc&libraries=services,clusterer,drawing"></script>
 
 </head>
 
 <body>
-<style>
-	.main-container{
-		/* border:1px solid red; */
-		/* margin-top : 50px; */
-		display:flex;
-		overflow:hidden;
-		height:100vh;
-	}
-	.editor-container{
-		float:left;
-		/* border: 1px solid blue; */
-		width: 300px;
-		background-color: #E6F0F8;
-		padding:10px;
-		text-align:center;
-	}
-	.map-container{
-		float:right;
-		/* border:1px solid red; */
-		width:100%;
-		margin-right:-300px;
-		padding-right:300px;
-	}
-	div.title-container{
-		margin:10px;
-		margin-top:10px;
-		text-align:left;
-	}
-	
-	.planner-container{
-		/* border:1px solid red; */
-		height: 75vh;
-		overflow-y:scroll;
-	}
-	.planner-container::-webkit-scrollbar{
-		display:none;
-	}
-	.btn-container{
-		margin-top:15px;
-	}
-	div#dropZone{
-		/* border:1px solid blue; */
-		padding: 25px;
-	}
-	.btn-controller{
-		/* position:absolute; */
-		left:10px;
-		display:flex;
-		padding:10px;
-		background-color: rgba( 255, 255, 255, 0.5 );
-	}
-	.btn-controller button{
-		margin:2px;
-	}
-	#myLikes{
-		height: 600px;
-	}
-	.title-container{
-		font-weight:300;
-	}
-	.box_drag{
-   
-	   background-color:rgba(255, 255, 255, 0.7);
-	   width : 248px;
-	   height:30px;
-	   border-radius : 5px;
-	   margin-top: 3px;
-	   margin-bottom: 3px;
-	   margin-left : -12px;
-	   font-size:13px;
-	   line-height:30px;
-	   text-indent: 8px;
-	   text-align: left;
-   
-   }
+	<style>
+.main-container {
+	/* border:1px solid red; */
+	/* margin-top : 50px; */
+	display: flex;
+	overflow: hidden;
+	height: 100vh;
+}
+
+.editor-container {
+	float: left;
+	/* border: 1px solid blue; */
+	width: 300px;
+	background-color: #E6F0F8;
+	padding: 10px;
+	text-align: center;
+}
+
+.map-container {
+	float: right;
+	/* border:1px solid red; */
+	width: 100%;
+	margin-right: -300px;
+	padding-right: 300px;
+}
+
+div.title-container {
+	margin: 10px;
+	margin-top: 10px;
+	text-align: left;
+}
+
+.planner-container {
+	/* border:1px solid red; */
+	height: 75vh;
+	overflow-y: scroll;
+}
+
+.planner-container::-webkit-scrollbar {
+	display: none;
+}
+
+.btn-container {
+	margin-top: 15px;
+}
+
+div#dropZone {
+	/* border:1px solid blue; */
+	padding: 25px;
+}
+
+.btn-controller {
+	/* position:absolute; */
+	left: 10px;
+	display: flex;
+	padding: 10px;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-controller button {
+	margin: 2px;
+}
+
+#myLikes {
+	height: 600px;
+}
+
+.title-container {
+	font-weight: 300;
+}
+
+.box_drag {
+	background-color: rgba(255, 255, 255, 0.7);
+	width: 248px;
+	height: 30px;
+	border-radius: 5px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-left: -12px;
+	font-size: 13px;
+	line-height: 30px;
+	text-indent: 8px;
+	text-align: left;
+	display:flex;
+}
+
+
 </style>
 
-<section>
+	<section>
 
-	<div class="main-container">
-		<div class="editor-container">
-			<div class="title-container">
-				${tempPlanner.plannerTitle}
-			</div>
-			<div class="planner-container">
+		<div class="main-container">
+			<div class="editor-container">
+				<div class="title-container">${tempPlanner.plannerTitle}</div>
+				<div class="planner-container">
 					<div class="daysOpt input-group mb-3">
-						  <div class="input-group-prepend">
-						    <label class="input-group-text" for="inputGroupSelect01">여행일자</label>
-						  </div>
-						  <select class="custom-select" id="travelDaysOpt">
-						  </select>
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="inputGroupSelect01">여행일자</label>
+						</div>
+						<select class="custom-select" id="travelDaysOpt">
+						</select>
 					</div>
-				
-					<div id="dropZone">
-<!-- 						
 
-						드래그 앤 드롭 카드 출력 예시
+					<div id="dropZone">
+					
+					
+<!-- 						<div id="p1" class="box_drag" draggable="true">
+							<button id="forInfoBtn" type="button" class="btn btn-secondary btn-sm">+</button>	
+							plan 1				
+						</div>
+						
+						<div id="p1" class="box_drag" draggable="true">
+							<button id="forInfoBtn" type="button" class="btn btn-secondary btn-sm">+</button>	
+							plan 2				
+						</div> -->
+
+
+						
+						<!-- 						
+
+						드래그 앤 드롭 카드 출력 예시 
 
 						<div id="p1" class="box_drag" draggable="true" >plan 1</div>
 				        <div id="p2" class="box_drag" draggable="true" >plan 2</div>
@@ -134,82 +172,127 @@
 				        <div id="p4" class="box_drag" draggable="true" >plan 4</div>
 				        <div id="p5" class="box_drag" draggable="true" >plan 5</div>
 				        <div id="p6" class="box_drag" draggable="true" >plan 6</div>
-				        <div id="p7" class="box_drag" draggable="true" >plan 7</div>  -->
+				        <div id="p7" class="box_drag" draggable="true" >plan 7</div>  
+				        
+				        -->
+				        
 					</div>
-			 </div>
+				</div>
 				<div class="btn-container">
 					<button class="btn btn-primary" type="button">작성 완료</button>
 					<button class="btn btn-primary" type="button">작성 취소</button>
 				</div>
 			</div>
-		<!-- 지도 영역 -->	
-		<div id="map" class="map-container">
-			<!-- 이 영역에 지도가 출력될 것임 -->
-		</div>
-		
+			<!-- 지도 영역 -->
+			<div id="map" class="map-container">
+				<!-- 이 영역에 지도가 출력될 것임 -->
+			</div>
 
-		    <div id="menu_wrap" class="bg_white">
-		        <div class="option">
-		            <div>
-		            	<h1 id="listTitle" style="text-align:left;padding:10px;margin-bottom:0px;margin-left:5px;font-family:Rubik;">SEARCH!</h1>
-		                <form onsubmit="searchPlaces(); return false;" id="searchBox">
-		                    	<input type="text" value="" id="keyword" size="40" placeholder="검색어를 입력하세요"> 
-		                    	<button id="searchBtn" type="submit">검색하기</button> 
-		                </form>
-		            </div>
-		        </div>
-		        <hr id="listLine">
-		        <ul id="placesList"></ul>
-		        <div id="pagination"></div>  
-    		</div>
 
-		<!-- 지도 관련 컨트롤러 -->
-		<div class="btn-controller" style="left:10px;">
-			<button id="searchListBtn" class="btn btn-primary btn-sm" type="button" onclick="showList();">검색하기</button>
-			<button tyle="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">나의 도구들</button>
-		
+			<div id="menu_wrap" class="bg_white">
+				<div class="option">
+					<div>
+						<h1 id="listTitle"
+							style="text-align: left; padding: 10px; margin-bottom: 0px; margin-left: 5px; font-family: Rubik;">SEARCH!</h1>
+						<form onsubmit="searchPlaces(); return false;" id="searchBox">
+							<input type="text" value="" id="keyword" size="40"
+								placeholder="검색어를 입력하세요">
+							<button id="searchBtn" type="submit">검색하기</button>
+						</form>
+					</div>
+				</div>
+				<hr id="listLine">
+				<ul id="placesList"></ul>
+				<div id="pagination"></div>
+			</div>
+
+			<!-- 지도 관련 컨트롤러 -->
+			<div class="btn-controller" style="left: 10px;">
+				<button id="searchListBtn" class="btn btn-primary btn-sm"
+					type="button" onclick="showList();">검색하기</button>
+				<button tyle="button" class="btn btn-primary btn-sm dropdown-toggle"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">나의
+					도구들</button>
+
 				<!-- dropdown : 사용자 아이템 드롭다운 -->
-			  <div class="dropdown-menu">
-				    <a class="dropdown-item" href="#">나의 좋아요</a>
-				    <a class="dropdown-item" href="#">나의 그룹</a>
-				    <a class="dropdown-item" href="#">나의 체크 리스트</a>
-			  		<div class="dropdown-divider"></div>
-				    <a class="dropdown-item" href="#">날씨</a>
-				    <a class="dropdown-item" href="#">길 찾기</a>
-			  </div>
-	   </div>
-	
-	</div>
-	<!-- 컨트롤러 관련 div 끝 -->
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="#">나의 좋아요</a> <a
+						class="dropdown-item" href="#">나의 그룹</a> <a class="dropdown-item"
+						href="#">나의 체크 리스트</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="#">날씨</a> <a class="dropdown-item"
+						href="#">길 찾기</a>
+				</div>
+			</div>
 
-  
-<!-- Modal : 좋아요 -->
-<div class="modal fade" id="myLikes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">나의 좋아요</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        "좋아요"를 클릭했던 장소들
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-      </div>
-    </div>
-  </div>
-</div>
+		</div>
+		<!-- 컨트롤러 관련 div 끝 -->
 
 
+		<!-- Modal : 좋아요 -->
+		<div class="modal fade" id="myLikes" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">나의 좋아요</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">"좋아요"를 클릭했던 장소들</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Modal : 리스트 카드 클릭 시 출력될 것 -->
+		<div id="addedPlace" class="modal fade" id="exampleModalCenter"
+			tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content" style="">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">리스트에 추가된
+							장소</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="container">
+							<div id="placeTitle" style="font-size: 25px; margin-bottom: 2px;">장소명</div>
+							<div id="placeAddr" style="margin-bottom: 25px;">주소</div>
+							<input id="placeLat" type="hidden">
+							<input id="placeLng" type="hidden">
+							<input id="cardId" type="hidden">
+							<div style="align-items: center;">
+								<input id="placeMemo" style="width: 259px; border-radius: 7px;">
+								<button id="updateMemo" type="button"
+									class="btn btn-primary btn-sm"
+									style="margin-left: 10px; margin-bottom: 4px;">메모 수정하기</button>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">닫기</button>
+						<button id="delPlace" type="button" class="btn btn-outline-danger">삭제하기</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 
-	
-</section>
+	</section>
 
 
 	<script>
@@ -462,6 +545,112 @@
 	    	
 		}
 		
+		//TODO0817) 모달에서 "삭제하기" 버튼 클릭 시 삭제하는 로직으로 변경함 --------------------------------------------------------
+		const delPlaceBtn = document.getElementById("delPlace");
+		delPlaceBtn.addEventListener("click",e=>{
+
+			
+			let oriCards = document.querySelectorAll("div#dropZone>div"); //이벤트 적용 대상 설정하기
+			
+			//카드가 아직 삭제되지 않은 상태에서 소환됨...
+			let lat = document.getElementById("placeLat").value;
+			let lng = document.getElementById("placeLng").value;
+			let id = document.getElementById("cardId").value;
+			//console.log("??????????????????",lat,lng,id);
+			
+			//console.log("////////////////////////", oriCards);
+			
+			oriCards.forEach(v=>{
+				if(id==v.id){
+					v.remove();
+				}
+			});
+			
+			let changedCards = document.querySelectorAll("div#dropZone>div");
+			console.log("변경됐니????????????", changedCards);
+			
+			
+			
+			
+			let tempArr = [];	
+			let forStorage = [];
+			
+			changedCards.forEach(v=>{ //더블 클릭-> 삭제되어 재구성된 카드 토대로 path[] 내용 재구성하기
+				
+				let lat = v.getAttribute('latitude');
+				let lng = v.getAttribute('longitude');
+				let key = v.getAttribute('day');
+				console.log("key확인 : ",key);
+				
+				tempArr.push(new kakao.maps.LatLng(lat,lng));
+				
+				//-------------------------------------------------------------------------
+				//localStorage에 수정 내용 저장하기...
+				
+				//생성자 함수로 "장소"객체 생성 후, 배열arr에 저장하기
+				function Places(day,id,placeName,latitude,longitude,memo){ //생성자 함수 : 장소 정보 저장 객체
+					
+					this.day = day;
+					this.id = id;
+					this.placeName = placeName;
+					this.latitude = latitude;
+					this.longitude = longitude;
+					this.memo = memo;			
+					
+				}
+				
+				forStorage.push(new Places(							
+											//cards[i].getAttribute("day"),
+											v.getAttribute('day'), //일자 정보 : 선택 일자로 저장하기
+											v.getAttribute("id"),
+											v.getAttribute("placeName"),
+								            v.getAttribute("latitude"),
+								            v.getAttribute("longitude"),
+								            v.getAttribute("memo")));
+	
+				console.log("카드 리스트 확인하기 : ",forStorage);
+				
+				localStorage.removeItem(key); //기존 저장 값은 삭제
+				localStorage.setItem(key,JSON.stringify(forStorage));
+	
+				//--------------------------------------------------------------------------
+			
+			});
+		
+				arr = tempArr.slice();		
+
+				line.setMap(null); //기존의 선은 없애기
+				
+	    		line = new kakao.maps.Polyline({ //새로운 선 구성하기
+	            path: arr, //새로운 내용 반영한 배열 적용하기
+	            strokeWeight: 5, 
+	            strokeColor: '#e61919',
+	            strokeOpacity: 0.7, 
+	            strokeStyle: 'solid', 
+	            endArrow:'true'
+	    	    });
+	        	
+	    		line.setMap(map); //수정 내용 반영하여 최종적으로 선 다시 그리기
+
+			
+			
+			
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
     	//2. 카드 순서 변경 (drag) ==================================================================================================================
   			[].forEach.call(cards,function(card){
  				card.addEventListener("dragend",drag,false);
@@ -531,7 +720,17 @@
 			    	    });
 			        	
 			    		line.setMap(map); //수정 내용 반영하여 최종적으로 선 다시 그리기
-  				
+			    		
+			    		
+			    		const daysOption = document.getElementById("travelDaysOpt");
+			    		daysOption.addEventListener("change",e=>{
+
+			    			line.setMap(null);
+			    	    	markersArr.forEach(e=>{
+			    	    		e.setMap(null);
+			    	    	})
+			    			
+			    		});
   				
   				
   			}
@@ -546,9 +745,20 @@
 		daysOption.addEventListener("change",e=>{
 
 			line.setMap(null);
+	    	markersArr.forEach(e=>{
+	    		e.setMap(null);
+	    	})
 			
 		});
 		
+/* 	    daysOption.addEventListener("change",e=>{
+	    	
+	    	polyline.setMap(null);
+	    	markersArr.forEach(e=>{
+	    		e.setMap(null);
+	    	})
+
+	    }); */
 		
 	
 	}
@@ -588,6 +798,7 @@
 												
 			deletePlace(div);
 			moveMap(div);
+			printInfo(div);
 			 
 		}
 		
@@ -656,8 +867,9 @@
 				div.setAttribute("draggable",true);
 				document.getElementById("dropZone").appendChild(div); 
 				
-				deletePlace(div); //TODO0815) 더블클릭 시, 리스트에서 장소 삭제됨
+				deletePlace(div); 
 				moveMap(div);
+				printInfo(div);
 	
 			}
 			
@@ -765,7 +977,17 @@
 		const addPlan = document.createElement("div"); //div생성하기
 		addPlan.classList.add("box_drag");
 		addPlan.setAttribute("draggable",true);
-		addPlan.innerText = placeName;
+		
+		//ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ
+/* 		const infoBtn = document.createElement("button");
+ 		infoBtn.classList.add("btn");
+		infoBtn.classList.add("btn-secondary");
+		infoBtn.classList.add("btn-sm"); 
+		infoBtn.innerText = "+";
+		infoBtn.id = "forInfoBtn"; */
+		//ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ
+		
+		//addPlan.innerText = placeName;
 	
 		//index를 식별하기 위해, 현재 dropZone에 자식 태그들이 몇 개 있는지 확인하기	
 		
@@ -773,11 +995,16 @@
 		console.log("현재 카드 개수 : ",cards.length);
 		let tempNo = cards.length+1;
 		addPlan.id="p"+tempNo;
+		
 		dropZone.insertAdjacentElement("beforeend",addPlan);
 		addDragEvent();
 		
 		console.log(addPlan);
-				
+		//dropZone.append(document.createElement("button"));
+		
+		addPlan.innerText = placeName;
+		//document.getElementById("p"+tempNo).append(infoBtn);
+		//document.getElementById("p"+tempNo).insertAdjacentElement("afterbegin",infoBtn);
 		//-------------------------------------------------------------------
 	
 		//장소 카드의 "속성"을 새로 생성해, 해당 장소의 정보를 저장하기--------------------
@@ -787,13 +1014,127 @@
 		addPlan.setAttribute("latitude",lat);
 		addPlan.setAttribute("longitude",lng);
 		addPlan.setAttribute("memo",memo);
+		
 
 		
-		deletePlace(addPlan); //더블클릭 시, 편집 시점에 생성된 마커와 카드가 삭제됨
+		//deletePlace(addPlan); //더블클릭 시, 편집 시점에 생성된 마커와 카드가 삭제됨
 		//deletePlaceMarker(addPlan);
 		moveMap(addPlan);
+		printInfo(addPlan);
+		//test(infoBtn);
+	}
+     
+     function test(btn){
+    	 btn.addEventListener("click",e=>{
+    		alert("ㅎㅇ"); 
+    	 });
+     }
+     
+     
+/*      document.getElementById("forInfoBtn").addEventListener("click",e=>{
+    	 alert("클릭하셨네요...");
+     }) */
+     
+     
+     function printInfo(e){ //리스트에서 특정 장소 삭제 시 구현될 이벤트
+    	 
+     
+  		
+      	let dropZone = document.getElementById("dropZone");
+     
+     	console.log("////////////////", document.getElementById("addedPlace"));
+     	//document.getElementById("addedPlace").getAttribute('aria-hidden') = 'false';
+     	let addrContainer = document.getElementById("placeAddr");
+     	let titleContainer = document.getElementById("placeTitle");
+     	let memoContainer = document.getElementById("placeMemo");
+     	let updateMemoBtn = document.getElementById("updateMemo");
+     	let idContainer = document.getElementById("cardId");
+     	let target //메모 수정||삭제 대상 카드 (리스트에서 클릭한 카드)
+     	let delPlaceBtn = document.getElementById("delPlace");
+     	
+      	e.addEventListener("click",e=>{ //삭제 대상 카드 클릭 시 카드에 저장된 내용이 출력됨
+      	
+			
+      		$('#addedPlace').modal('show');
+      		console.log("구성 확인 : ", e.target);
+      		let placeLat = e.target.getAttribute("latitude"); //위도
+      		let placeLng = e.target.getAttribute("longitude"); //경도
+      		let placeName = e.target.getAttribute("placename"); //장소명
+      		let memo = e.target.getAttribute("memo"); //메모
+      		
+     		document.getElementById("placeLng").value = placeLng;
+     		document.getElementById("placeLat").value = placeLat;
+      		
+      		
+      		titleContainer.innerText = placeName;
+      		getAddress(placeLat,placeLng, addrContainer);
+      		memoContainer.value = memo;
+      		idContainer.value = e.target.getAttribute("id");
+      		target = e.target;
+      		
+      		//메모 수정하기 ----------------------------------------------------------------------
+      		updateMemoBtn.addEventListener("click", e=>{
+      			//alert(memoContainer.value);
+      			
+      			console.log("////////", target);
+      			target.setAttribute("memo", memoContainer.value);
+      			console.log("수정 잘 됐나?",target.getAttribute('memo'));
+
+      		});
+      		
+      		
+      		
+      		
+      		
+      		//카드 삭제하기 -----------------------------------------------------------------------
+      		delPlaceBtn.addEventListener("click",e=>{
+ 		
+         		
+
+    			//------------------------------------------------------------------------------------------------
+          		
+    			console.log("카드 삭제하고 싶으니까 dropZone구성 : ", dropZone);
+    			//const targetCards = document.querySelectorAll("div#dropZone div");
+    			console.log("타겟은 뭘까...",target);
+
+         		//dropZone.removeChild(e); //방문 리스트에서 선택한 장소 카드 삭제
+				target.remove();
+         		
+         		$('#addedPlace').modal('hide'); //모달창 닫기
+
+         	});
+      			
+
+      		
+      	});
+	
+      	
+     }
+     
+    function updateMemo(memoContainer){
+    	
+    }
+     
+     
+	function getAddress(lat,lng,container){ //카드에 "주소" 정보 추가
+		
+	    let geocoder = new kakao.maps.services.Geocoder();
+	    let coord = new kakao.maps.LatLng(lat, lng);
+	    let addrTemp = "";
+	    
+	    let callback = function(result, status) {
+	        if (status === kakao.maps.services.Status.OK) {
+	            console.log(result);
+	            addrTemp = result[0]['address']['address_name'];
+	            console.log(addrTemp);
+	            container.innerText = addrTemp;
+	            
+	        }
+	    };
+
+	    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+ 
 	} 
-            
      
      
      
@@ -801,7 +1142,7 @@
  		
      	let dropZone = document.getElementById("dropZone");
 
-     	e.addEventListener("dblclick",e=>{ //삭제 대상 카드 클릭 시 (카드 및 마커가 삭제됨)	
+     	e.addEventListener("dblclick",e=>{ //삭제 대상 카드 더블 클릭 시 (카드 및 마커가 삭제됨)	
      	
      		alert("삭제!");
 
@@ -1199,6 +1540,53 @@
      				
      			}
      			
+     			//deletePlace 대신, delPlace버튼으로 삭제한 경우 myMarkers 재구성하기... -------------------------------
+     			document.getElementById("delPlace").addEventListener("click",e=>{
+     				
+
+     				let lng = document.getElementById("placeLng").value;
+     				let lat = document.getElementById("placeLat").value;
+     				console.log("정보 잘 받아왔나??????",lng," , ",lng);
+     				
+
+             		console.log("############## 대상////////////",myMarkers);
+             		
+             		//마커 삭제 1) (localStorage에 저장되지 않은 내용, 사람 모양 마커)작성 中, 내가 생성한 마커 지우기
+             		for(let i=0;i<myMarkers.length;i++){
+             			
+             			let mkLat = myMarkers[i].getPosition().getLat();
+             			let mkLng = myMarkers[i].getPosition().getLng();
+             			
+             			console.log(mkLat, mkLng);
+             			
+         				if(mkLat==lat&&mkLng==lng){
+         					myMarkers[i].setMap(null);
+         					break;
+         				}    			
+             		}
+
+     				
+     				//---
+     				
+     				let target = new kakao.maps.LatLng(lat,lng);
+     				
+      				let tempArr = myMarkers.filter(function(v,i,ori){
+     					return (v.getPosition().getLat()!=target.Ma&&v.getPosition().getLng()!=target.La);
+     				});
+     				
+					console.log("tempArr의 유형 /////////////////////",tempArr);
+     				myMarkers = tempArr.slice();
+
+     				
+     				console.log("##################### 제대로 삭제됐는가?", myMarkers);
+     				
+     				
+     				
+     				
+				
+     			});
+	
+     			
      			//장소 방문 순서 변경 관련, 수정 내용 반영해 myMarkers 재구성하기 ==========================================
       			[].forEach.call(cards,function(card){
      				card.addEventListener("dragend",drag,false);
@@ -1232,6 +1620,21 @@
  				} 
 		
 				drawLines(myMarkers); //마커 간 선 그리기
+				
+				
+				
+				
+ 			    daysOption.addEventListener("change",e=>{
+	    	    	
+ 			    	markersArr.forEach(e=>{
+ 			    		e.setMap(null);
+ 			    	})
+
+ 			    });
+				
+				
+				
+				
 
 			}  
 		 
@@ -1359,7 +1762,10 @@
  				//옵션이 전환될 때 path 삭제하기
  				daysOption.addEventListener("change",e=>{
 
- 					clickLine.setMap(null); 				
+ 					clickLine.setMap(null);
+ 			 		for(let i=0;i<myMarkers.length;i++){			
+ 			 			myMarkers[i].setMap(null); //마커 전체 삭제 			
+ 			 		}
  				})
  				
 				//---------------------------------------------------------------------------------------
@@ -1370,6 +1776,7 @@
      			[].forEach.call(cards,function(card){
      				card.addEventListener("dblclick",click,false);
      			});
+     			
      			
      			function click(e){ //deletePlace()와 같이, 리스트 카드 클릭 시 파란 선과 사람 모양 마커 삭제하기
      				
@@ -1396,12 +1803,43 @@
      			
      			
      			
+     			//ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
+     			//TODO0817 deletePlace()가 아닌, delPlace버튼으로부터 장소가 삭제된 경우, 마커 제거하기 (잘 안 됨...)
+     			document.getElementById("delPlace").addEventListener("click",e=>{
+     				
+     				
+     				
+     				
+     				
+     				let lng = document.getElementById("placeLng").value;
+     				let lat = document.getElementById("placeLat").value;
+     				console.log("정보 잘 받아왔나??????",lng," , ",lng);
+     				
+     				console.log("위도 경도 확인 : ",lat,lng);
+     				let target = new kakao.maps.LatLng(lat,lng);
+     				console.log("객체 확인 : ",target);
+     				//path[] 전체 삭제 후, 대상 좌표만 제거한 다음 다시
+     				
+     				
+     				console.log("원본 배열 : ", path);
+     				let tempPathArr = path.filter(function(v,i,ori){
+
+     					return (v.La != target.La&&v.Ma!=target.Ma); //삭제 대상을 제외한 새로운 배열을 반환함
+     				}); 
+     				
+     				//console.log("필터 적용되나? ", tempArr);
+     				//원본 파란 선은 모두 삭제하고, temp기준으로 polyline다시 그리기   				
+     				path = tempPathArr.slice();
+     				console.log("복사 잘 됐나? ",path);
+
+     				
+     			});
+     			//ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
+     			
  				//----------------------------------------------------------------------------------------
 				//리스팅된 방문 장소의 순서가 변경될 때도, '선' 표기가 변경되어야만 함
  				//카드가 drag되는 상황을 감지할 수 있어야 함
-				
- 				
- 				
+	
       			[].forEach.call(cards,function(card){
      				card.addEventListener("dragend",drag,false);
      			});
@@ -1422,13 +1860,25 @@
  				
  					console.log("////////////////////////",tempArr);
  					path = tempArr.slice();
+ 					
+ 					
+ 					const daysOption = document.getElementById("travelDaysOpt");
+ 					daysOption.addEventListener("change",e=>{
+
+ 						line.setMap(null);
+ 				    	markersArr.forEach(e=>{
+ 				    		e.setMap(null);
+ 				    	})
+ 						
+ 					});
+ 					
  				}
  				
  				
  				//옵션 변경 시 마커 제거 무조건이다
  			    daysOption.addEventListener("change",e=>{
 	    	    	
- 			    	polyline.setMap(null);
+ 			    	clickLine.setMap(null);
  			    	markersArr.forEach(e=>{
  			    		e.setMap(null);
  			    	})
@@ -1576,14 +2026,44 @@
 		//커스텀 오버레이 만들기
 
 		
+	//-----------------------------------------------------------------------------------------------------------------------
+	//지도 상에 마커를 계속 표출하는 대신, 카드 클릭 시 관련 상세 내용을 확인할 수 있도록 구현하는 편이 더 깔끔할 거라 판단함
+
+		
+	
+	(()=>{ //안 되네
 		
 		
+		
+		function checkCards(){
+			
+			let listedCards = document.querySelectorAll("#dragZone div");
+			console.log("몇 개 인가요? : ",listedCards.length);
+
+
+				[].forEach.call(listedCards,function(card){
+					card.addEventListener("dblclick",click,false);
+				});
+				
+				function click(e){
+					
+					alert(e);
+					
+				}
+			
+		}
+		
+		checkCards();
+		
+		
+		
+	})();
 		
 		
 		
 	</script>
 
-			                <script>
+	<script>
 	            		//드래그 앤 드롭 이벤트 관련
 		                
 		                		function addDragEvent(){
@@ -1642,6 +2122,6 @@
 		            	        }
 	            	     	            		
 	            		</script>
-	
-	
-<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+
+
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
