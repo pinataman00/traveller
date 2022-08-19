@@ -26,5 +26,41 @@
 	<select id="selectPlace" resultType="place">
 		SELECT * FROM PLACES WHERE CONTENTID=#{contentId}
 	</select>
+	
+	
+	
+	<!-- PROPOSAL 관련 resultMap만들기 -->
+	<resultMap id="proposalMap" type="proposal">
+		<!-- PROPOSAL객체가 기본적으로 보유한 것 -->
+		<id column="proposal_id" property="proposalId"/>
+		<result column="member_id" property="memberId"/>
+		<result column="title" property="title"/>
+		<result column="areacode" property="areaCode"/>
+		<result column="sigungucode" property="sigunguCode"/>
+		<result column="address" property="address"/>
+		<result column="cat2" property="cat2"/>
+		<result column="mapx" property="mapx"/>
+		<result column="mapy" property="mapy"/>
+		<result column="uploaddate" property="uploadDate"/>
+		<!-- has a관계인, Proposalimg객체가 보유한 것 -->
+		<collection property="firstImg" ofType="proposalimg">
+			<id column="imgno" property="imgNo"/>
+			<result column="proposal_id" property="proposalId"/>
+			<result column="oriname" property="oriName"/>
+			<result column="renamedfilename" property="renamedFileName"/>
+			<result column="uploaddate" property="uploadDate"/>			 
+		</collection>
+	</resultMap>
+		
+	<insert id="insertProposal" parameterType="proposal">
+		INSERT INTO PROPOSAL VALUES(#{memberId},'P'||SEQ_PROPOSAL.NEXTVAL,#{title},#{areaCode},#{sigunguCode},#{address},#{cat2},#{mapx},#{mapy},DEFAULT,DEFAULT,#{info})
+		<selectKey keyProperty="proposalId" resultType="string" order="AFTER">
+			SELECT SEQ_PROPOSAL.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertProposalImg" parameterType="proposalimg">
+		INSERT INTO PROPOSAL_IMG VALUES('IMG'||SEQ_PROPOSEIMG.NEXTVAL,'P'||#{proposalId},#{oriName},#{renamedFileName},DEFAULT)
+	</insert>
 
 </mapper>

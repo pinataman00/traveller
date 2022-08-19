@@ -179,8 +179,8 @@ div#dropZone {
 					</div>
 				</div>
 				<div class="btn-container">
-					<button class="btn btn-primary" type="button">작성 완료</button>
-					<button class="btn btn-primary" type="button">작성 취소</button>
+					<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#saveSchedule">작성 완료</button>
+					<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#deleteSchedule">작성 취소</button>
 				</div>
 			</div>
 			<!-- 지도 영역 -->
@@ -515,8 +515,10 @@ div#dropZone {
 			let tempArr = [];	
 			let forStorage = [];
 			
+			
 			changedCards.forEach(v=>{ //더블 클릭-> 삭제되어 재구성된 카드 토대로 path[] 내용 재구성하기
 				
+				console.log("카드 리스트 구성 확인하기 ",v);
 				let lat = v.getAttribute('latitude');
 				let lng = v.getAttribute('longitude');
 				let key = v.getAttribute('day');
@@ -540,8 +542,10 @@ div#dropZone {
 				}
 				
 				forStorage.push(new Places(							
-											//cards[i].getAttribute("day"),
-											v.getAttribute('day'), //일자 정보 : 선택 일자로 저장하기
+											
+
+											v.getAttribute("day"),
+											
 											v.getAttribute("id"),
 											v.getAttribute("placeName"),
 								            v.getAttribute("latitude"),
@@ -550,9 +554,11 @@ div#dropZone {
 	
 				console.log("카드 리스트 확인하기 : ",forStorage);
 				
-				localStorage.removeItem(key); //기존 저장 값은 삭제
-				localStorage.setItem(key,JSON.stringify(forStorage));
-	
+				
+					localStorage.removeItem(key); //기존 저장 값은 삭제
+					localStorage.setItem(key,JSON.stringify(forStorage));
+				
+				
 				//--------------------------------------------------------------------------
 			
 			});
@@ -596,12 +602,17 @@ div#dropZone {
 				}
 			});
 			
+			//TODO0819) 수정 중... 저장 前 전환시킨 일자 옵션 값 또한 localStorage에 저장된 데이터 기준으로 선을 편집하는 로직이 적용됨...
+			//해당 부분은 다음 flag변수와, if(flag.length>0)조건문으로 처리하긴 했지만... 여전히 에러가 감지됨...
+			//console.log("저장된 게 있다고?????????????????????",oriCards.length);
+			const flag = JSON.parse(localStorage.getItem(nowCho));
+			console.log("/////////////////////////////////////////",flag);
+			
+			
 			let changedCards = document.querySelectorAll("div#dropZone>div");
 			console.log("변경됐니????????????", changedCards);
-			
-			
-			
-			
+
+			if(flag.length>0){
 			let tempArr = [];	
 			let forStorage = [];
 			
@@ -662,7 +673,7 @@ div#dropZone {
 	        	
 	    		line.setMap(map); //수정 내용 반영하여 최종적으로 선 다시 그리기
 
-			
+			}
 			
 			
 		});
@@ -1273,7 +1284,13 @@ div#dropZone {
 		
 		// 지도에 클릭 이벤트를 등록합니다
 		// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
-		kakao.maps.event.addListener(map, 'dblclick', function(mouseEvent) {        
+		kakao.maps.event.addListener(map, 'dblclick', function(mouseEvent) {  
+			
+			document.getElementById("myTitle").value="";
+			document.getElementById("myLng").value="";
+		 	document.getElementById("myLat").value="";
+		 	document.getElementById("myMemo").value="";
+			
 		    
 		    // 클릭한 위도, 경도 정보를 가져옵니다 
 		    var latlng = mouseEvent.latLng; 
@@ -1359,6 +1376,10 @@ div#dropZone {
 			printInfo(addPlan);
 			
 			addMarkerFunc(lat,lng,placeName);
+			
+			
+			
+			
 			
 			$('#plusMarker').modal('hide');
 			
@@ -2130,8 +2151,152 @@ div#dropZone {
 	})();
 		
 		
+		//==============================================================================================================
+		//플래너 저장||삭제 관련 함수
+		const deleteSchedule = ()=>{
+			
+			localStorage.clear(); //localStorage 비우기
+			location.assign("${path}/"); //메인화면으로 돌아가기
+			
+		}
 		
+		const saveSchedule = ()=>{ //form은 form대로 보내고, 여기에는 개별 구체적인 plan들을 fetch로 전송할 수 있을까?
+			alert("저장!");
+		
+/* 			fetch('${path}/planner/savePlanner'),{
+				method:'POST',
+				headers: {
+					'Content-Type' : 'application/json',
+				},
+				body:JSON.stringify({"plans":})
+			} */
+		
+		
+		}
+		
+		const tempAlert = ()=>{
+			alert("구현 중입니다");
+		}
+		
+		
+		
+		//==============================================================================================================
 	</script>
+	
+	
+	
+	<!-- Modal : deleteSchedule()관련 -->
+	<div class="modal fade" id="deleteSchedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">플래너 삭제</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        편집 내용을 삭제하고 메인화면으로 돌아가겠습니까?
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+	        <button type="button" class="btn btn-outline-danger" onclick="deleteSchedule();">삭제하기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+
+	
+	
+	<div class="modal fade" id="saveSchedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"
+	>
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content" style="height:550px;">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">플래너 저장</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      
+	      
+	     <form name="memberEnrollFrm" action="${path }/planner/savePlanner" method="post"
+		 enctype="multipart/form-data">
+	      <div class="modal-body">
+		
+
+					<div class="input-group input-group-sm mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="inputGroup-sizing-sm">플래너 제목</span>
+						</div>
+						<input name="plannerTitle" type="text" class="form-control" aria-label="Small"
+							aria-describedby="inputGroup-sizing-sm" value="${tempPlanner.plannerTitle}">
+					</div>
+					<p style="margin-bottom:5px;font-style:italic;">플래너를 소개할 수 있는 짤막한 한 문장!</p>
+					<div class="input-group input-group-sm mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="inputGroup-sizing-sm">소개글</span>
+						</div>
+						<input name="plannerTitle" type="text" class="form-control" aria-label="Small"
+							aria-describedby="inputGroup-sizing-sm">
+					</div>
+					
+					<c:if test="${tempCrew.crewId!=null}">
+
+						<input name="crewId" type="hidden" value="C${tempCrew.crewId}">	 
+						<div class="form-group">
+							<label for="exampleFormControlSelect2" style="font-size:larger;font-weight:500;">${tempCrew.crewTitle}</label> 
+							<select multiple class="form-control"
+								id="exampleFormControlSelect2">
+								<c:forEach var="m" items="${crewMembers}">
+									<option>${m.memberId}</option>
+ 								</c:forEach>
+							</select>
+						</div>
+					</c:if>
+
+					<div class="input-file-container" style="width:460px;margin-left:0px;">
+							<h5 style="font-size:16px; text-align:left; margin-left:5px;">대표 이미지</h5>
+							<div class="input-group mb-3">
+							  <div class="custom-file">
+							    <input type="file" class="custom-file-input" id="img_" name="img">
+							    <label class="custom-file-label" for="inputGroupFile02">최대 10MB</label>
+							  </div>
+							</div>
+						</div>
+
+	      </div>
+	      
+	      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+		       <!--  <button type="submit" class="btn btn-outline-success" onclick="saveSchedule();">저장하기</button> -->
+		        <button type="button" class="btn btn-outline-success" onclick="tempAlert();">저장하기</button>
+	      </div>
+	      </form>
+	      
+	    </div>
+	  </div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	<script>
 	            		//드래그 앤 드롭 이벤트 관련

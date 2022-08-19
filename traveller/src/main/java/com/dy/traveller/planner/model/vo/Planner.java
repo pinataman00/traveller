@@ -23,6 +23,10 @@ public class Planner {
 	private int sigunguCode;
 	private int score;
 	
-	private Thumbnail img; //대표 이미지
+	private Plan[] plan; //planner에 속한 상세 plan들
+	
+	private String crewId; //그룹 아이디
+	private String summary; //플래너 소개
+	private Thumbnail imgage; //대표 이미지
 	
 }

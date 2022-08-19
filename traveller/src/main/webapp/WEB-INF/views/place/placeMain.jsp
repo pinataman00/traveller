@@ -584,6 +584,9 @@ button#addCat{
 				recommendBtn.innerText = "추천하기";
 				
 				recommendBox.append(recommendBtn);
+				recommendBox.addEventListener("click",e=>{
+					location.assign('${path}/place/propose');
+				});
 				
 				resultContainer[0].append(recommendBox);
 				mainContainer.append(resultContainer[0]);

@@ -6,6 +6,8 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.dy.traveller.places.model.vo.Place;
+import com.dy.traveller.places.model.vo.Proposal;
+import com.dy.traveller.places.model.vo.Proposalimg;
 
 public interface PlaceDao {
 
@@ -18,5 +20,9 @@ public interface PlaceDao {
 	List<Place> areaFilter(Map<String, Object> map, SqlSessionTemplate session);
 
 	Place selectPlace(Map<String, Object> map, SqlSessionTemplate session);
+
+	int insertProposal(SqlSessionTemplate session, Proposal proposal);
+
+	int insertProposalImg(SqlSessionTemplate session, Proposalimg firstImg);
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.dy.traveller.places.model.vo.Place;
+import com.dy.traveller.places.model.vo.Proposal;
 
 public interface PlaceService {
 
@@ -16,5 +17,7 @@ public interface PlaceService {
 	List<Place> areaFilter(Map<String, Object> map);
 
 	Place selectPlace(Map<String, Object> map);
+
+	int insertProposal(Proposal proposal);
 
 }

@@ -1,7 +1,7 @@
 server:
   port: 9090
   servlet:
-    context-path: /traveller
+    context-path: /GDJ47_traveller_final
   
 spring:
   datasource: 

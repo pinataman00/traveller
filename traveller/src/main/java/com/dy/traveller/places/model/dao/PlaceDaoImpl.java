@@ -8,6 +8,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.dy.traveller.places.model.vo.Place;
+import com.dy.traveller.places.model.vo.Proposal;
+import com.dy.traveller.places.model.vo.Proposalimg;
 
 @Repository
 public class PlaceDaoImpl implements PlaceDao {
@@ -43,6 +45,18 @@ public class PlaceDaoImpl implements PlaceDao {
 	public Place selectPlace(Map<String, Object> map, SqlSessionTemplate session) {
 		
 		return session.selectOne("place.selectPlace",map);
+	}
+
+	@Override
+	public int insertProposal(SqlSessionTemplate session, Proposal proposal) {
+		
+		return session.insert("place.insertProposal",proposal);
+	}
+
+	@Override
+	public int insertProposalImg(SqlSessionTemplate session, Proposalimg firstImg) {
+		
+		return session.insert("place.insertProposalImg", firstImg);
 	}
 
 }

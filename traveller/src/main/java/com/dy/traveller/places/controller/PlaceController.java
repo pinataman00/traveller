@@ -1,18 +1,23 @@
 package com.dy.traveller.places.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dy.traveller.common.PageFactory;
@@ -20,6 +25,8 @@ import com.dy.traveller.member.model.service.MemberService;
 import com.dy.traveller.member.model.vo.Member;
 import com.dy.traveller.places.model.service.PlaceService;
 import com.dy.traveller.places.model.vo.Place;
+import com.dy.traveller.places.model.vo.Proposal;
+import com.dy.traveller.places.model.vo.Proposalimg;
 import com.google.gson.JsonIOException;
 
 @Controller
@@ -126,4 +133,87 @@ public class PlaceController {
 		
 	}
 	
+	@RequestMapping("/propose")
+	public String proposeView() {
+		return "/place/placePropose";
+	}
+	
+	@RequestMapping("/placeProposal")
+	public String proposal(Proposal proposal, Model model, MultipartFile img, HttpServletRequest rs) {
+		
+		//● 로직 순서
+		//1. PROPOSAL테이블에 제안 정보 저장하기
+		//-> 실패 시 ROLLBACK 처리
+		//2. (PROPOSAL테이블에 데이터 INSERT시 생성된 SEQUENCE 전달) PROPOSAL_IMG테이블에 대표 이미지 관련 정보 저장하기
+		//-> 테이블 간 관계 : PROPOSAL_IMG테이블은, PROPOSAL테이블에 종속됨
+		//-> PROPOSAL테이블의 PK, PROPOSAL_ID는 PROPOSAL_IMG의 FK임
+		
+		System.out.println("제안 관련 기본 정보 : "+proposal);
+		
+		//0. 대표 이미지 관련 =============================================================================
+		System.out.println("파일 이름 : "+img.getOriginalFilename());
+		System.out.println("파일 크기 : "+img.getSize());
+		
+		//첨부파일 저장 경로 설정하기
+		String path = rs.getServletContext().getRealPath("/resources/place/proposal/");
+		File uploadDir = new File(path);
+		// 폴더가 없는 경우에는 생성하기
+		if (!uploadDir.exists())
+			uploadDir.mkdirs();
+		
+		//파일 리네임 및 서버 업로드
+		  if(!img.isEmpty()) { //만약, 파일을 업로드했다면 //리네임 처리!
+			  
+			  String oriName = img.getOriginalFilename(); //원본 파일명 가져오기 
+			  String ext = oriName.substring(oriName.lastIndexOf(".")); //파일명으로부터 확장자 추출 //리네임 작명 규칙 설정
+			  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS"); 
+			  int rndNum = (int)(Math.random()*10000); 
+			  String rename = sdf.format(System.currentTimeMillis())+"_"+rndNum+ext;
+			  
+			  //서버 업로드 처리하기 
+				try {
+					
+					img.transferTo(new File(path+rename));
+					Proposalimg proposalImg = Proposalimg.builder().oriName(oriName).renamedFileName(rename).build();
+					proposal.setFirstImg(proposalImg);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		  }
+		  
+		  //DB에 이미지 파일 저장하기
+		  
+		  String msg,loc="";
+		  
+		  
+		  try {
+		  
+			  service.insertProposal(proposal);
+			  msg="감사합니다! 관리자 검토 후 연락드리겠습니다";
+			  loc="/";
+
+		  } catch (RuntimeException e) {
+			  msg="등록 실패. 다시 시도해주세요.";
+			  loc="/place/propose";
+
+			  if(!img.isEmpty()) {
+				  File deleteFile = new File(path+proposal.getFirstImg().getRenamedFileName());
+				  if(deleteFile.exists()) {
+					  deleteFile.delete();
+				  }
+			  }
+
+		  }
+	  
+	  
+		model.addAttribute("msg",msg);
+		model.addAttribute("loc",loc);
+		  
+		return "common/msg";
+		  
+		
+		
+		
+	}
 }

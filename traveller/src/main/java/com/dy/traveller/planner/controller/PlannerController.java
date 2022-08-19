@@ -1,22 +1,31 @@
 package com.dy.traveller.planner.controller;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dy.traveller.planner.model.service.PlannerService;
 import com.dy.traveller.planner.model.vo.Crew;
 import com.dy.traveller.planner.model.vo.Friends;
+import com.dy.traveller.planner.model.vo.Plan;
 import com.dy.traveller.planner.model.vo.Planner;
+import com.dy.traveller.planner.model.vo.Thumbnail;
 
 @Controller
 @RequestMapping("/planner")
@@ -33,8 +42,7 @@ public class PlannerController {
 	@RequestMapping("/setting")
 	public ModelAndView setting(Planner planner, Crew crew, @RequestParam(value="crewMember") String[]crewMember, ModelAndView mv) {
 
-		System.out.println("될까? "+planner);
-		System.out.println("될까? "+crew);
+
 
 		if(crewMember[0].equals("fakeData")) { //크루가 없는 경우
 			System.out.println("크루 입력 값이 존재하지 않습니다!");
@@ -64,7 +72,12 @@ public class PlannerController {
 				service.inputCrew(crew); //crew저장 성공 時
 				mv.addObject("tempPlanner", planner);
 				mv.addObject("tempCrew",crew);
+				mv.addObject("crewMembers",list);
 				mv.setViewName("/planner/plannerEditor");
+				
+				System.out.println("될까? "+planner);
+				System.out.println("될까? "+crew);
+				
 				
 				return mv;
 				
@@ -79,11 +92,7 @@ public class PlannerController {
 		}
 		
 
-//		mv.addObject("tempPlanner", planner);
-//		mv.addObject("tempCrew",crew);
-//		mv.setViewName("/planner/plannerEditor");
-//		
-//		return mv;
+
 		
 	}
 	
@@ -115,6 +124,70 @@ public class PlannerController {
 	public String plannerEditor() {
 		return "/planner/plannerEditor";
 	}
+	
+	@RequestMapping("/savePlanner")
+	@ResponseBody
+	public void savePlanner(Plan[] plans, Planner p, Model model, MultipartFile img, HttpServletRequest rs) {
+		
+		
+		System.out.println(p);
+		System.out.println(plans);
+		
+		/* 로직 순서
+		 * 
+		 * 1. Planner 테이블에 플래너 정보 저장하기 (plannerTitle, sumamry, crewId)
+		 * -> PLANNER테이블에 저장 실패 시, ROLLBACK처리하기
+		 * 2. PLANNER테이블에서 자동 생성된 PLANNER_NO 전달 > THUMBNAIL테이블에 플래너 대표 이미지 저장하기
+		 * ※ 테이블 간 관계 : 대표 이미지 관련 THUMBNAIL테이블은 PLANNER테이블에 종속됨
+		 * -> PLANNER의 PK, 'PLANNER_NO'는 PLANNER의 FK임
+		 * 
+		 * */
+		
+		//1. 멀티 미디어 파일 받아오기
+		//썸네일 이미지 관련 기본 정보
+		System.out.println("파일 이름 : "+img.getOriginalFilename());
+		System.out.println("파일 크기 : "+img.getSize());
+		
+		//첨부파일 저장 경로 설정하기
+		String path = rs.getServletContext().getRealPath("/resources/planner/thumbnail/");
+		File uploadDir = new File(path);
+		//폴더가 없는 경우, 생성하기
+		if(!uploadDir.exists()) uploadDir.mkdirs();
+		
+		
+		  if(!img.isEmpty()) { //만약, 파일을 업로드했다면 //리네임 처리!
+			  
+			  String oriName = img.getOriginalFilename(); //원본 파일명 가져오기 
+			  String ext = oriName.substring(oriName.lastIndexOf(".")); //파일명으로부터 확장자 추출 //리네임 작명 규칙 설정
+			  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS"); 
+			  int rndNum = (int)(Math.random()*10000); 
+			  String rename = sdf.format(System.currentTimeMillis())+"_"+rndNum+ext;
+			  
+			  //서버 업로드 처리하기 
+				try {
+					
+					img.transferTo(new File(path+rename));
+
+					Thumbnail t = Thumbnail.builder().oriName(oriName).renamedFileName(rename).build();
+					p.setImgage(t);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		  }
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	
 	
 	
 }
