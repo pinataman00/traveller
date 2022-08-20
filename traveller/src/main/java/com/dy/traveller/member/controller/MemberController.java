@@ -416,7 +416,6 @@ public class MemberController {
 		
 		Map param = Map.of("cPage",cPage,"numPerPage",numPerPage);
 		List<Member> list = service.selectMemberListPage(param);
-		System.out.println("회원 검색했어? "+list.size());
 	
 		int totalMember = service.selectMemberCnt();
 		mv.addObject("list",list);

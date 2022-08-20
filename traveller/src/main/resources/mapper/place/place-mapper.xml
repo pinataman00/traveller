@@ -62,5 +62,20 @@
 	<insert id="insertProposalImg" parameterType="proposalimg">
 		INSERT INTO PROPOSAL_IMG VALUES('IMG'||SEQ_PROPOSEIMG.NEXTVAL,'P'||#{proposalId},#{oriName},#{renamedFileName},DEFAULT)
 	</insert>
+	
+	<select id="selectProposalList" resultType="proposal">
+		SELECT * FROM PROPOSAL
+	</select>
+	
+	<select id="selectProposalCnt" resultType="_int">
+		SELECT COUNT(*) FROM PROPOSAL
+	</select>
+	
+	<select id="selectProposal" resultMap="proposalMap">
+		SELECT * FROM PROPOSAL P
+					          LEFT JOIN PROPOSAL_IMG I
+					          USING (PROPOSAL_ID)
+					          WHERE PROPOSAL_ID=#{proposalId}
+	</select>
 
 </mapper>

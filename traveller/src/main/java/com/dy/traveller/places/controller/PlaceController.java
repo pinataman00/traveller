@@ -211,9 +211,44 @@ public class PlaceController {
 		model.addAttribute("loc",loc);
 		  
 		return "common/msg";
-		  
-		
-		
-		
+	
 	}
+	
+	@RequestMapping("/proposalList.do") //페이징 처리할 것
+	public ModelAndView proposalList(@RequestParam(value="cPage", defaultValue="1") int cPage,
+							  @RequestParam(value="numPerPage", defaultValue="5") int numPerPage,
+							  ModelAndView mv) {
+		
+		//전체 제안 조회 > 게시판 페이징 처리
+		
+		Map param = Map.of("cPage",cPage,"numPerPage",numPerPage);
+		List<Proposal> list = service.selectProposalListPage(param);
+		//System.out.println("제안 검색했어? "+list.size());
+		
+		int totalProposal = service.selectProposalCnt();
+		mv.addObject("list",list);
+		mv.addObject("totalProposal",totalProposal);
+		mv.addObject("pageBar",PageFactory.getPageBar(totalProposal, numPerPage, cPage, "proposalList.do"));
+		mv.setViewName("place/proposalList");
+		
+		return mv;
+	}
+	
+	//proposal 내용 상세 보기 페이지로 이동
+	@RequestMapping("/proposalView/{id}")
+	public String getProposalView (@PathVariable String id, Model m) {
+		m.addAttribute("proposalId",id);
+		
+		return "place/printProposal";
+	}
+	
+	//proposal 내용 출력하기
+	@RequestMapping("/printProposal/{proposalId}")
+	@ResponseBody
+	public Proposal getProposal (@PathVariable String proposalId) {
+		Proposal p = service.selectProposal(Proposal.builder().proposalId(proposalId).build());
+		return p;
+	}
+	
+	
 }

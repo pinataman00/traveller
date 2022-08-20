@@ -51,7 +51,7 @@ public class PlaceServiceImpl implements PlaceService {
 		int res = 0;
 		
 		try {
-			System.out.println("여기는 와?");
+			
 			//先 PROPOSAL테이블 : 제안 기본 정보 저장
 			res = dao.insertProposal(session,proposal);
 			System.out.println("여기는 돼?");
@@ -73,6 +73,21 @@ public class PlaceServiceImpl implements PlaceService {
 		}
 				
 		return res;
+	}
+
+	@Override
+	public List<Proposal> selectProposalListPage(Map param) {
+		return dao.selectProposalListPage(session,param);
+	}
+
+	@Override
+	public int selectProposalCnt() {
+		return dao.selectProposalCnt(session);
+	}
+
+	@Override
+	public Proposal selectProposal(Proposal p) {
+		return dao.selectProposal(session,p);
 	}
 
 }

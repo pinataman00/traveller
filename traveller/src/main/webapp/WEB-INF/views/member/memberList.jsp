@@ -5,25 +5,24 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 
 <style>
-	.admin-container{
-		/* border:1px solid red; */
-		margin-top : 70px;
+ 	.admin-container{
+
 		display:flex;
 		overflow:hidden;
-		height:800px;
+		height:100vh;
 	}
 	.menu-container{
 		float:left;
-		/* border:1px solid blue; */
 		width:200px;
 		background-color:#333333;
 	}
 	.contents-container{
+		margin-top: 100px;
 		float:right;
-		/* border:1px solid orange; */	
 		width:100%;
 		margin-right:-200px;
 		padding-right:200px;
+		height:100vh;
 	}
 	.list-container{
 		padding-right:50px;
@@ -70,9 +69,9 @@
 <section>
 <div class="admin-container">
 
-	<div class="menu-container">
+  	<div class="menu-container">
 	
-		<div class="list-title-container">
+ 		<div class="list-title-container" style="margin-top:100px;">
 			<p>ADMIN</p>
 		</div>		
 			<ul class="list-group list-group-flush" style="backgroundColor:black;">
@@ -84,7 +83,6 @@
 				<li class="list-group-item list-item">장소 등록</li>
 			</ul>
 		</div>
-	
 	<div class="contents-container">
 
 			<div class="content-title-container">
@@ -218,6 +216,24 @@
 		console.log(id);
 		document.getElementById("memberId_2").value=id;		
 	}
+	
+	//메뉴 =============================================================================================
+	const proposal = document.getElementsByClassName("proposal-list")[0];
+	const member = document.getElementsByClassName("member-list")[0];
+	
+	proposal.addEventListener("click",e=>{
+		//alert("클릭!");
+		member.classList.remove("active");
+		e.target.classList.add("active");
+	});
+	
+	member.addEventListener("click",e=>{
+		//alert("클릭!");
+		proposal.classList.remove("active");
+		e.target.classList.add("active");
+	});
+	
+	
 </script>
 
 </section>

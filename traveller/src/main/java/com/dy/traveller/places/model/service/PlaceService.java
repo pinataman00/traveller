@@ -20,4 +20,10 @@ public interface PlaceService {
 
 	int insertProposal(Proposal proposal);
 
+	List<Proposal> selectProposalListPage(Map param);
+
+	int selectProposalCnt();
+
+	Proposal selectProposal(Proposal build);
+
 }

@@ -25,4 +25,10 @@ public interface PlaceDao {
 
 	int insertProposalImg(SqlSessionTemplate session, Proposalimg firstImg);
 
+	List<Proposal> selectProposalListPage(SqlSessionTemplate session, Map param);
+
+	int selectProposalCnt(SqlSessionTemplate session);
+
+	Proposal selectProposal(SqlSessionTemplate session, Proposal p);
+
 }

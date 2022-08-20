@@ -68,7 +68,7 @@
           <a class="dropdown-item" href="${path }/member/memberList.do">회원 조회</a>
           <div class="dropdown-divider"></div>
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true" style="color:gray;margin-left:5px;">콘텐츠 관리</a>
-          <a class="dropdown-item" href="#">장소 등록</a>
+          <a class="dropdown-item" href="${path }/place/proposalList.do">장소 등록</a>
           <!-- <a class="dropdown-item" href="#">Something else here</a> -->
         </div>
       </li>

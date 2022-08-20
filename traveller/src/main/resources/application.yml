@@ -36,6 +36,7 @@ mybatis:
   type-aliases-package: com.dy.traveller.member.model.vo,com.dy.traveller.places.model.vo,com.dy.traveller.planner.model.vo
   configuration:
     map-underscore-to-camel-case: true
+    jdbc-type-for-null: null
       
 
   

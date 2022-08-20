@@ -59,4 +59,22 @@ public class PlaceDaoImpl implements PlaceDao {
 		return session.insert("place.insertProposalImg", firstImg);
 	}
 
+	@Override
+	public List<Proposal> selectProposalListPage(SqlSessionTemplate session, Map param) {
+		
+		int offSet = (int)param.get("cPage");
+		int limit = (int)param.get("numPerPage");
+		return session.selectList("place.selectProposalList",null,new RowBounds((offSet-1)*limit, limit));
+	}
+
+	@Override
+	public int selectProposalCnt(SqlSessionTemplate session) {
+		return session.selectOne("place.selectProposalCnt");
+	}
+
+	@Override
+	public Proposal selectProposal(SqlSessionTemplate session,Proposal p) {
+		return session.selectOne("place.selectProposal",p);
+	}
+
 }
