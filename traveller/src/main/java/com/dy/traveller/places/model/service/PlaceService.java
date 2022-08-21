@@ -28,4 +28,8 @@ public interface PlaceService {
 
 	int deleteProposal(String proposalId);
 
+	int insertPlace(Place build);
+
+	int updateApproval(String proposalId);
+
 }

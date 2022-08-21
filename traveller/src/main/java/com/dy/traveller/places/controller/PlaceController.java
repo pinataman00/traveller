@@ -285,32 +285,29 @@ public class PlaceController {
 	public String test2(Place p, Model m, String proposalId) {
 		
 		System.out.println("잘 받아왔니? "+p);
+
 		System.out.println("제안 ID : "+proposalId);
 		
 		
-		  int res = service.insertPlace(p.builder().proposal("Y").build());
+		
+		  int res = service.insertPlace(p);
 		  
 		  String msg,loc = "";
 		  
 		  if(res>0) {
 		  
-			  //proposal의 approval값 'N'에서 'Y'로 변경하기
-			  res = service.updateApproval(proposalId);
-			  if(res>0) {
-				  msg= "등록 성공! 메인화면으로 이동합니다"; 
-				  loc= "/";
-			  } else {
-				  msg = "등록에 실패했습니다! 다시 시도해주세요";
-				  loc = "/";
-			  }
-			
+		  //proposal의 approval값 'N'에서 'Y'로 변경하기 res =
+		  service.updateApproval(proposalId); if(res>0) { msg= "등록 성공! 메인화면으로 이동합니다";
+		  loc= "/"; } else { msg = "등록에 실패했습니다! 다시 시도해주세요"; loc = "/"; }
+		  
 		  
 		  } else {
 		  
-			  msg= "등록 실패! 다시 시도해주세요!"; loc = "place/proposalList.do"; }			  
-			  m.addAttribute("msg",msg); m.addAttribute("loc",loc);
+		  msg= "등록 실패! 다시 시도해주세요!"; loc = "place/proposalList.do"; }
+		  m.addAttribute("msg",msg); m.addAttribute("loc",loc);
 		  
 		  return "common/msg";
+		 
 		 
 		
 		

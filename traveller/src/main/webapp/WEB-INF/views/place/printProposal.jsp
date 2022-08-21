@@ -58,6 +58,7 @@
 		<div class="content-container">	
 		
 			<h5 style="font-weight:bolder;">장소 제안서</h5>
+			<p class="isApproved" style="color:red;">* 이미 승인된 제안입니다</p>
 			<hr style="margin-bottom:30px;">
 			<div class="detail-info-container">
 
@@ -164,7 +165,7 @@
 			
 			
  		</div> 
-			<div class="btn-container">
+			<div class="btn-container">					
 					<button id="enroll" type="submit" class="btn btn-outline-primary" style="margin-right:5px;">등록하기</button>
 					<button type="button" class="btn btn-outline-secondary">목록으로</button>
 			</div>	
@@ -197,6 +198,19 @@
 			console.log("성공했어?",data);
 			
 			//받아온 데이터 토대로 화면 구성하기
+			if(data.approval=='N'){
+				
+				document.getElementsByClassName("isApproved")[0].style.display='none';
+		
+			} else {
+				document.getElementById("enroll").addEventListener("click",e=>{
+					alert('이미 승인된 제안입니다');
+				})
+				document.getElementById("enroll").disabled="true";
+				
+			}
+			
+			
 			document.getElementById("proposer").value = data.memberId;
 			document.getElementById("title_").value= data.title;
 			document.getElementById("addr").value=data.address;

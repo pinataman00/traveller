@@ -43,6 +43,7 @@
 		<result column="mapy" property="mapy"/>
 		<result column="info" property="info"/>
 		<result column="uploaddate" property="uploadDate"/>
+		<result column="approval" property="approval"/>
 		<!-- has a관계인, Proposalimg객체가 보유한 것 -->
 		<collection property="firstImg" ofType="proposalimg">
 			<id column="imgno" property="imgNo"/>
@@ -82,5 +83,13 @@
 	<delete id="deleteProposal" parameterType="string">
 		DELETE FROM PROPOSAL WHERE PROPOSAL_ID = #{proposalId}
 	</delete>
+	
+	<insert id="insertPlace" parameterType="place">
+		INSERT INTO PLACES VALUES ('PP'||SEQ_CONTENTID.NEXTVAL,DEFAULT,#{title},#{areacode},#{sigungucode},#{address},DEFAULT,#{cat2},DEFAULT,#{firstImage},#{mapx},#{mapy},#{proposalId},#{info})
+	</insert>
+	
+	<update id="updateApproval" parameterType="string">
+		UPDATE PROPOSAL SET APPROVAL='Y' WHERE PROPOSAL_ID=#{proposalId}
+	</update>
 
 </mapper>

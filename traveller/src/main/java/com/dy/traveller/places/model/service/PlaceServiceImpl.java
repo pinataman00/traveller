@@ -95,4 +95,14 @@ public class PlaceServiceImpl implements PlaceService {
 		return dao.deleteProposal(session,proposalId);
 	}
 
+	@Override
+	public int insertPlace(Place p) {
+		return dao.insertPlace(session,p);
+	}
+
+	@Override
+	public int updateApproval(String proposalId) {
+		return dao.updateApproval(session,proposalId);
+	}
+
 }
