@@ -49,8 +49,9 @@
 
 </style>
 <section>
+	<form action="${path }/place/test2.do" method="post">
 	<div class="container" style="width:800px;">
-		<input id="pId" type="hidden" value="${proposalId}">
+		<input id="pId" name="proposalId" type="hidden" value="${proposalId}">
 		
 
 
@@ -60,16 +61,17 @@
 			<hr style="margin-bottom:30px;">
 			<div class="detail-info-container">
 
-
+			
 				<div class="input-group mb-3 for-space">
 				  <div class="input-group-prepend">
 				    <span class="input-group-text" id="inputGroup-sizing-default">제목</span>
 				  </div>
-				  <input id="title" type="text" class="form-control white-container" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+				  <input id="title_" name="title" type="text" class="form-control white-container" aria-label="Default" aria-describedby="inputGroup-sizing-default">
 				</div>
 				
 				<!-- 이미지 등록하기 -->
 				<div id="proposalPic-container"></div>
+				<input type="hidden" id="firstImage_" name="firstImage" value="">
 				
 				
 				<div class="input-group mb-3 input-group-sm for-space">
@@ -83,13 +85,13 @@
 				  <div class="input-group-prepend">
 				    <span class="input-group-text" id="inputGroup-sizing-sm">주소</span>
 				  </div>
-				  <input id="addr" type="text" class="form-control white-container" aria-label="Default" aria-describedby="inputGroup-sizing-sm">
+				  <input id="addr" name="address" type="text" class="form-control white-container" aria-label="Default" aria-describedby="inputGroup-sizing-sm">
 				</div>
 				
 				
 				 <!-- 장소 -->
 				<div class="theme-container for-space" style="display:flex; margin-bottom:30px;">
-					<select class="custom-select custom-select-sm area-class" name="areaCode" id="areacode_" onclick="createAreaOption(0);">
+					<select class="custom-select custom-select-sm area-class" name="areacode" id="areacode_" onclick="createAreaOption(0);">
 							<option value="0">지역을 선택해보세요</option>
 							<option value="1">서울</option>
 							<option value="2">인천</option>
@@ -109,33 +111,45 @@
 							<option value="38">전라남도</option>
 							<option value="39">제주도</option>	
 					</select>
-					<select class="custom-select custom-select-sm sigungu-class" name="sigunguCode" id="sigungucode_" required>
+					<select class="custom-select custom-select-sm sigungu-class" name="sigungucode" id="sigungucode_" required>
 						<!-- <option selected value="0">-- 선택 --</option> -->
 					</select>
 			   </div>
+	
 				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				<div class="input-group mb-3 input-group-sm for-space">
-				  <div class="input-group-prepend">
-				    <span class="input-group-text" id="inputGroup-sizing-sm">테마</span>
-				  </div>
-				  <input id="theme" type="text" class="form-control white-container" aria-label="Default" aria-describedby="inputGroup-sizing-sm">
-				</div>
+				<label for="exampleFormControlTextarea1" style="font-weight:500;">테마</label>
+				<select id="theme" name="cat2" class="custom-select custom-select-sm" style="margin-bottom:20px;">
+					<!-- <option selected>테마를 선택해주세요</option> -->
+					<option value="A0101">자연 관광지</option>
+					<option value="A0102">관광 자원</option>
+					<option value="A0201">역사</option>
+					<option value="A0202">휴양</option>
+					<option value="A0203">체험</option>
+					<option value="A0204">산업</option>
+					<option value="A0205">건축/조형</option>
+					<option value="A0206">문화시설</option>
+					<option value="A0207">축제</option>
+					<option value="A0208">공연/행사</option>
+					<option value="C0112">가족</option>
+					<option value="C0113">나홀로</option>
+					<option value="C0114">힐링</option>
+					<option value="C0115">도보</option>
+					<option value="C0116">캠핑</option>
+					<option value="C0117">맛</option>
+					<option value="A0301">일반</option>
+					<option value="A0302">육상</option>
+					<option value="A0303">수상</option>
+					<option value="A0304">항공</option>
+					<option value="A0305">복합</option>
+					<option value="A0401">쇼핑하기</option>
+					<option value="A0502">먹기</option>
+					<option value="free">자유여행</option>
+				</select>
+
 
 				<div class="form-group">
 					<label for="exampleFormControlTextarea1" style="font-weight:500;">소개글</label>
-					<textarea id="info" class="form-control" id="exampleFormControlTextarea1"
+					<textarea id="info_" name="info" class="form-control" id="exampleFormControlTextarea1"
 						rows="3"></textarea>
 				</div>
 
@@ -143,19 +157,21 @@
 			<div class="addr-container">
 				<div id="map" class="map-container">
 					지도 
-				</div>				
+				</div>
+				<input type="hidden" name="mapx" id="mapx_">				
+				<input type="hidden" name="mapy" id="mapy_">				
 			</div>
 			
 			
  		</div> 
 			<div class="btn-container">
-					<button id="enroll" type="button" class="btn btn-outline-primary" style="margin-right:5px;">등록하기</button>
+					<button id="enroll" type="submit" class="btn btn-outline-primary" style="margin-right:5px;">등록하기</button>
 					<button type="button" class="btn btn-outline-secondary">목록으로</button>
 			</div>	
-
+		
 
 	</div>
-	
+	</form>
 </section>
 <script>
 
@@ -182,52 +198,38 @@
 			
 			//받아온 데이터 토대로 화면 구성하기
 			document.getElementById("proposer").value = data.memberId;
-			document.getElementById("title").value= data.title;
+			document.getElementById("title_").value= data.title;
 			document.getElementById("addr").value=data.address;
+
+			const opt = document.querySelectorAll("#theme option");
 			
-			let theme;
+			opt.forEach(e=>{
+				
+				if(e.value==data.cat2){
+					e.selected=true;
+				}
+			})
 			
-			switch(data.cat2){
 			
-				case 'A0101' : theme='자연관광지'; break;
-				case 'A0102' : theme='관광 자원'; break;
-				case 'A0201' : theme='역사'; break;
-				case 'A0202' : theme='휴양'; break;
-				case 'A0203' : theme='체험'; break;
-				case 'A0204' : theme='산업'; break;
-				case 'A0205' : theme='건축/조형'; break;
-				case 'A0206' : theme='문화시설'; break;
-				case 'A0207' : theme='축제'; break;
-				case 'A0208' : theme='공연/행사'; break;
-				case 'C0112' : theme='가족'; break;
-				case 'C0113' : theme='나홀로'; break;
-				case 'C0114' : theme='힐링'; break;
-				case 'C0115' : theme='도보'; break;
-				case 'C0116' : theme='캠핑'; break;
-				case 'C0117' : theme='맛'; break;
-				case 'A0301' : theme='일반'; break;
-				case 'A0302' : theme='육상'; break;
-				case 'A0303' : theme='수상'; break;
-				case 'A0304' : theme='항공'; break;
-				case 'A0305' : theme='복합'; break;
-				case 'A0401' : theme='쇼핑하기'; break;
-				case 'A0502' : theme='먹기'; break;
-				case 'free' : theme='자유여행'; break;
-		
-			}
 			
-			document.getElementById("theme").value = theme;
 			if(data.info!=null&&data.info!=''){
-				document.getElementById("info").value= data.info;
+				document.getElementById("info_").value= data.info;
 			} else {
-				document.getElementById("info").value="소개글이 존재하지 않습니다";
+				document.getElementById("info_").value="소개글이 존재하지 않습니다";
 			}
 			
 			
 			//지도 출력하기
 			mapStarter(data.mapy,data.mapx);
+			//좌표 정보 전달하기
+			document.getElementById("mapx_").value=data.mapx;
+			document.getElementById("mapy_").value=data.mapy;
+			
+			//이미지 출력하기
 			img = data.firstImg.renamedFileName;
-			console.log(img);
+			//이미지 정보 전달하기
+			document.getElementById("firstImage_").value="${path}/resources/place/proposal/"+data.firstImg.renamedFileName;
+			
 			
 			const container = document.getElementById("proposalPic-container");
 			if(data.firstImg.renamedFileName!=null&&data.firstImg.renamedFileName!=''){
@@ -250,29 +252,12 @@
 
 		} 
 			
-/* 			else { //등록된 이미지가 없다면... 기본 이미지를 출력할 것인가, 관리자가 사진을 등록할 수 있게할까...
-			
-			let img = document.createElement("img");
-			img.src = "${path}/resources/img/testPic/dimitri.png";
-		
-			container.append(img);
-			container.append(document.createElement("hr"));
-			img.className = "proposalImg";
-			
-		} */
+
 		
 			//지역 옵션 구성하기
 			document.getElementById("areacode_").value= data.areaCode;
 			fn_forSigungu(data.areaCode);
-		
-			
-			
-			//등록하기 버튼 클릭 시
-			document.getElementById("enroll").addEventListener("click",e=>{
-				fn_enroll(data);
-			})
-			
-			
+			document.getElementById("sigungucode_").value= data.sigunguCode;
 			
 		})
 		
@@ -280,16 +265,6 @@
 
 	console.log(img);
 
-
-	//Places 테이블로 데이터 등록하기
-	function fn_enroll(data){
-		
-		console.log("들어왔니?", data);
-		
-		
-		
-		
-	}
 	
 	
  	function mapStarter(latitude,longitude){

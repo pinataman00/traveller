@@ -250,5 +250,71 @@ public class PlaceController {
 		return p;
 	}
 	
+	//proposal 삭제하기
+	@RequestMapping("/deleteProposal.do")
+	public String deleteProposal(String proposalId, Model m, HttpServletRequest rs) { //사진이 존재할 경우, 사진까지 삭제하기
+		
+		
+		  Proposal p = service.selectProposal(Proposal.builder().proposalId(proposalId).build());		
+		  int res = service.deleteProposal(proposalId);
+		  System.out.println("사진 정보 확인 : "+p.getFirstImg().getRenamedFileName());
+		  String msg= "";
+		  
+		  if(res>0) {
+			  msg="제안 삭제 완료";
+			  //"/resources/place/proposal/"
+			  //대표 이미지가 첨부된 제안인 경우, 사진 삭제하기
+			  String path = rs.getServletContext().getRealPath("/resources/place/proposal/");
+			  File deleteImg = new File(path+p.getFirstImg().getRenamedFileName());
+			  if(deleteImg.exists()) {
+				  deleteImg.delete();
+			  }
+		  } else {
+			  msg = "제안 삭제 실패. 다시 시도해주세요";
+		  }
+		  
+		  m.addAttribute("msg",msg);
+		  m.addAttribute("loc","/place/proposalList.do");
+		  
+		  return "common/msg";
+		 
+		
+	}
+	
+	@RequestMapping("/test2.do")
+	public String test2(Place p, Model m, String proposalId) {
+		
+		System.out.println("잘 받아왔니? "+p);
+		System.out.println("제안 ID : "+proposalId);
+		
+		
+		  int res = service.insertPlace(p.builder().proposal("Y").build());
+		  
+		  String msg,loc = "";
+		  
+		  if(res>0) {
+		  
+			  //proposal의 approval값 'N'에서 'Y'로 변경하기
+			  res = service.updateApproval(proposalId);
+			  if(res>0) {
+				  msg= "등록 성공! 메인화면으로 이동합니다"; 
+				  loc= "/";
+			  } else {
+				  msg = "등록에 실패했습니다! 다시 시도해주세요";
+				  loc = "/";
+			  }
+			
+		  
+		  } else {
+		  
+			  msg= "등록 실패! 다시 시도해주세요!"; loc = "place/proposalList.do"; }			  
+			  m.addAttribute("msg",msg); m.addAttribute("loc",loc);
+		  
+		  return "common/msg";
+		 
+		
+		
+	}
+	
 	
 }

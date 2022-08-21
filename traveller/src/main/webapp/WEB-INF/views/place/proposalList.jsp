@@ -228,7 +228,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="" method="post">
+      <form action="${path }/place/deleteProposal.do" method="post">
       <div class="modal-body">
       		<input class="form-control" type="text" name="title" id="title_2" readonly>
 			<input type="hidden" id="proposalId_2" name="proposalId">

@@ -31,4 +31,6 @@ public interface PlaceDao {
 
 	Proposal selectProposal(SqlSessionTemplate session, Proposal p);
 
+	int deleteProposal(SqlSessionTemplate session, String proposalId);
+
 }

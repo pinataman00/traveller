@@ -26,4 +26,6 @@ public interface PlaceService {
 
 	Proposal selectProposal(Proposal build);
 
+	int deleteProposal(String proposalId);
+
 }

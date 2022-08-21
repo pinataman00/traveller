@@ -77,4 +77,9 @@ public class PlaceDaoImpl implements PlaceDao {
 		return session.selectOne("place.selectProposal",p);
 	}
 
+	@Override
+	public int deleteProposal(SqlSessionTemplate session, String proposalId) {
+		return session.delete("place.deleteProposal",proposalId);
+	}
+
 }

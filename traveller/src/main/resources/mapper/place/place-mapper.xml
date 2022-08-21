@@ -78,5 +78,9 @@
 					          USING (PROPOSAL_ID)
 					          WHERE PROPOSAL_ID=#{proposalId}
 	</select>
+	
+	<delete id="deleteProposal" parameterType="string">
+		DELETE FROM PROPOSAL WHERE PROPOSAL_ID = #{proposalId}
+	</delete>
 
 </mapper>

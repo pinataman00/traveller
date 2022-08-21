@@ -90,4 +90,9 @@ public class PlaceServiceImpl implements PlaceService {
 		return dao.selectProposal(session,p);
 	}
 
+	@Override
+	public int deleteProposal(String proposalId) {
+		return dao.deleteProposal(session,proposalId);
+	}
+
 }
