@@ -614,19 +614,17 @@
 		themeTwo[0].appendChild(option);
 	}
 	
-	function insertInto(nature,val){ //복수 옵션
+	function insertInto(theme,val){ //복수 옵션
 		const themeTwo = document.getElementsByClassName("theme-select-two");
 		themeTwo[0].innerHTML="";
-		nature.forEach(n=>{
+
+		for(let i=0;i<theme.length;i++){
 			let option = document.createElement("option");
-			option.innerText = n;
-			
-			val.forEach(v=>{
-				option.value = v;				
-			});
-			
-			themeTwo[0].appendChild(option);			
-		});
+			option.innerText = theme[i];
+			option.value = val[i];
+			themeTwo[0].appendChild(option);
+		}
+		
 	}
 	
 	//form태그 유효성 체크 -----------------------------------------------------------------------------

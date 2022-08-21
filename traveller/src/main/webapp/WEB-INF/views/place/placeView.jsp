@@ -189,7 +189,10 @@ button#routeBtn{
 				routeStarter(routeTitle,mapy,mapx);
 				//https://map.kakao.com/link/to/카카오판교오피스,37.402056,127.108212
 				
-				
+				//console.log("/////////////// 장소 정보 확인 ////////////////////", data.info);
+				if(data.info!=null&&data.info!=''){
+					document.getElementsByClassName("info-container")[0].innerHTML = data.info;
+				}
 							
 			});
 						

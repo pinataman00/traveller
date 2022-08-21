@@ -149,6 +149,7 @@ public class PlaceController {
 		//-> PROPOSAL테이블의 PK, PROPOSAL_ID는 PROPOSAL_IMG의 FK임
 		
 		System.out.println("제안 관련 기본 정보 : "+proposal);
+		System.out.println("내가 선택한 테마 : //////////////////////////////////////"+proposal.getCat2());
 		
 		//0. 대표 이미지 관련 =============================================================================
 		System.out.println("파일 이름 : "+img.getOriginalFilename());

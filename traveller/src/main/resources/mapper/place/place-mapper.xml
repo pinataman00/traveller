@@ -85,7 +85,7 @@
 	</delete>
 	
 	<insert id="insertPlace" parameterType="place">
-		INSERT INTO PLACES VALUES ('PP'||SEQ_CONTENTID.NEXTVAL,DEFAULT,#{title},#{areacode},#{sigungucode},#{address},DEFAULT,#{cat2},DEFAULT,#{firstImage},#{mapx},#{mapy},#{proposalId},#{info})
+		INSERT INTO PLACES VALUES (SEQ_CONTENTID.NEXTVAL,DEFAULT,#{title},#{areacode},#{sigungucode},#{address},DEFAULT,#{cat2},DEFAULT,#{firstImage},#{mapx},#{mapy},#{proposalId},#{info})
 	</insert>
 	
 	<update id="updateApproval" parameterType="string">

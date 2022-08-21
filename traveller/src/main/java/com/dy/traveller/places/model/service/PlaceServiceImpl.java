@@ -54,7 +54,6 @@ public class PlaceServiceImpl implements PlaceService {
 			
 			//先 PROPOSAL테이블 : 제안 기본 정보 저장
 			res = dao.insertProposal(session,proposal);
-			System.out.println("여기는 돼?");
 			
 			//後 PROPOSAL_IMG테이블 : 이미지 정보 저장하기
 			if(res>0&&proposal.getFirstImg()!=null) {//등록 절차 성공 AND 대표 이미지 사진이 존재하는 경우
