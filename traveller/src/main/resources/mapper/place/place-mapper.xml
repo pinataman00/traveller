@@ -41,6 +41,7 @@
 		<result column="cat2" property="cat2"/>
 		<result column="mapx" property="mapx"/>
 		<result column="mapy" property="mapy"/>
+		<result column="info" property="info"/>
 		<result column="uploaddate" property="uploadDate"/>
 		<!-- has a관계인, Proposalimg객체가 보유한 것 -->
 		<collection property="firstImg" ofType="proposalimg">

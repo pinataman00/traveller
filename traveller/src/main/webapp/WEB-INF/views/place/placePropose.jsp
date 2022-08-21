@@ -480,8 +480,8 @@ var geocoder = new kakao.maps.services.Geocoder();
 		}	
 	
 		//테마 옵션 구성하기 =============================================================
-			const themeOne = document.getElementsByClassName("theme-select-one");	
-	themeOne[0].addEventListener("change",e=>{
+		const themeOne = document.getElementsByClassName("theme-select-one");	
+		themeOne[0].addEventListener("change",e=>{
 		//alert(e.target.value);
 		const opt = e.target.value;
 		
