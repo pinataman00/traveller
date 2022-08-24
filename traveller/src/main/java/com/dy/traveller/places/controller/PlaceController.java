@@ -24,6 +24,7 @@ import com.dy.traveller.common.PageFactory;
 import com.dy.traveller.member.model.service.MemberService;
 import com.dy.traveller.member.model.vo.Member;
 import com.dy.traveller.places.model.service.PlaceService;
+import com.dy.traveller.places.model.vo.Likes;
 import com.dy.traveller.places.model.vo.Place;
 import com.dy.traveller.places.model.vo.Proposal;
 import com.dy.traveller.places.model.vo.Proposalimg;
@@ -308,11 +309,33 @@ public class PlaceController {
 		  m.addAttribute("msg",msg); m.addAttribute("loc",loc);
 		  
 		  return "common/msg";
-		 
-		 
-		
-		
+
 	}
+	
+	@RequestMapping("/loadLikesList.do")
+	@ResponseBody
+	public List<Likes> test3 (@RequestBody Map<String,String> data) {
+		//System.out.println("잘 가져왔니?? : "+data.get("memberId"));
+		String memberId = data.get("memberId");
+		//System.out.println("아이디 확인 : "+memberId);
+		List<Likes> list = service.getLikes(memberId);
+		System.out.println("리스트 확인 : "+list.size());
+		
+		//System.out.println("리스트에 저장된 요소 개수 : "+list.size());
+		
+		//존재한다면, 리스트 형태를 보내기
+		return list;
+	
+	}
+	
+	/*
+	 * @RequestMapping("/addCat.do") public void addCat(Map<String,String>param) {
+	 * 
+	 * System.out.println("카테고리 추가하기 데이터 확인 : "+param);
+	 * 
+	 * }
+	 */
+	
 	
 	
 }

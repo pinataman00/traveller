@@ -91,5 +91,9 @@
 	<update id="updateApproval" parameterType="string">
 		UPDATE PROPOSAL SET APPROVAL='Y' WHERE PROPOSAL_ID=#{proposalId}
 	</update>
+	
+	<select id="getLikes" resultType="likes">
+		SELECT * FROM LIKES WHERE MEMBER_ID=#{memberId}
+	</select>
 
 </mapper>

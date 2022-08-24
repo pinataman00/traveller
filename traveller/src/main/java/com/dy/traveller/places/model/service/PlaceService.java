@@ -3,6 +3,8 @@ package com.dy.traveller.places.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.dy.traveller.places.model.vo.Likes;
+import com.dy.traveller.places.model.vo.LikesInfo;
 import com.dy.traveller.places.model.vo.Place;
 import com.dy.traveller.places.model.vo.Proposal;
 
@@ -31,5 +33,7 @@ public interface PlaceService {
 	int insertPlace(Place build);
 
 	int updateApproval(String proposalId);
+
+	List<Likes> getLikes(String memberId);
 
 }

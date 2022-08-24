@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.dy.traveller.places.model.vo.Likes;
+import com.dy.traveller.places.model.vo.LikesInfo;
 import com.dy.traveller.places.model.vo.Place;
 import com.dy.traveller.places.model.vo.Proposal;
 import com.dy.traveller.places.model.vo.Proposalimg;
@@ -36,5 +38,7 @@ public interface PlaceDao {
 	int insertPlace(SqlSessionTemplate session, Place p);
 
 	int updateApproval(SqlSessionTemplate session, String proposalId);
+
+	List<Likes> getLikes(SqlSessionTemplate session, String memberId);
 
 }

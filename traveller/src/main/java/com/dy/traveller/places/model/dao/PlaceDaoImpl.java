@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.dy.traveller.places.model.vo.Likes;
 import com.dy.traveller.places.model.vo.Place;
 import com.dy.traveller.places.model.vo.Proposal;
 import com.dy.traveller.places.model.vo.Proposalimg;
@@ -90,6 +91,12 @@ public class PlaceDaoImpl implements PlaceDao {
 	@Override
 	public int updateApproval(SqlSessionTemplate session, String proposalId) {
 		return session.update("place.updateApproval",proposalId);
+	}
+
+	@Override
+	public List<Likes> getLikes(SqlSessionTemplate session, String memberId) {
+		
+		return session.selectList("place.getLikes",memberId);
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dy.traveller.places.model.dao.PlaceDao;
+import com.dy.traveller.places.model.vo.Likes;
 import com.dy.traveller.places.model.vo.Place;
 import com.dy.traveller.places.model.vo.Proposal;
 
@@ -102,6 +103,11 @@ public class PlaceServiceImpl implements PlaceService {
 	@Override
 	public int updateApproval(String proposalId) {
 		return dao.updateApproval(session,proposalId);
+	}
+
+	@Override
+	public List<Likes> getLikes(String memberId) {
+		return dao.getLikes(session,memberId);
 	}
 
 }
