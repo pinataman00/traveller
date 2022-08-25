@@ -42,10 +42,10 @@ public class PlannerController {
 	@RequestMapping("/setting")
 	public ModelAndView setting(Planner planner, Crew crew, @RequestParam(value="crewMember") String[]crewMember, ModelAndView mv) {
 
-
+		//TODO 0825) 플래너 새로고침할 때마다 CREW테이블에 ROW가 추가되는 문제 해결해야 함...
 
 		if(crewMember[0].equals("fakeData")) { //크루가 없는 경우
-			System.out.println("크루 입력 값이 존재하지 않습니다!");
+			//System.out.println("크루 입력 값이 존재하지 않습니다!");
 			
 			mv.addObject("tempPlanner", planner);
 			//mv.addObject("tempCrew",crew);

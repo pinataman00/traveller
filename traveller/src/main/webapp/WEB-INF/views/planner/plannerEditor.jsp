@@ -130,6 +130,15 @@ div#dropZone {
 	display:flex;
 }
 
+.add-btn-container button{
+
+	margin-left : 30px;
+
+}
+
+.add-btn-container{
+	margin-bottom : 10px;
+}
 
 </style>
 
@@ -218,7 +227,7 @@ div#dropZone {
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="#">나의 좋아요</a> <a
 						class="dropdown-item" href="#">나의 그룹</a> <a class="dropdown-item"
-						href="#">나의 체크 리스트</a>
+						href="#" onclick="showCkList();">나의 체크 리스트</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="#">날씨</a> <a class="dropdown-item"
 						href="#">길 찾기</a>
@@ -227,6 +236,68 @@ div#dropZone {
 
 		</div>
 		<!-- 컨트롤러 관련 div 끝 -->
+
+
+		<script>
+			const showCkList = ()=>{
+				
+				//e.preventDefault();
+				$("#ckList").modal('show');
+				
+			}
+		</script>
+
+		<!-- Modal : 체크 리스트 -->
+		<div class="modal fade" id="ckList" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalCenterTitle"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">나의 체크 리스트</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+					
+						<div class="ck-title-container">
+							나만의 여행 체크리스트를 확인해보세요
+						</div>
+						<div class="ck-content-container" style="margin-top:30px;">
+							<button class="btn btn-primary" type="button"
+								data-toggle="collapse" data-target="#collapseExample"
+								aria-expanded="false" aria-controls="collapseExample">
+								준비물
+							</button>
+							<div class="collapse" id="collapseExample">
+								<div class="ckbox-main-container card card-body">
+									<div class="add-btn-container" style="display:flex;">
+									이번 여행에 필요한 준비물은 무엇이 있나요?
+									<button type="button" class="btn btn-primary btn-sm" onclick="addCkBox();">추가하기</button>
+									</div>
+									<div class="ckbox-container input-group mb-3">
+										<div class="input-group-prepend">
+											<div class="input-group-text">
+												<input class="check-ck" type="checkbox" aria-label="Checkbox for following text input">
+											</div>
+										</div>
+										<input type="text" class="form-control"
+											aria-label="Text input with checkbox">
+									</div>
+								</div>
+							</div>
+						</div>
+					
+					
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary">저장하기</button>
+						<button type="button" class="btn btn-primary">엑셀로 다운받기</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 		<!-- Modal : 좋아요 -->
@@ -259,8 +330,7 @@ div#dropZone {
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content" style="">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLongTitle">리스트에 추가된
-							장소</h5>
+						<h5 class="modal-title" id="exampleModalLongTitle">리스트에 추가된 장소</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -323,9 +393,78 @@ div#dropZone {
 
 
 	</section>
+	
 
 
 	<script>
+	//나의 도구들 > 체크 리스트 구성하기 ====================================================================================================================
+	
+	const addCkBox = ()=>{
+		
+		const mainContainer = document.getElementsByClassName("ckbox-main-container")[0];
+		
+		//0. 체크박스 세트 컨테이너 만들기
+		const container = document.createElement("div");
+		container.classList.add("ckbox-container");
+		container.classList.add("input-group");
+		container.classList.add("mb-3");
+		
+		//1. 체크박스 만들기
+		const divBox = document.createElement("div");
+		divBox.classList.add("input-group-prepend");
+		
+		const grayBox = document.createElement("div");
+		grayBox.classList.add("input-group-text");
+		
+		
+		const ckBox = document.createElement("input");
+		ckBox.classList.add("check-ck");
+		ckBox.setAttribute("type","checkbox");
+		ckBox.setAttribute("aria-label","Checkbox for following text input");
+		
+		divBox.append(grayBox);
+		grayBox.append(ckBox);
+		container.append(divBox);
+		
+		//2. input박스 만들기
+		const inputBox = document.createElement("input");
+		inputBox.setAttribute("type","text");
+		inputBox.classList.add("form-control");
+		inputBox.setAttribute("aria-label","Text input with checkbox");
+		
+		container.append(inputBox);
+		mainContainer.append(container);
+
+
+		
+	}
+	
+	//체크박스 체크 시 글자에 선 긋기
+	//TODO0825) 저장 관련 작업은 데이터베이스 서버 재배정되면 재개할 것
+	const ckBoxSet = document.getElementsByClassName("check-ck");
+	console.log("체크 박스 몇 개? : ",ckBoxSet.length);
+	
+	for(let i=0;i<ckBoxSet.length;i++){
+		
+		ckBoxSet[i].addEventListener("change",e=>{
+			
+			let targetText = e.target.parentElement.parentElement.nextElementSibling;
+			
+			if(e.target.checked){ //체크된다면
+				
+				targetText.style.textDecorationLine='line-through'; //취소선 그리기
+				
+			} else {
+				targetText.style.textDecorationLine=''; //취소선 삭제하기
+			}
+
+		})
+	
+	}
+	
+
+	
+	
 	//플래너 기본 구성 관련 함수들 ===========================================================================================================================
 		
 		(()=>{
