@@ -139,6 +139,14 @@ div#dropZone {
 .add-btn-container{
 	margin-bottom : 10px;
 }
+.weather-table th{
+	vertical-align:middle;
+	text-align:center;
+}
+.weather-table td{
+	vertical-align:middle;
+	text-align:center;
+}
 
 </style>
 
@@ -229,7 +237,7 @@ div#dropZone {
 						class="dropdown-item" href="#">나의 그룹</a> <a class="dropdown-item"
 						href="#" onclick="showCkList();">나의 체크 리스트</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">날씨</a> <a class="dropdown-item"
+					<a class="dropdown-item" href="#" onclick="ckWeather();">날씨</a> <a class="dropdown-item"
 						href="#">길 찾기</a>
 				</div>
 			</div>
@@ -389,6 +397,115 @@ div#dropZone {
 		    </div>
 		  </div>
 		</div>
+		
+		<!-- Modal : 날씨 관련 -->
+		<div class="modal fade" id="checkWeather" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:900px;">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLongTitle">날씨 예보</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        ※ 기상청 제공 : 중기 예보 <br> (금일로부터 최대 10일 이후까지의 날씨 예보를 확인해보세요)
+		        <br>
+		        <div class="weather-title-container" style="display:flex; float:right;">
+			        <p style="margin-bottom:0px;">기상예보 발표일시 : </p>
+			        <div id="todayDate">
+			        	<!-- 오늘의 날씨가 출력될 영역 -->
+			        </div>		        
+		        </div>
+		        <div class="weather-info-container">
+
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="inputGroupSelect01">지역</label>
+						</div>
+						<select class="custom-select" id="weatherArea" onclick="createAreaOption();">
+							<option selected disabled>-- 선택 --</option>
+							<option value="1">서울/인천/경기도</option>
+							<option value="2">부산.울산.경상남도</option>
+							<option value="3">대구.경상북도</option>
+							<option value="4">광주.전라남도</option>
+							<option value="5">전라북도</option>
+							<option value="6">대전.세종.충청남도</option>
+							<option value="7">충청북도</option>
+							<option value="8">강원도</option>
+							<option value="9">제주도</option>
+						</select> 
+						<select
+							class="custom-select sigungu-class"
+							name="sigunguCode" id="weatherArea2" required>
+							<option value="0" selected disabled>-- 선택 --</option>
+						</select>
+					</div>
+					<div class="weathet-btn-container" style="float:right;margin-bottom:10px;">
+						<button type="button" class="btn btn-primary btn-sm" onclick="weatherInfo();">선택한 지역의 날씨 확인하기</button>
+					</div>
+				</div>
+				<!-- 표 형식으로 구성하기 -->
+		        <div class="weather-table-container" style="display:none;">
+
+
+					<table class="weather-table table table-bordered">
+						<tbody>
+						<!-- <thead> -->
+							<tr>
+								<th scope="col" colspan=2 style="text-align:center;vertical-align:middle;">3일 후</th>
+								<th scope="col" colspan=2 style="text-align:center;vertical-align:middle;">4일 후</th>
+								<th scope="col" colspan=2 style="text-align:center;vertical-align:middle;">5일 후</th>
+								<th scope="col" colspan=2>6일 후</th>
+								<th scope="col" colspan=2>7일 후</th>
+								<th scope="col" rowspan=2>8일 후</th>
+								<th scope="col" rowspan=2>9일 후</th>
+								<th scope="col" rowspan=2>10일 후</th>
+							</tr>
+						<!-- </thead> -->
+<!-- 						<tbody> -->
+							<tr>
+							    <td>오전</td>
+							    <td>오후</td>
+							    <td>오전</td>
+							    <td>오후</td>
+							    <td>오전</td>
+							    <td>오후</td>
+							    <td>오전</td>
+							    <td>오후</td>
+							    <td>오전</td>
+							    <td>오후</td>
+							</tr>
+							<tr>
+							    <td>오전날씨</td>
+							    <td>오후날씨</td>
+							    <td>오전날씨</td>
+							    <td>오후날씨</td>
+							    <td>오전날씨</td>
+							    <td>오후날씨</td>
+							    <td>오전날씨</td>
+							    <td>오후날씨</td>
+							    <td>오전날씨</td>
+							    <td>오후날씨</td>
+							    <td>날씨</td>
+							    <td>날씨</td>
+							    <td>날씨</td>
+						    </tr>
+<!-- 						</tbody> -->
+							</tbody>
+					</table>
+							
+				</div>
+		        
+		        
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary">Save changes</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
 
 
@@ -397,6 +514,182 @@ div#dropZone {
 
 
 	<script>
+	
+	//나의 도구들 > 날씨 정보 ====================================
+	
+	function getToday(){ //오늘 날짜 yyyyMMdd0600 형식으로 가져오기
+		
+		let date = new Date();
+		let year = date.getFullYear();
+		let month = ("0"+(1+date.getMonth())).slice(-2);
+		let day = ("0"+date.getDate()).slice(-2);
+		
+		return year+month+day+'0600'; //중기 예보 파악을 위해 06시로 시간 대를 고정함
+		
+	}
+	
+
+	
+	//지역구성하기, 날씨 정보 출력하기
+	const createAreaOption=()=>{
+		
+		//지역옵션생성관련로직
+		const cat1=document.getElementById("weatherArea");
+		const cat2=document.getElementById("weatherArea2");
+		
+		cat1.addEventListener("change",e=>{
+			
+			if(e.target.value==1){//서울,인천,경기도
+				
+				let sudo=["서울","인천","수원","성남","안양","광명","과천","평택","오산","의왕","용인",
+						"군포","안성","화성","양평","구리","남양주","하남","이천","여주","광주","의정부"
+						,"고양","파주","양주","동두천","연천","포천","가평","강화","김포","시흥","부천",
+						"안산","백령도"];
+				let sudoCode=["11B10101","11B20201","11B20601","11B20605","11B20602","11B10103","11B10102","11B20606","11B20603","11B20609","11B20612",
+							"11B20610","11B20611","11B20604","11B20503","11B20501","11B20502","11B20504","11B20701","11B20703","11B20702","11B20301"
+							,"11B20302","11B20305","11B20304","11B20401","11B20402","11B20403","11B20404","11B20101","11B20102","11B20202","11B20204",
+							"11B20203","11A00101"];
+				createOpt(sudo,sudoCode);
+	
+			}
+			
+			if(e.target.value==2){//부산.울산.경상남도
+				
+				let kn=["부산","울산","김해","양산","창원","밀양","함안","창녕","의령","진주","하동","사천",
+						"거창","합천","산청","함양","통영","거제","고성","남해"];
+				let knCode=["11H20201","11H20101","11H20304","11H20102","11H20301","11H20601","11H20603","11H20604","11H20602","11H20701","11H20704","11H20402"
+							,"11H20502","11H20503","11H20703","11H20501","11H20401","11H20403","11H20404","11H20405"];
+				createOpt(kn,knCode);
+			}
+			
+			if(e.target.value==3){//대구.경북
+				
+				let kb=["대구","영천","경산","청도","칠곡","김천","구미","군위","고령","성주","안동","의성","청송","상주","문경","예천","영주","봉화","영양","울진","영덕","포항","경주","울릉도","독도"];
+				let kbCode=["11H10701","11H10702","11H10703","11H10704","11H10705","11H10601","11H10602","11H10603","11H10604","11H10605","11H10501","11H10502","11H10503","11H10302","11H10301","11H10303","11H10401","11H10402","11H10403","11H10101","11H10102","11H10201","11H10202","11E00101","11E00102"];
+				createOpt(kb,kbCode);
+			}
+			
+			if(e.target.value==4){//광주.전남
+				
+				let jn=["광주","나주","장성","담양","화순","영광","함평","목포","무안","영암","진도","신안","흑산도	","순천","광양	"
+					  ,"구례","곡성","완도","강진","장흥","해남","여수","고흥","보성"];
+				let jnCode=["11F20501","11F20503","11F20502","11F20504","11F20505","21F20102","21F20101","21F20801","21F20804","21F20802","21F20201","21F20803","11F20701","11F20603","11F20402"
+						,"11F20601","11F20602","11F20301","11F20303","11F20304","11F20302","11F20401","11F20403","11F20404"];
+				createOpt(jn,jnCode);
+			}
+			if(e.target.value==5){ //전북
+				let jb = ["전주","익산","군산","정읍","김제","남원","고창","무주","부안","순창","완주","임실","장수","진안"];
+				let jbCode = ["11F10201","11F10202","21F10501","11F10203","21F10502","11F10401","21F10601","11F10302","21F10602","11F10403","11F10204","11F10402","11F10301","11F10303"]; 
+				createOpt(jb,jbCode);
+			}
+			if(e.target.value==6){ //대전.세종.충남
+				let cn = ["대전","세종","공주","논산","계룡","금산","천안","아산","예산","서산","태안","당진","홍성","보령","서천","청양","부여"];
+				let cnCode = ["11C20401","11C20404","11C20402","11C20602","11C20403","11C20601","11C20301","11C20302","11C20303","11C20101","11C20102","11C20103","11C20104","11C20201","11C20202","11C20502","11C20501"];
+				createOpt(cn,cnCode);
+			}
+			if(e.target.value==7){ //충북
+				let cb = ["청주","증평","괴산","진천","충주","음성","제천","단양","보은","옥천","영동","추풍령"];
+				let cbCode = ["11C10301","11C10304","11C10303","11C10102","11C10101","11C10103","11C10201","11C10202","11C10302","11C10403","11C10402","11C10401"];
+				createOpt(cb,cbCode);
+			}
+			if(e.target.value==8){ //강원
+				let gw = ["철원","화천","인제","양구","춘천","홍천","원주","횡성","영월","정선","평창","대관령","속초","고성","양양","강릉","동해","삼척","태백"];
+				let gwCode = ["11D10101","11D10102","11D10201","11D10202","11D10301","11D10302","11D10401","11D10402","11D10501","11D10502","11D10503","11D20201","11D20401","11D20402","11D20403","11D20501","11D20601","11D20602","11D20301"]; 
+				createOpt(gw,gwCode);
+			}
+			if(e.target.value==9){ //제주
+				let jj = ["제주","서귀포","성산","고산","성판악","이어도","추자도"];
+				let jjCode = ["11G00201","11G00401","11G00101","11G00501","11G00302","11G00601","11G00800"];
+				createOpt(jj,jjCode);
+			}
+			
+			
+		});
+		
+		
+		function createOpt(cat, catCode){
+			
+			cat2.innerHTML = ""; //select 옵션 영역 초기화
+			
+			for(let i=0;i<cat.length;i++){ //option 생성하기
+				
+				let opt = document.createElement("option");
+				opt.innerText = cat[i];
+				opt.value = catCode[i];
+				cat2.appendChild(opt);
+				
+			}
+			
+			
+		}
+	
+	}
+	
+	const weatherInfo = () => {
+		
+		const table = document.getElementsByClassName("weather-table-container")[0];
+		
+		if(table.style.display="none"){
+			table.style.display="block";
+		} else {
+			table.style.display="none";
+		}
+		
+		//선택한 지역 코드 가져오기
+		let areaCode = document.getElementById("weatherArea2").value;
+		//alert(areaCode);
+		
+		//오늘 날짜 가져오기
+		//TODO 0826) 만약에 클라이언트가 당일 오전 6시 이전에 날씨를 확인할 경우... 예외 처리하기
+		let today = getToday();
+		
+		//기상청API 활용하기
+		
+		const url = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst"
+			        +"?serviceKey=elB%2BRI1Qb32rIFvCv63J%2FI7Tc7CNydheC6%2BgTHJNP3TAiREJhR6WkEu5GXN8OGWj9Fcwzdvw7z72B6hQRKHdGw%3D%3D"
+					+"&pageNo=1"
+					+"&numOfRows=10"
+					+"&dataType=JSON"
+					+"&regId="+areaCode
+					+"&tmFc="today;
+			
+		fetch(url)
+		.then(res=>res.json())
+		.then(myJson=>{
+			console.log("날씨",myJson.response.body.items.item[0]); //유효한 정보 가져오기
+		})
+		
+		
+		
+	}
+	
+	
+		
+	const ckWeather = ()=>{ //기상청 중기예보 API 활용하기
+		
+		//모달 열기
+		$('#checkWeather').modal('show');
+	
+		//오늘의 날짜
+		const today = document.getElementById("todayDate");
+		console.log("오늘 날짜 : ",getToday());
+		today.innerText = getToday();
+		
+		//날씨 관련 변수들
+		//1. 지역 옵션		
+		//console.log("지역 코드 확인 : ",areaCode);
+		
+		
+		
+		//table형식으로 출력할 것
+		
+
+		
+		
+		
+	}	
+	
+	
 	//나의 도구들 > 체크 리스트 구성하기 ====================================================================================================================
 	
 	const addCkBox = ()=>{
