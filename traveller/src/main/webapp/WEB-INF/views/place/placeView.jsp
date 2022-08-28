@@ -151,7 +151,7 @@ button#routeBtn{
 			  headers: {
 			    'Content-Type': 'application/json',
 			  },
-			  body: JSON.stringify({"contentId":id}),
+			  body: JSON.stringify({"":id}),
 			})
 			.then((response) => response.json())
 			.then((data) => {
@@ -236,7 +236,7 @@ button#routeBtn{
  	}
  
  	//장소 관련 상세 정보 --------------------------------------------------------------
- 	console.log(id); //contentId 토대로 공공API에서 관련 상세 정보 글 가져오기
+ 	console.log(id); // 토대로 공공API에서 관련 상세 정보 글 가져오기
  	
 	const url = "https://apis.data.go.kr/B551011/KorService/detailCommon?serviceKey=elB%2BRI1Qb32rIFvCv63J%2FI7Tc7CNydheC6%2BgTHJNP3TAiREJhR6WkEu5GXN8OGWj9Fcwzdvw7z72B6hQRKHdGw%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&contentId=${contentId}&contentTypeId=12&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y";
 	//fetch(url).then(res=>console.log(res));

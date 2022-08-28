@@ -147,6 +147,14 @@ div#dropZone {
 	vertical-align:middle;
 	text-align:center;
 }
+.daysColumn th{
+	background-color:black;
+	color:white;
+}
+.timeColumn td{
+	background-color:#a0a0a0;
+	color:black;
+}
 
 </style>
 
@@ -237,8 +245,8 @@ div#dropZone {
 						class="dropdown-item" href="#">나의 그룹</a> <a class="dropdown-item"
 						href="#" onclick="showCkList();">나의 체크 리스트</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#" onclick="ckWeather();">날씨</a> <a class="dropdown-item"
-						href="#">길 찾기</a>
+					<a class="dropdown-item" href="#" onclick="ckWeather();">날씨</a> 
+<!-- 					<a class="dropdown-item" href="#">길 찾기</a> -->
 				</div>
 			</div>
 
@@ -400,10 +408,10 @@ div#dropZone {
 		
 		<!-- Modal : 날씨 관련 -->
 		<div class="modal fade" id="checkWeather" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:900px;">
+		  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px;">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLongTitle">날씨 예보</h5>
+		        <h5 class="modal-title" id="exampleModalLongTitle" style="font-weight:500">날씨 예보</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
@@ -425,6 +433,20 @@ div#dropZone {
 						</div>
 						<select class="custom-select" id="weatherArea" onclick="createAreaOption();">
 							<option selected disabled>-- 선택 --</option>
+							<option value="11B00000">서울/인천/경기도</option>
+							<option value="11H20000">부산.울산.경상남도</option>
+							<option value="11H10000">대구.경상북도</option>
+							<option value="11F20000">광주.전라남도</option>
+							<option value="11F10000">전라북도</option>
+							<option value="11C20000">대전.세종.충청남도</option>
+							<option value="11C10000">충청북도</option>
+							<option value="11D10000">강원도 영서</option>
+							<option value="11D20000">강원도 영동</option>
+							<option value="11G00000">제주도</option>
+						</select> 
+						<!-- 0828 중기육상예보 관련 지역 옵션이 다음과 같이 세분화되지 않음을 확인 -->
+<!-- 						<select class="custom-select" id="weatherArea" onclick="createAreaOption();">
+							<option selected disabled>-- 선택 --</option>
 							<option value="1">서울/인천/경기도</option>
 							<option value="2">부산.울산.경상남도</option>
 							<option value="3">대구.경상북도</option>
@@ -434,7 +456,7 @@ div#dropZone {
 							<option value="7">충청북도</option>
 							<option value="8">강원도</option>
 							<option value="9">제주도</option>
-						</select> 
+						</select>  -->
 						<select
 							class="custom-select sigungu-class"
 							name="sigunguCode" id="weatherArea2" required>
@@ -451,20 +473,17 @@ div#dropZone {
 
 					<table class="weather-table table table-bordered">
 						<tbody>
-						<!-- <thead> -->
-							<tr>
-								<th scope="col" colspan=2 style="text-align:center;vertical-align:middle;">3일 후</th>
-								<th scope="col" colspan=2 style="text-align:center;vertical-align:middle;">4일 후</th>
-								<th scope="col" colspan=2 style="text-align:center;vertical-align:middle;">5일 후</th>
-								<th scope="col" colspan=2>6일 후</th>
-								<th scope="col" colspan=2>7일 후</th>
-								<th scope="col" rowspan=2>8일 후</th>
-								<th scope="col" rowspan=2>9일 후</th>
-								<th scope="col" rowspan=2>10일 후</th>
+							<tr class="daysColumn">
+								<th id="day3" scope="col" colspan=2 style="text-align:center;vertical-align:middle;">3일 후</th>
+								<th id="day4"  scope="col" colspan=2 style="text-align:center;vertical-align:middle;">4일 후</th>
+								<th id="day5"  scope="col" colspan=2 style="text-align:center;vertical-align:middle;">5일 후</th>
+								<th id="day6"  scope="col" colspan=2>6일 후</th>
+								<th id="day7"  scope="col" colspan=2>7일 후</th>
+								<th id="day8"  scope="col" rowspan=2>8일 후</th>
+								<th id="day9"  scope="col" rowspan=2>9일 후</th>
+								<th id="day10"  scope="col" rowspan=2>10일 후</th>
 							</tr>
-						<!-- </thead> -->
-<!-- 						<tbody> -->
-							<tr>
+							<tr class="timeColumn">
 							    <td>오전</td>
 							    <td>오후</td>
 							    <td>오전</td>
@@ -476,22 +495,39 @@ div#dropZone {
 							    <td>오전</td>
 							    <td>오후</td>
 							</tr>
+							<!-- 중기육상예보조회 -->
 							<tr>
-							    <td>오전날씨</td>
-							    <td>오후날씨</td>
-							    <td>오전날씨</td>
-							    <td>오후날씨</td>
-							    <td>오전날씨</td>
-							    <td>오후날씨</td>
-							    <td>오전날씨</td>
-							    <td>오후날씨</td>
-							    <td>오전날씨</td>
-							    <td>오후날씨</td>
-							    <td>날씨</td>
-							    <td>날씨</td>
-							    <td>날씨</td>
+							    <td id="wf3Am">오전날씨</td>
+							    <td id="wf3Pm">오후날씨</td>
+							    <td id="wf4Am">오전날씨</td>
+							    <td id="wf4Pm">오후날씨</td>
+							    <td id="wf5Am">오전날씨</td>
+							    <td id="wf5Pm">오후날씨</td>
+							    <td id="wf6Am">오전날씨</td>
+							    <td id="wf6Pm">오후날씨</td>
+							    <td id="wf7Am">오전날씨</td>
+							    <td id="wf7Pm">오후날씨</td>
+							    <td id="wf8">날씨</td>
+							    <td id ="wf9">날씨</td>
+							    <td id="wf10">날씨</td>
 						    </tr>
-<!-- 						</tbody> -->
+						    
+						    <tr>
+						    	<td colspan=20 style="text-align:left;">최저/최고기온(℃)</td>
+						    </tr>
+						    
+						    <!-- 중기기온조회 -->
+						    <tr>
+						    	<td id="ta3" colspan=2></td>			    
+						    	<td id="ta4" colspan=2></td>			    
+						    	<td id="ta5" colspan=2></td>			    
+						    	<td id="ta6" colspan=2></td>			    
+						    	<td id="ta7" colspan=2></td>			    
+						    	<td id="ta8" ></td>			    
+						    	<td id="ta9" ></td>			    
+						    	<td id="ta10" ></td>			    
+						    </tr>
+						    
 							</tbody>
 					</table>
 							
@@ -499,11 +535,11 @@ div#dropZone {
 		        
 		        
 		      </div>
-		      <div class="modal-footer">
+<!-- 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 		        <button type="button" class="btn btn-primary">Save changes</button>
-		      </div>
-		    </div>
+		      </div> 
+		    </div> -->
 		  </div>
 		</div>
 
@@ -539,7 +575,7 @@ div#dropZone {
 		
 		cat1.addEventListener("change",e=>{
 			
-			if(e.target.value==1){//서울,인천,경기도
+			if(e.target.value=='11B00000'){//서울,인천,경기도
 				
 				let sudo=["서울","인천","수원","성남","안양","광명","과천","평택","오산","의왕","용인",
 						"군포","안성","화성","양평","구리","남양주","하남","이천","여주","광주","의정부"
@@ -553,7 +589,7 @@ div#dropZone {
 	
 			}
 			
-			if(e.target.value==2){//부산.울산.경상남도
+			if(e.target.value=='11H20000'){//부산.울산.경상남도
 				
 				let kn=["부산","울산","김해","양산","창원","밀양","함안","창녕","의령","진주","하동","사천",
 						"거창","합천","산청","함양","통영","거제","고성","남해"];
@@ -562,14 +598,14 @@ div#dropZone {
 				createOpt(kn,knCode);
 			}
 			
-			if(e.target.value==3){//대구.경북
+			if(e.target.value=='11H10000'){//대구.경북
 				
 				let kb=["대구","영천","경산","청도","칠곡","김천","구미","군위","고령","성주","안동","의성","청송","상주","문경","예천","영주","봉화","영양","울진","영덕","포항","경주","울릉도","독도"];
 				let kbCode=["11H10701","11H10702","11H10703","11H10704","11H10705","11H10601","11H10602","11H10603","11H10604","11H10605","11H10501","11H10502","11H10503","11H10302","11H10301","11H10303","11H10401","11H10402","11H10403","11H10101","11H10102","11H10201","11H10202","11E00101","11E00102"];
 				createOpt(kb,kbCode);
 			}
 			
-			if(e.target.value==4){//광주.전남
+			if(e.target.value=='11F20000'){//광주.전남
 				
 				let jn=["광주","나주","장성","담양","화순","영광","함평","목포","무안","영암","진도","신안","흑산도	","순천","광양	"
 					  ,"구례","곡성","완도","강진","장흥","해남","여수","고흥","보성"];
@@ -577,27 +613,27 @@ div#dropZone {
 						,"11F20601","11F20602","11F20301","11F20303","11F20304","11F20302","11F20401","11F20403","11F20404"];
 				createOpt(jn,jnCode);
 			}
-			if(e.target.value==5){ //전북
+			if(e.target.value=='11F10000'){ //전북
 				let jb = ["전주","익산","군산","정읍","김제","남원","고창","무주","부안","순창","완주","임실","장수","진안"];
 				let jbCode = ["11F10201","11F10202","21F10501","11F10203","21F10502","11F10401","21F10601","11F10302","21F10602","11F10403","11F10204","11F10402","11F10301","11F10303"]; 
 				createOpt(jb,jbCode);
 			}
-			if(e.target.value==6){ //대전.세종.충남
+			if(e.target.value=='11C20000'){ //대전.세종.충남
 				let cn = ["대전","세종","공주","논산","계룡","금산","천안","아산","예산","서산","태안","당진","홍성","보령","서천","청양","부여"];
 				let cnCode = ["11C20401","11C20404","11C20402","11C20602","11C20403","11C20601","11C20301","11C20302","11C20303","11C20101","11C20102","11C20103","11C20104","11C20201","11C20202","11C20502","11C20501"];
 				createOpt(cn,cnCode);
 			}
-			if(e.target.value==7){ //충북
+			if(e.target.value=='11C10000'){ //충북
 				let cb = ["청주","증평","괴산","진천","충주","음성","제천","단양","보은","옥천","영동","추풍령"];
 				let cbCode = ["11C10301","11C10304","11C10303","11C10102","11C10101","11C10103","11C10201","11C10202","11C10302","11C10403","11C10402","11C10401"];
 				createOpt(cb,cbCode);
 			}
-			if(e.target.value==8){ //강원
+			if(e.target.value=='11D10000'||e.target.value=='11D20000'){ //강원
 				let gw = ["철원","화천","인제","양구","춘천","홍천","원주","횡성","영월","정선","평창","대관령","속초","고성","양양","강릉","동해","삼척","태백"];
 				let gwCode = ["11D10101","11D10102","11D10201","11D10202","11D10301","11D10302","11D10401","11D10402","11D10501","11D10502","11D10503","11D20201","11D20401","11D20402","11D20403","11D20501","11D20601","11D20602","11D20301"]; 
 				createOpt(gw,gwCode);
 			}
-			if(e.target.value==9){ //제주
+			if(e.target.value=='11G00000'){ //제주
 				let jj = ["제주","서귀포","성산","고산","성판악","이어도","추자도"];
 				let jjCode = ["11G00201","11G00401","11G00101","11G00501","11G00302","11G00601","11G00800"];
 				createOpt(jj,jjCode);
@@ -627,6 +663,33 @@ div#dropZone {
 	
 	const weatherInfo = () => {
 		
+		
+		//선택하지 않은 경우, 알림창!
+		let flag = document.getElementById("weatherArea").value;
+		console.log("flag? ",flag);
+		if(flag=='-- 선택 --'){
+			alert('먼저 지역을 선택해주세요');
+			table.style.display="none";
+		}
+		
+
+		//일자 출력하기
+		for(let i=3;i<=10;i++){
+			
+			let todayDate = new Date();
+			let addDay = new Date();
+			
+			todayDate.setDate(addDay.getDate()+i);
+			
+			document.getElementById("day"+i).innerText 
+			//= todayDate.toLocaleString();
+			= todayDate.getMonth()+1+"/"+todayDate.getDate();
+			
+		}
+		
+		
+		//---------------------------------------------------------------------------
+		
 		const table = document.getElementsByClassName("weather-table-container")[0];
 		
 		if(table.style.display="none"){
@@ -636,28 +699,97 @@ div#dropZone {
 		}
 		
 		//선택한 지역 코드 가져오기
-		let areaCode = document.getElementById("weatherArea2").value;
-		//alert(areaCode);
+		let areaCode = document.getElementById("weatherArea").value;
 		
 		//오늘 날짜 가져오기
 		//TODO 0826) 만약에 클라이언트가 당일 오전 6시 이전에 날씨를 확인할 경우... 예외 처리하기
 		let today = getToday();
+		console.log("날짜 확인하기 : ",getToday());
 		
 		//기상청API 활용하기
-		
+		//1. 중기육상예보 조회
 		const url = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst"
 			        +"?serviceKey=elB%2BRI1Qb32rIFvCv63J%2FI7Tc7CNydheC6%2BgTHJNP3TAiREJhR6WkEu5GXN8OGWj9Fcwzdvw7z72B6hQRKHdGw%3D%3D"
 					+"&pageNo=1"
 					+"&numOfRows=10"
 					+"&dataType=JSON"
 					+"&regId="+areaCode
-					+"&tmFc="today;
+					+"&tmFc="+today;
 			
 		fetch(url)
 		.then(res=>res.json())
 		.then(myJson=>{
 			console.log("날씨",myJson.response.body.items.item[0]); //유효한 정보 가져오기
-		})
+			//console.log("날씨",myJson); //유효한 정보 가져오기
+			
+			//3일 후
+			document.getElementById("wf3Am").innerText = myJson.response.body.items.item[0].wf3Am;
+			document.getElementById("wf3Am").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt3Am+"%";
+			document.getElementById("wf3Pm").innerText = myJson.response.body.items.item[0].wf3Pm;
+			document.getElementById("wf3Pm").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt3Pm+"%";
+			//4일 후
+			document.getElementById("wf4Am").innerText = myJson.response.body.items.item[0].wf4Am;
+			document.getElementById("wf4Am").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt4Am+"%";
+			document.getElementById("wf4Pm").innerText = myJson.response.body.items.item[0].wf4Pm;
+			document.getElementById("wf4Pm").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt4Pm+"%";
+			//5일 후
+			document.getElementById("wf5Am").innerText = myJson.response.body.items.item[0].wf5Am;
+			document.getElementById("wf5Am").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt5Am+"%";
+			document.getElementById("wf5Pm").innerText = myJson.response.body.items.item[0].wf5Pm;
+			document.getElementById("wf5Pm").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt5Pm+"%";
+			//6일 후
+			document.getElementById("wf6Am").innerText = myJson.response.body.items.item[0].wf6Am;
+			document.getElementById("wf6Am").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt6Am+"%";
+			document.getElementById("wf6Pm").innerText = myJson.response.body.items.item[0].wf6Pm;
+			document.getElementById("wf6Pm").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt6Pm+"%";
+			//7일 후
+			document.getElementById("wf7Am").innerText = myJson.response.body.items.item[0].wf7Am;
+			document.getElementById("wf7Am").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt7Am+"%";
+			document.getElementById("wf7Pm").innerText = myJson.response.body.items.item[0].wf7Pm;
+			document.getElementById("wf7Pm").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt7Pm+"%";
+			//8일 후
+			document.getElementById("wf8").innerText = myJson.response.body.items.item[0].wf8;
+			document.getElementById("wf8").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt8+"%";
+			//9일 후
+			document.getElementById("wf9").innerText = myJson.response.body.items.item[0].wf9;
+			document.getElementById("wf9").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt9+"%";
+			//10일 후
+			document.getElementById("wf10").innerText = myJson.response.body.items.item[0].wf9;
+			document.getElementById("wf10").innerHTML += "<br>"+myJson.response.body.items.item[0].rnSt9+"%";
+
+			
+			
+			
+		});
+		
+		//2. 중기기온조회 (세분화된 범주 필요) ---------------------------------------------------------------------
+		
+		let areaCode2 = document.getElementById("weatherArea2").value;
+		
+/* 		const urlforTemp = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?"
+							+"serviceKey=elB%2BRI1Qb32rIFvCv63J%2FI7Tc7CNydheC6%2BgTHJNP3TAiREJhR6WkEu5GXN8OGWj9Fcwzdvw7z72B6hQRKHdGw%3D%3D"
+							+"&pageNo=1&numOfRows=10&dataType=JSON"
+							+"&regId="+areaCode2;
+							+"&tmFc="+today; */
+		
+		const urlforTemp = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=elB%2BRI1Qb32rIFvCv63J%2FI7Tc7CNydheC6%2BgTHJNP3TAiREJhR6WkEu5GXN8OGWj9Fcwzdvw7z72B6hQRKHdGw%3D%3D&pageNo=1&numOfRows=10&dataType=JSON&"
+						   +"regId="+areaCode2
+						   +"&tmFc="+today;
+		
+		fetch(urlforTemp)
+		.then(res=>res.json())
+		.then(data=>{
+			
+			console.log("중기기온조회 : ",data.response.body.items.item[0]);
+			
+			for(let i=3;i<=10;i++){
+				
+				let temp = data.response.body.items.item[0];
+				document.getElementById("ta"+i).innerHTML = "<span style='color:blue;'>"+temp[("taMin"+i)]+"</span> / <span style='color:red;'>"+temp[("taMax"+i)]+"</span>";
+				
+			}
+			
+		});
 		
 		
 		
@@ -674,19 +806,7 @@ div#dropZone {
 		const today = document.getElementById("todayDate");
 		console.log("오늘 날짜 : ",getToday());
 		today.innerText = getToday();
-		
-		//날씨 관련 변수들
-		//1. 지역 옵션		
-		//console.log("지역 코드 확인 : ",areaCode);
-		
-		
-		
-		//table형식으로 출력할 것
-		
 
-		
-		
-		
 	}	
 	
 	
