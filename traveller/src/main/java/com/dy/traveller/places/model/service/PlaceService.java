@@ -38,4 +38,8 @@ public interface PlaceService {
 
 	Likes insertLikes(Map<String, Object> param);
 
+	int insertLikesInfo(Map<String, String> param);
+
+	List<Likes> selectLikes(Likes likes);
+
 }

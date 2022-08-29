@@ -43,4 +43,8 @@ public interface PlaceDao {
 
 	int insertLikes(SqlSessionTemplate session, Map<String, Object> param);
 
+	int insertLikesInfo(SqlSessionTemplate session, Map<String, String> param);
+
+	List<Likes> selectLikes(SqlSessionTemplate session, Likes likes);
+
 }

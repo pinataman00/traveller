@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.dy.traveller.places.model.dao.PlaceDao;
 import com.dy.traveller.places.model.vo.Likes;
+import com.dy.traveller.places.model.vo.LikesInfo;
 import com.dy.traveller.places.model.vo.Place;
 import com.dy.traveller.places.model.vo.Proposal;
 
@@ -125,6 +126,16 @@ public class PlaceServiceImpl implements PlaceService {
 			
 		} else return Likes.builder().build();
 			
+	}
+
+	@Override
+	public int insertLikesInfo(Map<String, String> param) {
+		return dao.insertLikesInfo(session,param);
+	}
+
+	@Override
+	public List<Likes> selectLikes(Likes likes) {
+		return dao.selectLikes(session,likes);
 	}
 
 }

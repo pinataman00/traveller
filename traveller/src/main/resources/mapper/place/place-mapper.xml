@@ -120,4 +120,15 @@
 		</selectKey>
 	</insert>
 
+	<insert id="insertLikesInfo" parameterType="likesInfo">
+		INSERT INTO LIKES_INFO VALUES ('L'||SEQ_LIKESINFO.NEXTVAL, #{likesId}, #{contentId})
+	</insert>
+	
+	<select id="selectLikes" parameterType="likes" resultMap="likesMap">
+		SELECT * FROM LIKES_INFO I
+				      JOIN LIKES L
+				      USING(LIKES_ID)
+				 WHERE L.MEMBER_ID=#{memberId}
+	</select>
+
 </mapper>

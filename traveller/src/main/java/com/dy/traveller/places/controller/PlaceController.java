@@ -3,6 +3,7 @@ package com.dy.traveller.places.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import com.dy.traveller.member.model.service.MemberService;
 import com.dy.traveller.member.model.vo.Member;
 import com.dy.traveller.places.model.service.PlaceService;
 import com.dy.traveller.places.model.vo.Likes;
+import com.dy.traveller.places.model.vo.LikesInfo;
 import com.dy.traveller.places.model.vo.Place;
 import com.dy.traveller.places.model.vo.Proposal;
 import com.dy.traveller.places.model.vo.Proposalimg;
@@ -350,8 +352,55 @@ public class PlaceController {
 		  return res;
 		  
 	  }
+	  
+	  @RequestMapping("/saveLikes.do")
+	  @ResponseBody
+	  public LikesInfo saveLikes(@RequestBody Map<String,String> param) {
+		  
+		  //System.out.println("좋아요LIKES_INFO테이블에 추가할 것 : "+param);
+		  
+		  int res = service.insertLikesInfo(param);
+		  
+		  if(res>0) {
+			
+			  System.out.println("좋아요 추가 성공!!!");
+			  
+			  String contentId = param.get("contentId");
+			  String likesId = param.get("likesId");
+			  
+			  return LikesInfo.builder().contentId(contentId).likesId(likesId).build();
+			  
+		  } else {
+			  System.out.println("좋아요 추가 실패!!!");
+			  return new LikesInfo();
+		  }
+		  
+	  }
 	 
 	
+	  @RequestMapping("/searchHeart.do")
+	  @ResponseBody
+	  public List<String> searchHeart(@RequestBody Likes likes) {
+		  
+		  //System.out.println("하트 데이터 가져오기 : "+likes);
+		  
+		  List<Likes> res = service.selectLikes(likes);
+		  //List<String> res = service.selectLikes(likes);
+		  //System.out.println("데이터 가져왔니? "+res.size());
+		  //System.out.println("가져온 데이터 보여줘 "+res);
+
+		  List<String> list = new ArrayList();
+		  
+		  for (Likes l : res) {
+			  for(LikesInfo info : l.getList()) {
+				  //System.out.println("콘텐츠 아이디 확인 : "+info.getContentId());
+				  list.add(info.getContentId()); //리스트에 콘텐츠 아이디 추가하기
+			  }
+		  }
+		  
+		  return list;
+	  
+	  }
 	
 	
 }

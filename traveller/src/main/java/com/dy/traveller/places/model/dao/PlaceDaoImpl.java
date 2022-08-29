@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.dy.traveller.places.model.vo.Likes;
+import com.dy.traveller.places.model.vo.LikesInfo;
 import com.dy.traveller.places.model.vo.Place;
 import com.dy.traveller.places.model.vo.Proposal;
 import com.dy.traveller.places.model.vo.Proposalimg;
@@ -103,6 +104,17 @@ public class PlaceDaoImpl implements PlaceDao {
 	public int insertLikes(SqlSessionTemplate session, Map<String, Object> param) {
 		
 		return session.insert("place.insertLikes",param);
+	}
+
+	@Override
+	public int insertLikesInfo(SqlSessionTemplate session, Map<String, String> param) {
+		return session.insert("place.insertLikesInfo",param);
+	}
+
+	@Override
+	public List<Likes> selectLikes(SqlSessionTemplate session, Likes likes) {
+		
+		return session.selectList("place.selectLikes",likes);
 	}
 
 }
