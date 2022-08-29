@@ -490,7 +490,7 @@ button#addCat{
         	<input type="hidden" id="placeCode"> 
         	<select id="catList"
 				class="custom-select custom-select-sm">
-				<option selected>나만의 '좋아요' 목록 추가하기</option>
+				<option selected disabled>나만의 '좋아요' 목록 추가하기</option>
 				<!-- 출력 예시 -->
 				<!-- 0823) 좋아요 카테고리 추가함 
 					 : LIKES테이블에서 불러오기 -->
@@ -506,7 +506,7 @@ button#addCat{
 					<input id="catTitle" type="text" class="form-control" aria-label="Small"
 						aria-describedby="inputGroup-sizing-sm" placeholder="카테고리 제목을 작성하세요" required>
 				</div>
-				<button type="button" class="btn btn-outline-primary btn-sm" style="float:right;" onclick="addCatagory();">카테고리에 새로 추가하기</button>
+				<button type="button" class="btn btn-outline-primary btn-sm" style="float:right;" onclick="addCatagory();">'좋아요' 항목에 추가하기</button>
 			</span> 
 			
 			
@@ -530,37 +530,41 @@ button#addCat{
 		let title = document.getElementById("catTitle").value;
 		console.log(title);
 		
+		let memberId = "${loginMember.memberId}";
+		console.log("지금 접속 중인 아이디 확인 : ",memberId," 제목 : ",title);
+		
 		//새로운 항목 DB에 저장하기
 		  fetch('${path}/place/addCat.do', {
 		  method: 'POST', 
 		  headers: {
 		    'Content-Type': 'application/json',
 		  },
-		  body: JSON.stringify({"memberId":${loginMember.memberId},"newCat":title}),
+		  body: JSON.stringify({"memberId":memberId,"title":title}),
 		})
 		.then((response) => response.json())
 		.then((data) => {
 		  		
+			alert("카테고리 추가 완료!");
 			console.log(data);
 			//DB에 저장된 '좋아요'항목이 있다면, 불러오기
 			//const list = document.getElementById("catList");
 			//document.createElement("");
 			
 			//DB에 저장하고 화면에 반영하기까지
+			//select의 option에 추가하기
+			const select = document.getElementById("catList");
+			let newOpt = document.createElement("option");
+			newOpt.innerText= data.likesTitle;
+			newOpt.value= data.likesId;
+			select.append(newOpt);
 			
+			//collapse 다시 접기
+			title.innerText = ""; //입력창 초기화
+			document.getElementsByClassName("ok")[0].style.display="block"; //접기
 			
 			
 		});
-		
-		
-		
-		//화면상 리스트에 추가하기
-/* 		let list = document.getElementById("catList");
-		
-		const newCat = document.createElement("option");
-		newCat.value = title;
-		newCat.innerText = title;
-		list.append(newCat); */
+
 		
 		
 		
@@ -763,10 +767,11 @@ button#addCat{
 					.then((response) => response.json())
 					.then((data) => {
 					  		
-						console.log(data);
+						console.log("저장된 좋아요 목록이 있습니까? ",data);
 						//DB에 저장된 '좋아요'항목이 있다면, 불러오기
 						//const list = document.getElementById("catList");
 						//document.createElement("");
+						
 						if(data.length==0){
 							console.log("좋아요 리스트가 없습니다!");
 							/* const list = document.getElementById("catList");
@@ -775,10 +780,18 @@ button#addCat{
 							
 						} else {
 							
+							const select = document.getElementById("catList");
 							//존재하는 경우, select의 option으로서 저장된 리스트의 '항목'들 가져오기
 							data.forEach(e=>{
 								
 								//TODO 0824) 아직은 데이터가 없음. 보류
+								//TODO 0829) DB서버 재연결함. 작업 재개하기
+								console.log("좋아요 리스트 : ",e);
+								
+								let opt = document.createElement("option");
+								opt.innerText = e.likesTitle;
+								opt.value= e.likesId;
+								select.append(opt);
 								
 							});
 						}

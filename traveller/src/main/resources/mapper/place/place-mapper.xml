@@ -54,6 +54,22 @@
 			<result column="uploaddate" property="uploadDate"/>			 
 		</collection>
 	</resultMap>
+	
+	<!-- 0829) LIKES 관련 resultMap만들기 -->
+	<resultMap id="likesMap" type="likes">
+	
+		<!--LIKES객체가 기본적으로 보유한 것-->
+			<id column="likes_id" property="likesId"/>
+			<result column="likes_title" property="likesTitle"/>
+			<result column="member_id" property="memberId"/>
+		<!--has a 관계인 LIKES_INFO객체가 보유한 것-->
+			<collection property="list" ofType="likesInfo">
+				<id column="lcode" property="lcode"/>
+				<result column="likes_id" property="likesId"/>
+				<result column="contentid" property="contentId"/>
+			</collection>
+	</resultMap>
+	
 		
 	<insert id="insertProposal" parameterType="proposal">
 		INSERT INTO PROPOSAL VALUES(#{memberId},'P'||SEQ_PROPOSAL.NEXTVAL,#{title},#{areaCode},#{sigunguCode},#{address},#{cat2},#{mapx},#{mapy},DEFAULT,DEFAULT,#{info})
@@ -96,5 +112,12 @@
 	<select id="getLikes" resultType="likes">
 		SELECT * FROM LIKES WHERE MEMBER_ID=#{memberId}
 	</select>
+	
+	<insert id="insertLikes" parameterType="likes">
+		INSERT INTO LIKES VALUES (SEQ_LIKES.NEXTVAL,#{title},#{memberId})
+		<selectKey keyProperty="likesId" resultType="string" order="AFTER">
+			SELECT SEQ_LIKES.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
 
 </mapper>

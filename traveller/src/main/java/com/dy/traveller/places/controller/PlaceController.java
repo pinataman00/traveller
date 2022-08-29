@@ -331,13 +331,26 @@ public class PlaceController {
 	
 	}
 	
-	/*
-	 * @RequestMapping("/addCat.do") public void addCat(Map<String,String>param) {
-	 * 
-	 * System.out.println("카테고리 추가하기 데이터 확인 : "+param);
-	 * 
-	 * }
-	 */
+	
+	  @RequestMapping("/addCat.do") 
+	  @ResponseBody
+	  public Likes addCat(@RequestBody Map<String,Object> param) {
+	  
+		  System.out.println("카테고리 추가하기 데이터 확인 : "+param);
+		  //memberId, title
+		  
+		  //DB테이블에 해당 데이터를 추가한 이후, 화면에 반영해주는 순으로 로직 구현하기
+		  //LIKES(개괄), LIKES_INFO(상세)
+		 Likes res = service.insertLikes(param);
+		  
+		  if(res.getLikesId()!=null) { //LIKES테이블에 데이터 추가 성공 時
+			  System.out.println("좋아요 목록 추가 성공!");
+		  } else System.out.println("좋아요 목록 추가 실패!");
+	  
+		  return res;
+		  
+	  }
+	 
 	
 	
 	

@@ -36,4 +36,6 @@ public interface PlaceService {
 
 	List<Likes> getLikes(String memberId);
 
+	Likes insertLikes(Map<String, Object> param);
+
 }

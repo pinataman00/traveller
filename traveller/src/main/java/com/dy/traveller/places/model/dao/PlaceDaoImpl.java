@@ -99,4 +99,10 @@ public class PlaceDaoImpl implements PlaceDao {
 		return session.selectList("place.getLikes",memberId);
 	}
 
+	@Override
+	public int insertLikes(SqlSessionTemplate session, Map<String, Object> param) {
+		
+		return session.insert("place.insertLikes",param);
+	}
+
 }

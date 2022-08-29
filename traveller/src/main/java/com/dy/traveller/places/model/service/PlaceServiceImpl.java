@@ -110,4 +110,21 @@ public class PlaceServiceImpl implements PlaceService {
 		return dao.getLikes(session,memberId);
 	}
 
+	@Override
+	public Likes insertLikes(Map<String, Object> param) {
+		
+		int res = 0;
+		res = dao.insertLikes(session,param);
+		
+		if (res>0) {
+			
+			System.out.println("방금 생성된 '좋아요' PK 아이디 : "+param.get("likesId"));			
+			String id = (String)param.get("likesId");
+			String title = (String)param.get("title");
+			return Likes.builder().likesId(id).likesTitle(title).build();
+			
+		} else return Likes.builder().build();
+			
+	}
+
 }
