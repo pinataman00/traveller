@@ -108,6 +108,8 @@
 		<artifactId>spring-boot-starter-websocket</artifactId>
 	</dependency>
 	
+	<!-- 0828 채팅 : STOMP 관련 -->
+	
 		
 	</dependencies>
 

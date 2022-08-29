@@ -25,6 +25,7 @@
 
 	<select id="selectPlace" resultType="place">
 		SELECT * FROM PLACES WHERE CONTENTID=#{contentId}
+		
 	</select>
 	
 	

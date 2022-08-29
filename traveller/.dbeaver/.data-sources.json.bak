@@ -94,7 +94,7 @@
 		"oracle_thin-182d29a3e00-12d293aa28678bfb": {
 			"provider": "oracle",
 			"driver": "oracle_thin",
-			"name": "localhost",
+			"name": "임시0825",
 			"save-password": true,
 			"read-only": false,
 			"configuration": {

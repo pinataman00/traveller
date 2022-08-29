@@ -8,10 +8,10 @@
 			"save-password": true,
 			"read-only": false,
 			"configuration": {
-				"host": "61.78.121.242",
+				"host": "gd1class.iptime.org",
 				"port": "8877",
 				"database": "XE",
-				"url": "jdbc:oracle:thin:@61.78.121.242:8877:XE",
+				"url": "jdbc:oracle:thin:@gd1class.iptime.org:8877:XE",
 				"home": "C:\\app\\pinat\\product\\18.0.0\\dbhomeXE",
 				"type": "dev",
 				"provider-properties": {
@@ -28,7 +28,8 @@
 					"@dbeaver-connection-type@": "BASIC",
 					"@dbeaver-sid-service@": "SID"
 				},
-				"auth-model": "oracle_native"
+				"auth-model": "oracle_native",
+				"handlers": {}
 			}
 		},
 		"oracle_thin-1824e8d6458-53e8890673d4a1c8": {
@@ -118,8 +119,7 @@
 					"@dbeaver-connection-type@": "BASIC",
 					"@dbeaver-sid-service@": "SERVICE"
 				},
-				"auth-model": "oracle_native",
-				"handlers": {}
+				"auth-model": "oracle_native"
 			}
 		}
 	},

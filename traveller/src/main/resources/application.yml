@@ -1,15 +1,16 @@
 server:
-  port: 9090
+  port: 8877
   servlet:
     context-path: /GDJ47_traveller_final
   
 spring:
   datasource: 
-    url: jdbc:oracle:thin:@61.78.121.242:8877:xe
+    url: jdbc:oracle:thin:@gd1class.iptime.org:8877:xe
     driver-class-name: oracle.jdbc.driver.OracleDriver
     username: dy
     password: dydy
     #connection pool설정
+    #임시로 저장함
     hikari:
       minimum-idle: 10
       maximum-pool-size: 50

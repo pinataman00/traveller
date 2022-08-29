@@ -128,8 +128,11 @@ public class PlaceController {
 	public Place getPlaceView(@RequestBody Map<String,Object> map) {
 		
 		System.out.println("장소 관련 정보 잘 도착했니?");
-		System.out.println(map);
+		
+		System.out.println("확인 : "+map);
 		Place p = service.selectPlace(map);
+		
+		System.out.println("/////////////////////////"+p);
 		return p;
 		
 	}
