@@ -488,8 +488,8 @@ button#addCat{
 					
 			  </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		        <button id="delHeart" type="button" class="btn btn-primary" style="display:block;">취소하기</button>
+		        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+		        <button id="delHeart" type="button" class="btn btn-outline-danger" style="display:block;" data-dismiss="modal">좋아요 취소하기</button>
 		        <button id="liked-btn" type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveLikes()">추가하기</button>
 		      </div>
       
@@ -895,37 +895,28 @@ button#addCat{
 	 						
 	 						hearts = await getHearts();
 	 						
-	 						console.log("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ",hearts);
-	 						
 	 						const values = Object.values(hearts); //객체의 value값들을 하나의 배열로 묶어주는 함수
-	 						console.log("values : ",values);
+	 						//console.log("values : ",values);
 	 						
 	 						const entries = Object.entries(hearts); //객체의 [key,value]를 한 벌의 이중 배열 형태로 반환해주는 함수
-	 						console.log("entries : ",entries);
+	 						//console.log("entries : ",entries);
 	 						
-	 						//
-	 						
-	 						values.forEach(e=>{
+	 						//entries로 순회하기
+	 						//-> contentId에 대응되는 lcode 값도 input에 저장하기
+	 						for(let i=0;i<entries.length;i++){
 	 							
-	 							//2685274
-	 							console.log("순회 가능? ",e);
+	 							//if(entries[i])
+	 							//console.log(entries[i][1]);
 	 							
-	 							if(e==placeId){
-	 								
-	 								console.log("e: ",e," placeId : ",placeId);
+	 							if(placeId==entries[i][1]){
+	 								document.getElementById("lcode_").value=entries[i][0];
 	 								document.getElementById("savedPlace").style.display="block";
 									document.getElementById("delHeart").style.display="block";
-	 								
-	 							} 
-	 							
-/* 	 							else if(e!=placeId){
-	 								document.getElementById("savedPlace").style.display="";
-	 								//document.getElementById("delHeart").style.display="none";
-	 							} */
+	 							}
 	 							
 	 							
-	 						});
-	 						
+	 						}
+					
 	 						
 	 					} catch(error){
 	 						console.log(error);
@@ -974,26 +965,29 @@ button#addCat{
 					//'좋아요 취소하기' 로직 구현하기
 					document.getElementById("delHeart").addEventListener("click",e=>{
 						
-						//alert("삭제?"); 
-						
-						let contentId = document.getElementById("placeCode").value;
+						//1. LIKES_INFO테이블에 저장된 데이터 삭제를 위해 lcode 가져오기
+						let lcode = document.getElementById("lcode_").value;
 						
  						fetch('${path}/place/deleteLikes.do', {
 							  method: 'POST', 
 							  headers: {
 							    'Content-Type': 'application/json',
 							  },
-							  body: JSON.stringify({"contentId":contentId,"likesId":likesId}),
+							  body: JSON.stringify({"lcode":lcode}),
 							})
 							.then((response) => response.json())
 							.then((data) => {
 								
 								console.log("좋아요 삭제 완료? ",data);
+								if(data==1){
+									alert("좋아요 취소 완료!");
+									heart.src =  "${path}/resources/img/icons/heart.svg";
+								}
 								
 							});
 						
 						//하트 색상 변경하기
-						heart.src =  "${path}/resources/img/icons/heart.svg";
+						//heart.src =  "${path}/resources/img/icons/heart.svg";
 					});
 					
 

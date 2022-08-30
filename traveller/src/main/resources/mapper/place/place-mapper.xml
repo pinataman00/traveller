@@ -130,5 +130,9 @@
 				      USING(LIKES_ID)
 				 WHERE L.MEMBER_ID=#{memberId}
 	</select>
+	
+	<delete id="deleteLike" parameterType="likesInfo">
+		DELETE FROM LIKES_INFO WHERE LCODE=#{lcode}
+	</delete>
 
 </mapper>

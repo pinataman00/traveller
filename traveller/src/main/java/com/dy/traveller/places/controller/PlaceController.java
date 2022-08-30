@@ -422,10 +422,23 @@ public class PlaceController {
 	  }
 	  
 	  @RequestMapping("/deleteLikes.do")
-	  public void deleteHeart(@RequestBody Likes likes) {
+	  @ResponseBody
+	  public int deleteHeart(@RequestBody LikesInfo like) {
 		  
 		  //lcode 가져오기
-		  System.out.println("하트 데이터 가져오기 : "+likes);
+		  //System.out.println("하트 데이터 가져오기 : "+like);
+		  int res = service.deleteLike(like);
+		  
+		  if(res>0) {
+			  System.out.println("삭제 성공!");
+			  return res;
+			  
+		  } else {
+			  System.out.println("삭제 실패!");
+			  return res;
+		  }
+		  
+		  //return res;
 		  
 	  }
 	
@@ -433,10 +446,9 @@ public class PlaceController {
 	  @ResponseBody
 	  public Map<String,String> heartInfo(@RequestBody Likes likes) {
 		  
-		  //TODO 0830) Map객체는 key를 중복으로 가져올 수 없음
+		  //0830) key는 고유한 값으로서 Map객체는 key를 중복으로 가져올 수 없음!
 		  //-> LikesInfo의 FK(LIKES_ID) 아닌 PK(LCODE)를 key로 활용해야 함
-		  
-		  System.out.println("하트 정보 가져오기 "+likes);
+
 		  List<Likes> res = service.selectLikes(likes);
 		  
 		  System.out.println("데이터 가져왔는가? "+res);
@@ -449,10 +461,8 @@ public class PlaceController {
 				//Map<String,String> map = Map.of("id",info.getLikesId(),"contentId",info.getContentId());
 				map.put(info.getLcode(),info.getContentId());
 			}
-		
 		  }
 		  
-		  System.out.println("좋아요 전체 조회하기 : "+map);
 		  
 		  return map;
 		  

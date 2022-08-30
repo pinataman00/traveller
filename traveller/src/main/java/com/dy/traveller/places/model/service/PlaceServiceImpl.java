@@ -138,4 +138,9 @@ public class PlaceServiceImpl implements PlaceService {
 		return dao.selectLikes(session,likes);
 	}
 
+	@Override
+	public int deleteLike(LikesInfo like) {
+		return dao.deleteLike(session,like);
+	}
+
 }
