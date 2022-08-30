@@ -439,39 +439,7 @@ button#addCat{
 							</div>
 						</div>					
 				 </div> 
-				
-
-				
-				
-				<!-- TODO : 클라이언트의 키워드 검색 결과를 페이징 처리할 수 없어서 주석 처리함 -->
-<%--  			<div class="list-container">
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th scope="col">title</th>					
-						</tr>
-					</thead>
-					<tbody>
-						<c:if test="${not empty list}">
-							<c:forEach var="m" items="${list}">
-								<tr>
-									<td>${m.title}</td>						
-								</tr>
-							</c:forEach>
-						</c:if>
-						<c:if test="${empty list }">
-							<td colspan="11">검색 결과가 없습니다</td>
-						</c:if>
-					</tbody>
-				</table>
-				<div id="pageBar">
-					${pageBar }
-				</div>
-			</div> --%>
-				
-				
-				
-				
+	
 				
 				
 				
@@ -480,23 +448,31 @@ button#addCat{
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content likes-main-container">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle" style="float:left;"><p class="likedPlace"></p></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle" style="float:left;">
+        	<p class="likedPlace"></p>   
+        	<p id="savedPlace" style="font-size:10pt; color:green; display:none;">이미 좋아요 목록에 추가된 장소입니다</p>
+        	<!-- 이미 목록에 추가된 장소라면, lcode정보 확인할 수 있어야 함! -->
+        	<input type="hidden" id="lcode_" name="lcode">     
+        </h5>
+                	
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       
-     
+     		 <!-- 이미 "좋아요"리스트에 추가된 경우에는 "좋아요 취소하기"버튼 활성화하기 -->	
 		      <div class="modal-body">
 		      		<!-- mybatis : LikesInfo객체와 연결하기 -->
 		        	<input type="hidden" name="contentId" id="placeCode"> 
 		        	<select name="likesId" id="catList" class="custom-select custom-select-sm" required>
-						<option selected disabled>나만의 '좋아요' 목록 추가하기</option>
+						<option value="notOpt" selected disabled>-- 선택 --</option>
 						<!-- 출력 예시 -->
 						<!-- 0823) 좋아요 카테고리 추가함 
 							 : LIKES테이블에서 불러오기 -->
-						<option value="basicLikes">좋아요</option>
+<!-- 						<option value="basicLikes">좋아요</option> -->
 					</select>
+					
+					<p id="addAlarm" style="color:red; display:none;">좋아요 카테고리를 먼저 추가해주세요!</p>
 					<button id="addCat" type="button" class="btn btn-outline-primary btn-sm" onclick="addCat();">카테고리 +</button>
 					
 					<span class="guide ok">
@@ -513,6 +489,7 @@ button#addCat{
 			  </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		        <button id="delHeart" type="button" class="btn btn-primary" style="display:block;">취소하기</button>
 		        <button id="liked-btn" type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveLikes()">추가하기</button>
 		      </div>
       
@@ -534,7 +511,7 @@ button#addCat{
 		let memberId = "${loginMember.memberId}";
 		console.log("지금 접속 중인 아이디 확인 : ",memberId," 제목 : ",title);
 		
-		//새로운 항목 DB에 저장하기
+		//새로운 카테고리 항목 DB에 저장하기
 		  fetch('${path}/place/addCat.do', {
 		  method: 'POST', 
 		  headers: {
@@ -546,6 +523,7 @@ button#addCat{
 		.then((data) => {
 		  		
 			alert("카테고리 추가 완료!");
+			document.getElementById("addAlarm").style.display="none"; //카테고리 없음 안내 끄기
 			console.log(data);
 			//DB에 저장된 '좋아요'항목이 있다면, 불러오기
 			//const list = document.getElementById("catList");
@@ -570,24 +548,9 @@ button#addCat{
 		});
 
 		
-		
-		
-		
-		
 	}
 	
-	//TODO0824) DB에 저장하기
-	//TODO0829) DB저장 작업 재개
-	const saveLikes = () => {
-		
-		//기본 "좋아요"는 어떻게 로직을 구현할 건지...
- 		let contentId = document.getElementById("placeCode").value;
-		let likesId = document.getElenetById("catList").value;
-		
-		//alert("contentId : "+contentId+" likesId : "+likesId);
-		console.log("/////////////////",contentId,"/////////////",likesId);
-		
-	}
+
 
 </script>				
 				
@@ -694,8 +657,7 @@ button#addCat{
 	 				
 	 				let hearts = [];
 	 				//물론 로그인된 상태여야 데이터 조회가 가능함
-	 				
-	 				
+ 				
 	 				//async활용하기
 	 				
 	 				function getHearts(){
@@ -714,28 +676,7 @@ button#addCat{
 	 					
 	 					
 	 				}
-	 				
-	 				
-/*  	 				async function exec(){
-	 					
-	 					let hearts;
-	 					
-	 					try{
-	 						
-	 						hearts = await getHearts();
-	 						//console.log(hearts);
-	 						
-	 						
-	 						
-	 					} catch(error){
-	 						console.log(error);
-	 					}
-	 					
-	 				}  */
-	 				
-					//exec();
-					
- 	 			
+
 
 					//결과 화면 구성하기 > 카드 형태로 데이터 출력하기 ============================================================				
 					for(let i=0;i<data.length;++i){
@@ -798,8 +739,10 @@ button#addCat{
 				 						
 				 						hearts.forEach(e=>{
 				 							if(e==contentId){
+				 								
 				 								heart.src = "${path}/resources/img/icons/heart-fill.svg";
-				 							}
+				 								//document.getElementById("savedPlace").style.display="block";
+				 							} 
 				 						});
 				 						
 				 						
@@ -845,18 +788,16 @@ button#addCat{
 			
 		}
 		
-		//'좋아요' 리스트에 추가하기
+		//'좋아요' 리스트에 추가하기 > modal창 관련
 		const addLikes = (heart,data) => {
 			
 			heart.addEventListener("click",e=>{
 				
-				if(${loginMember!=null}){
-					
+				if(${loginMember!=null}){ //로그인 여부 확인 > 회원 전용 기능
 					
 					let id = "${loginMember.memberId}";
-					//console.log("///////////////////",id);
-					//--------------------------------------------------------------
-					//좋아요 목록 불러오기
+					
+					//1. 좋아요 목록 불러오기
 					fetch('${path}/place/loadLikesList.do', {
 					  method: 'POST', 
 					  headers: {
@@ -868,24 +809,31 @@ button#addCat{
 					.then((data) => {
 					  		
 						console.log("저장된 좋아요 목록이 있습니까? ",data);
-						//DB에 저장된 '좋아요'항목이 있다면, 불러오기
-						//const list = document.getElementById("catList");
-						//document.createElement("");
 						
 						if(data.length==0){
+							
 							console.log("좋아요 리스트가 없습니다!");
-							/* const list = document.getElementById("catList");
-							const info = document.createElement("option");
-							info.innerText = "'카테고리 +'버튼을 클릭해 추가해주세요" */
+							//0830) 좋아요 리스트가 부재하는 경우, '카테고리+' 버튼으로 사용자 정의 항목을 추가할 수 있음을 안내할 것
+							document.getElementById("addAlarm").style.display="block";
+							
 							
 						} else {
 							
 							const select = document.getElementById("catList");
 							//존재하는 경우, select의 option으로서 저장된 리스트의 '항목'들 가져오기
+							
+							select.innerHTML = "";
+							let basicOpt = document.createElement("option");
+							basicOpt.innerText = "-- 선택 --";
+							basicOpt.value="notOpt";
+							basicOpt.selected="true";
+							basicOpt.disabled="true";
+							select.append(basicOpt);
+							
 							data.forEach(e=>{
 								
-								//TODO 0824) 아직은 데이터가 없음. 보류
-								//TODO 0829) DB서버 재연결함. 작업 재개하기
+								//0824) 아직은 데이터가 없음. 보류
+								//0829) DB서버 재연결함. 작업 재개
 								console.log("좋아요 리스트 : ",e);
 								
 								let opt = document.createElement("option");
@@ -900,33 +848,137 @@ button#addCat{
 					
 
 					//--------------------------------------------------------------
-		
-					//사용자가 선택한 좋아요 항목에 장소 정보 추가하기
+					//사용자가 선택한 좋아요 항목에 *장소 정보 추가하기
 										
 					heart.setAttribute('data-toggle','modal');
 					heart.setAttribute('data-target','#addLikesList');
-					//heart.data-toggle="modal";
-					//heart.data-target="#addLikesList"; 
-					//좋아요 색상 변경하기
-					//heart.src =  "${path}/resources/img/icons/heart-fill.svg";
 					
 					document.getElementsByClassName("likedPlace")[0].innerText=data.title;
 					document.getElementById("placeCode").value=data.contentId;
 					
+					//---------------------------------------------------------------
+					//TODO0830) 사용자가 이미 "좋아요"항목에 추가한 경우 *알림 및 취소하기 버튼 활성화하기
+					//-> 어떤 카테고리에 추가된 장소인지 확인할 수 있으면 좋은데...
+					//searchHeart.do에서 contentId만 List형태로 가져올 수 있도록 설정함
+					//likes_title도 받아오는 메소드를 따로 만들어야 함
+					
+ 	 				function getHearts(){
+	 					
+	 					let memberId = "${loginMember.memberId}";
+	 					
+	 					const res = fetch('${path}/place/heartInfo.do', {
+							  			method: 'POST', 
+							  			headers: {
+							    		'Content-Type': 'application/json',
+							  			},
+							  			body: JSON.stringify({"memberId":memberId}),
+										});
+	 					
+	 					return res.then(res=>res.json());
+	 					
+	 					
+	 				} 
+					
+					//기본 : "이미 추가된 장소" 안내 문구, "취소하기" 버튼은 숨기기
+	 				document.getElementById("savedPlace").style.display="none";
+	 				document.getElementById("delHeart").style.display="none";
+	 				
+					let placeId = document.getElementById("placeCode").value;
+					console.log("장소 코드 확인 : ",placeId);
+					
+ 	 				async function exec(placeId){
+	 					
+	 					let hearts;
+	 					
+	 					
+	 					try{
+	 						
+	 						hearts = await getHearts();
+	 						
+	 						console.log("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ",hearts);
+	 						
+	 						const values = Object.values(hearts); //객체의 value값들을 하나의 배열로 묶어주는 함수
+	 						console.log("values : ",values);
+	 						
+	 						const entries = Object.entries(hearts); //객체의 [key,value]를 한 벌의 이중 배열 형태로 반환해주는 함수
+	 						console.log("entries : ",entries);
+	 						
+	 						//
+	 						
+	 						values.forEach(e=>{
+	 							
+	 							//2685274
+	 							console.log("순회 가능? ",e);
+	 							
+	 							if(e==placeId){
+	 								
+	 								console.log("e: ",e," placeId : ",placeId);
+	 								document.getElementById("savedPlace").style.display="block";
+									document.getElementById("delHeart").style.display="block";
+	 								
+	 							} 
+	 							
+/* 	 							else if(e!=placeId){
+	 								document.getElementById("savedPlace").style.display="";
+	 								//document.getElementById("delHeart").style.display="none";
+	 							} */
+	 							
+	 							
+	 						});
+	 						
+	 						
+	 					} catch(error){
+	 						console.log(error);
+	 					}
+	 					
+	 				} 
+					
+					exec(placeId);
+
 					
 					//좋아요 추가하기 -> 선택한 항목에 장소 정보 저장하기
 					document.getElementById("liked-btn").onclick = ()=>{
 						
-						//saveLikes의 역할을 여기서 수행하고 있었군
-						
-						
 				 		let contentId = document.getElementById("placeCode").value;
 						let likesId = document.getElementById("catList").value;
 						
-						//alert("contentId : "+contentId+" likesId : "+likesId);
-						console.log("/////////////////",contentId,"/////////////",likesId);
+						if(likesId=="notOpt"){
+							
+							alert("옵션을 선택해주세요!");
+								
+						} else {
+							
+							fetch('${path}/place/saveLikes.do', {
+								  method: 'POST', 
+								  headers: {
+								    'Content-Type': 'application/json',
+								  },
+								  body: JSON.stringify({"contentId":contentId,"likesId":likesId}),
+								})
+								.then((response) => response.json())
+								.then((data) => {
+									
+									console.log("좋아요 추가 완료? ",data);
+									
+								});
+											
+							//"좋아요" 표시 변경 -> 하트 색상 변경하기
+							heart.src =  "${path}/resources/img/icons/heart-fill.svg";
+							
+							
+						}
+
+					}
+					
+					//TODO0830)
+					//'좋아요 취소하기' 로직 구현하기
+					document.getElementById("delHeart").addEventListener("click",e=>{
 						
-						fetch('${path}/place/saveLikes.do', {
+						//alert("삭제?"); 
+						
+						let contentId = document.getElementById("placeCode").value;
+						
+ 						fetch('${path}/place/deleteLikes.do', {
 							  method: 'POST', 
 							  headers: {
 							    'Content-Type': 'application/json',
@@ -936,15 +988,15 @@ button#addCat{
 							.then((response) => response.json())
 							.then((data) => {
 								
-								console.log("좋아요 추가 완료? ",data);
+								console.log("좋아요 삭제 완료? ",data);
 								
 							});
-										
-						//"좋아요" 표시 변경 -> 하트 색상 변경하기
-						heart.src =  "${path}/resources/img/icons/heart-fill.svg";
+						
+						//하트 색상 변경하기
+						heart.src =  "${path}/resources/img/icons/heart.svg";
+					});
 					
-					}
-					//heart.setAttribute('heartId',data[i]);
+
 										
 				} else alert('로그인 먼저!');
 			

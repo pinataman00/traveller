@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -103,11 +104,11 @@ public class PlaceController {
 	@ResponseBody
 	public List<Place> searchFilter(@RequestBody Map<String,Object> map){
 		
-		System.out.println("잘 도착했니?");
-		System.out.println(map);
+		//System.out.println("잘 도착했니?");
+		//System.out.println(map);
 
 		List<Place> list = service.areaFilter(map);
-		System.out.println("결과 총 : "+list.size()+"개");
+		//System.out.println("결과 총 : "+list.size()+"개");
 		return list;
 		
 	}
@@ -115,8 +116,8 @@ public class PlaceController {
 	@RequestMapping("/placeView/{id}")
 	public ModelAndView getPlaceView(@PathVariable String id, ModelAndView mv) {
 		
-		System.out.println("도착했니?");
-		System.out.println(id);
+		//System.out.println("도착했니?");
+		//System.out.println(id);
 		
 		mv.addObject("contentId", id);
 		mv.setViewName("/place/placeView");
@@ -324,7 +325,7 @@ public class PlaceController {
 		String memberId = data.get("memberId");
 		//System.out.println("아이디 확인 : "+memberId);
 		List<Likes> list = service.getLikes(memberId);
-		System.out.println("리스트 확인 : "+list.size());
+		//System.out.println("리스트 확인 : "+list.size());
 		
 		//System.out.println("리스트에 저장된 요소 개수 : "+list.size());
 		
@@ -357,6 +358,27 @@ public class PlaceController {
 	  @ResponseBody
 	  public LikesInfo saveLikes(@RequestBody Map<String,String> param) {
 		  
+		  String contentId = param.get("contentId");
+		  String likesId = param.get("likesId");
+		  
+		  //likesId의 value값이 basicLikes인 경우, 
+		  //기본 좋아요 data가 존재할 경우는 해당 데이터의 LIKES_ID로 연결된 LIKES_INFO테이블에 저장
+		  //TODO0830 기본 좋아요, 만들지 않음
+			/*
+			 * if(likesId.equals("basicLikes")) {
+			 * 
+			 * System.out.println("기본 좋아요에 장소 정보 저장하기"); int ck =
+			 * service.selectBasic(likesId);
+			 * 
+			 * if(ck==0) { //기본 좋아요, 가 부재하는 경우 LIKES테이블에 데이터 추가하기
+			 * 
+			 * }
+			 * 
+			 * }
+			 */
+		  
+		  
+		  //부재하는 경우는, LIKES에 카테고리 추가 이후 LIKES_INFO테이블에 이어 저장할 것
 		  //System.out.println("좋아요LIKES_INFO테이블에 추가할 것 : "+param);
 		  
 		  int res = service.insertLikesInfo(param);
@@ -364,10 +386,7 @@ public class PlaceController {
 		  if(res>0) {
 			
 			  System.out.println("좋아요 추가 성공!!!");
-			  
-			  String contentId = param.get("contentId");
-			  String likesId = param.get("likesId");
-			  
+	  
 			  return LikesInfo.builder().contentId(contentId).likesId(likesId).build();
 			  
 		  } else {
@@ -401,6 +420,42 @@ public class PlaceController {
 		  return list;
 	  
 	  }
+	  
+	  @RequestMapping("/deleteLikes.do")
+	  public void deleteHeart(@RequestBody Likes likes) {
+		  
+		  //lcode 가져오기
+		  System.out.println("하트 데이터 가져오기 : "+likes);
+		  
+	  }
 	
+	  @RequestMapping("/heartInfo.do")
+	  @ResponseBody
+	  public Map<String,String> heartInfo(@RequestBody Likes likes) {
+		  
+		  //TODO 0830) Map객체는 key를 중복으로 가져올 수 없음
+		  //-> LikesInfo의 FK(LIKES_ID) 아닌 PK(LCODE)를 key로 활용해야 함
+		  
+		  System.out.println("하트 정보 가져오기 "+likes);
+		  List<Likes> res = service.selectLikes(likes);
+		  
+		  System.out.println("데이터 가져왔는가? "+res);
+		  
+		  Map<String,String> map = new HashMap();
+		  
+		  for (Likes like : res) {
+			
+			for(LikesInfo info : like.getList()) {
+				//Map<String,String> map = Map.of("id",info.getLikesId(),"contentId",info.getContentId());
+				map.put(info.getLcode(),info.getContentId());
+			}
+		
+		  }
+		  
+		  System.out.println("좋아요 전체 조회하기 : "+map);
+		  
+		  return map;
+		  
+	  }
 	
 }
