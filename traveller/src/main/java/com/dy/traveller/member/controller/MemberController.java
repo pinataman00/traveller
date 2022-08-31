@@ -180,6 +180,11 @@ public class MemberController {
 		return "member/myInfo";
 	}
 	
+	@RequestMapping("/myTrip.do")
+	public String myTrip() {
+		return "member/myTrip";
+	}
+	
 	//회원 정보 수정 > 전반적인 정보 수정
 	@RequestMapping("/updateInfo.do")
 	public String updateInfo(Member m, Model model, MultipartFile img, HttpServletRequest rs) {

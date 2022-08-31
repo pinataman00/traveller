@@ -87,7 +87,7 @@ button#routeBtn{
 			    <p class="star-container">★★★★★</p>
 			    <hr class="my-4">
 				<p class="lead" style="float:right;">
-					<button id="liked-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addLikesList" role="button">좋아요</button>
+					<button id="likeBtn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addLikesList" role="button">좋아요</button>
 					<button class="btn btn-primary btn-sm" href="#">별점</button>
 				</p>
 
@@ -203,8 +203,9 @@ button#routeBtn{
 	//좋아요 MODAL 관련 > placeView에 작성한 코드 활용하기
 	
 	
-			//'좋아요' 리스트에 추가하기 > modal창 관련
-		const addLikes = (heart,data) => {
+		let heart = document.getElementById("likeBtn");
+		//'좋아요' 리스트에 추가하기 > modal창 관련
+		//const addLikes = (heart,data) => {
 			
 			heart.addEventListener("click",e=>{
 				
@@ -247,8 +248,6 @@ button#routeBtn{
 							
 							data.forEach(e=>{
 								
-								//0824) 아직은 데이터가 없음. 보류
-								//0829) DB서버 재연결함. 작업 재개
 								console.log("좋아요 리스트 : ",e);
 								
 								let opt = document.createElement("option");
@@ -261,21 +260,9 @@ button#routeBtn{
 						
 					});
 					
-
-					//--------------------------------------------------------------
-					//사용자가 선택한 좋아요 항목에 *장소 정보 추가하기
-										
-					heart.setAttribute('data-toggle','modal');
-					heart.setAttribute('data-target','#addLikesList');
-					
-					document.getElementsByClassName("likedPlace")[0].innerText=data.title;
-					document.getElementById("placeCode").value=data.contentId;
-					
 					//---------------------------------------------------------------
-					//TODO0830) 사용자가 이미 "좋아요"항목에 추가한 경우 *알림 및 취소하기 버튼 활성화하기
-					//-> 어떤 카테고리에 추가된 장소인지 확인할 수 있으면 좋은데...
-					//searchHeart.do에서 contentId만 List형태로 가져올 수 있도록 설정함
-					//likes_title도 받아오는 메소드를 따로 만들어야 함
+					//사용자가 이미 "좋아요"항목에 추가한 경우 *알림 및 취소하기 버튼 활성화
+					//-> TODO) 어떤 카테고리에 추가된 장소인지 확인할 수 있으면 좋은데...
 					
  	 				function getHearts(){
 	 					
@@ -369,15 +356,15 @@ button#routeBtn{
 								});
 											
 							//"좋아요" 표시 변경 -> 하트 색상 변경하기
-							heart.src =  "${path}/resources/img/icons/heart-fill.svg";
+							//heart.src =  "${path}/resources/img/icons/heart-fill.svg";
 							
 							
 						}
 
 					}
 					
-					//TODO0830)
-					//'좋아요 취소하기' 로직 구현하기
+					//0830)
+					//'좋아요 취소하기' 로직
 					document.getElementById("delHeart").addEventListener("click",e=>{
 						
 						//1. LIKES_INFO테이블에 저장된 데이터 삭제를 위해 lcode 가져오기
@@ -410,9 +397,6 @@ button#routeBtn{
 				} else alert('로그인 먼저!');
 			
 			});
-			
-		}
-
 
 		//좋아요 카테고리 추가 관련
 		
@@ -435,11 +419,6 @@ button#routeBtn{
 			
 	
 		})();
-	
-	
-	
-
-
 
 	//----------------------------------------------------------------------------------------------------------------------
 	const id = ${contentId}; //클라이언트가 클릭한 장소의 고유 ID
