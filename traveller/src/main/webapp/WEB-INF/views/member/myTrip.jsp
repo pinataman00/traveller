@@ -68,7 +68,7 @@
 				</div>
 				<div class="option-container">
 					<select name="likesId" id="catList" class="custom-select">
-						<option selected>Open this select menu</option>
+						<option value="notOpt" selected disabled>-- 선택 --</option>
 						<option value="1">One</option>
 						<option value="2">Two</option>
 						<option value="3">Three</option>
@@ -80,10 +80,63 @@
 		</div>
 	</div>
 	
-	
-	
-	
-	
 </section>
+
+<script>
+
+
+let id = "${loginMember.memberId}";
+
+//1. 좋아요 목록 불러오기
+fetch('${path}/place/loadLikesList.do', {
+  method: 'POST', 
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({"memberId":id}),
+})
+.then((response) => response.json())
+.then((data) => {
+  		
+	console.log("저장된 좋아요 목록이 있습니까? ",data);
+	
+	if(data.length==0){
+		
+		console.log("좋아요 리스트가 없습니다!");
+		//0830) 좋아요 리스트가 부재하는 경우, '카테고리+' 버튼으로 사용자 정의 항목을 추가할 수 있음을 안내할 것
+		document.getElementById("addAlarm").style.display="block";
+		
+		
+	} else {
+		
+		const select = document.getElementById("catList");
+		//존재하는 경우, select의 option으로서 저장된 리스트의 '항목'들 가져오기
+		
+		select.innerHTML = "";
+		let basicOpt = document.createElement("option");
+		basicOpt.innerText = "-- 선택 --";
+		basicOpt.value="notOpt";
+		basicOpt.selected="true";
+		basicOpt.disabled="true";
+		select.append(basicOpt);
+		
+		data.forEach(e=>{
+			
+			let opt = document.createElement("option");
+			opt.innerText = e.likesTitle;
+			opt.value= e.likesId;
+			select.append(opt);
+			
+		});
+	}
+	
+});
+
+//나의 장소 > select > "option" 선택 시 해당 옵션에 저장된 데이터 불러올 수 있도록
+
+
+
+</script>
+
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
