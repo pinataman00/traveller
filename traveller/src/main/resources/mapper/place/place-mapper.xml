@@ -134,5 +134,16 @@
 	<delete id="deleteLike" parameterType="likesInfo">
 		DELETE FROM LIKES_INFO WHERE LCODE=#{lcode}
 	</delete>
+	
+	<select id="selectSavedHearts" parameterType="likesInfo" resultType="likesInfo">
+		SELECT * FROM LIKES_INFO WHERE LIKES_ID=#{likesId}
+	</select>
+	
+	<select id="selectLikedPlace" parameterType="likesInfo" resultType="place">
+		SELECT * FROM PLACES P
+					  JOIN LIKES_INFO I
+					  USING (CONTENTID) 
+					  WHERE LIKES_ID=#{likesId}
+	</select>
 
 </mapper>

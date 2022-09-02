@@ -143,4 +143,14 @@ public class PlaceServiceImpl implements PlaceService {
 		return dao.deleteLike(session,like);
 	}
 
+	@Override
+	public List<LikesInfo> savedHearts(LikesInfo like) {
+		return dao.savedHearts(session,like);
+	}
+
+	@Override
+	public List<Place> selectLikedPlace(LikesInfo like) {
+		return dao.selectLikedPlace(session,like);
+	}
+
 }

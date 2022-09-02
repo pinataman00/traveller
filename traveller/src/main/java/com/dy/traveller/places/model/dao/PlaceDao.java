@@ -49,4 +49,8 @@ public interface PlaceDao {
 
 	int deleteLike(SqlSessionTemplate session, LikesInfo like);
 
+	List<LikesInfo> savedHearts(SqlSessionTemplate session, LikesInfo like);
+
+	List<Place> selectLikedPlace(SqlSessionTemplate session, LikesInfo like);
+
 }

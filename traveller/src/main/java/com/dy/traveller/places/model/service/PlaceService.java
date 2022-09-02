@@ -44,4 +44,8 @@ public interface PlaceService {
 
 	int deleteLike(LikesInfo like);
 
+	List<LikesInfo> savedHearts(LikesInfo likes);
+
+	List<Place> selectLikedPlace(LikesInfo like);
+
 }

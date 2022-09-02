@@ -401,13 +401,7 @@ public class PlaceController {
 	  @ResponseBody
 	  public List<String> searchHeart(@RequestBody Likes likes) {
 		  
-		  //System.out.println("하트 데이터 가져오기 : "+likes);
-		  
 		  List<Likes> res = service.selectLikes(likes);
-		  //List<String> res = service.selectLikes(likes);
-		  //System.out.println("데이터 가져왔니? "+res.size());
-		  //System.out.println("가져온 데이터 보여줘 "+res);
-
 		  List<String> list = new ArrayList();
 		  
 		  for (Likes l : res) {
@@ -438,8 +432,6 @@ public class PlaceController {
 			  return res;
 		  }
 		  
-		  //return res;
-		  
 	  }
 	
 	  @RequestMapping("/heartInfo.do")
@@ -467,5 +459,24 @@ public class PlaceController {
 		  return map;
 		  
 	  }
+	  
+	  //나의 여행 > select > option 기준으로 "좋아요" 장소 불러오기
+	  @RequestMapping("/savedHearts.do")
+	  @ResponseBody
+	  //public List<LikesInfo> savedHearts(@RequestBody LikesInfo like) {
+	  public List<Place> savedHearts(@RequestBody LikesInfo like) {
+
+		  System.out.println("데이터 잘 가져왔니! "+like);
+		 
+		  //0902) Place정보 받아오기
+		  List<Place> res = service.selectLikedPlace(like);
+		  
+		  System.out.println("회원이 좋아한 장소들 : "+res);
+		  
+		  return res; 
+		  
+	  }
+	  
+	  
 	
 }

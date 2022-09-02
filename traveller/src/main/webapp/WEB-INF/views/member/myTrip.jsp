@@ -133,7 +133,31 @@ fetch('${path}/place/loadLikesList.do', {
 });
 
 //나의 장소 > select > "option" 선택 시 해당 옵션에 저장된 데이터 불러올 수 있도록
-
+//option의 value인 lcode를 기준으로 가져올 수 있음
+const heartsList = document.getElementById("catList");
+heartsList.addEventListener("change",e=>{
+	
+	//alert(e.target.value);
+	const likesId = e.target.value;
+	
+	fetch('${path}/place/savedHearts.do', {
+		  method: 'POST', 
+		  headers: {
+		    'Content-Type': 'application/json',
+		  },
+		  body: JSON.stringify({"likesId":likesId}),
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			
+			console.log("${loginMember.memberId}가 좋아한 장소들 : ",data);
+			
+			
+		});
+	
+	
+	
+});
 
 
 </script>

@@ -122,4 +122,15 @@ public class PlaceDaoImpl implements PlaceDao {
 		return session.delete("place.deleteLike", like);
 	}
 
+	@Override
+	public List<LikesInfo> savedHearts(SqlSessionTemplate session, LikesInfo like) {
+		return session.selectList("place.selectSavedHearts",like);
+	}
+
+	@Override
+	public List<Place> selectLikedPlace(SqlSessionTemplate session, LikesInfo like) {
+		
+		return session.selectList("place.selectLikedPlace",like);
+	}
+
 }
