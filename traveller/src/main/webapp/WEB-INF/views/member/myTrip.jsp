@@ -31,7 +31,56 @@
 		margin-bottom:30px;
 	
 	}
+	.cards-container{
+		border: 1px solid blue;
+	}
 	
+	/* 카드 관련 설정 */
+	.search-result-contents{
+	display:flex;
+	justify-content:center;
+}
+.result-card{
+	margin:10px;
+	width:300px;
+	height:340px;
+}
+.result-card img{
+    
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    width: 280px;
+    height: 200px;
+    object-fit: cover;
+    border-radius:10px;
+    margin-top:10px;
+ 
+}
+
+.card-body{
+	width:300px;
+	height:120px;
+}
+
+.card-title{
+	font-size:20px;
+}
+
+/* 사용자 프로필 이미지 출력 관련 */
+	img.profileImg{
+	
+		margin-top: 20px;
+		margin-bottom: 20px;
+		width:100px;
+		height:100px;
+ 		max-width: 200px;
+	    max-height: 200px;
+	    border-radius: 50px;
+	    
+/* 	    border:1px solid red; */
+	
+	}
 	
 </style>
 
@@ -40,7 +89,22 @@
 
 		<div class="jumbotron jumbotron-fluid">
 			<div class="container title-container">
-				<img id="profileImg" src="${path}/resources/img/icons/person-fill.svg">
+			
+				<!-- 프로필 이미지 출력 -->
+				<div id="myPic-container">
+					<c:choose>
+					
+						<c:when test="${not empty loginMember.image.oriName}">
+							
+						</c:when>
+						
+						<c:when test="${empty loginMember.image.oriName}">
+							<img id="profileImg" src="${path}/resources/img/icons/person-fill.svg">
+						</c:when>
+					
+					</c:choose>
+				</div>
+				
 				<p class="display-4" style="font-size:30px;font-weight:400;">나의 여행</p>
 				<p class="lead">${loginMember.memberId}님의 여행 미리보기</p>
 			</div>
@@ -63,26 +127,55 @@
 			</div> --%>
 			
 			<div class="content-body" style="border:1px solid red; margin-bottom:30px;">
+			
 				<div class="content-title-container">
-					제목이 들어갈 곳
+					<p style="text-align:right; margin-top:10px; margin-right:30px;">내가 '좋아요'한 장소 모아보기</p>
 				</div>
+				
 				<div class="option-container">
 					<select name="likesId" id="catList" class="custom-select">
 						<option value="notOpt" selected disabled>-- 선택 --</option>
-						<option value="1">One</option>
-						<option value="2">Two</option>
-						<option value="3">Three</option>
 					</select>
-				</div>
+				</div>				
 			</div>
-			
-			
+
+			<div class="cards-container">
+				카드가 들어갈 곳
+				<!-- 카드 출력 예시 -->
+							
+			</div>
+
+
 		</div>
 	</div>
 	
 </section>
 
 <script>
+
+//회원 프로필 이미지 출력 관련
+
+		if(${loginMember.image.renamedFileName!=null}){
+
+			async function getImg(){
+				let response = await fetch("${path}/resources/member/profile/${loginMember.image.renamedFileName}");
+				let blob = await response.blob(); //응답을 blob형태로 가져옴
+				let img = document.createElement("img");
+				const container = document.getElementById("myPic-container");
+				container.append(img);
+				container.append(document.createElement("hr"));
+				img.className = "profileImg";
+				img.src = URL.createObjectURL(blob);
+
+			}
+			
+			getImg();
+	
+		}
+
+
+
+
 
 
 let id = "${loginMember.memberId}";
@@ -150,7 +243,56 @@ heartsList.addEventListener("change",e=>{
 		.then((response) => response.json())
 		.then((data) => {
 			
+			const cardContainer = document.getElementsByClassName("cards-container")[0];
+			cardContainer.innerHTML="";
+			
 			console.log("${loginMember.memberId}가 좋아한 장소들 : ",data);
+			
+			//카드 출력하기
+			for(let i=0;i<data.length;++i){
+				
+				const container = document.createElement("div");
+				container.classList.add("search-result-contents");
+				
+				for(let j=0;j<3;j++){ //1행 당 3열씩 출력하기
+					
+					//1개 카드 구성하기
+					//1. div > card
+					const card = document.createElement("div");
+					card.classList.add("result-card");
+					card.classList.add("card");
+					
+					const img = document.createElement("img");
+					if(data[i].firstImage!=null){ //Place에 이미지 정보가 포함된 경우
+						img.src= data[i].firstImage;
+					} else { //미포함 시 기본 이미지 출력
+						img.src="${path}/resources/img/testPic/doraemon.png";
+					}
+					
+					const contentId = data[i].contentId;
+					img.addEventListener("click",e=>{
+						location.assign("${path}/place/placeView/"+contentId);
+					});
+					card.append(img);
+					
+					const cardBody = document.createElement("div");
+					cardBody.classList.add("card-body");
+					const cardTitle = document.createElement("h5");
+					cardTitle.classList.add("card-title");
+					cardTitle.innerText = data[i].title;
+					cardBody.append(cardTitle);
+					
+					card.append(cardBody);
+					container.append(card);
+					document.getElementsByClassName("cards-container")[0].append(container);
+					i++;
+					
+					
+				}
+				
+				i--;
+				
+			}
 			
 			
 		});
