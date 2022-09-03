@@ -467,9 +467,22 @@ public class PlaceController {
 
 		  //0902) Place정보 받아오기
 		  List<Place> res = service.selectLikedPlace(like);
-  
+		  //System.out.println("확인 : "+res);
 		  return res; 
 		  
+	  }
+	  
+	  @RequestMapping("searchWithKeyword.do")
+	  @ResponseBody
+	  public List<Place> searchWithKeyword(@RequestBody Map<String,String> param) {
+		  
+		  System.out.println("잘 가져왔니? "+param);
+		  
+		  //title, likesId를 가져옴
+		  List<Place> res = service.searchWithKeyword(param);
+		  System.out.println("결과 ? "+res);
+		  return res;
+	  
 	  }
 	  
 	  

@@ -153,4 +153,9 @@ public class PlaceServiceImpl implements PlaceService {
 		return dao.selectLikedPlace(session,like);
 	}
 
+	@Override
+	public List<Place> searchWithKeyword(Map<String, String> param) {
+		return dao.searchWithKeyword(session,param);
+	}
+
 }

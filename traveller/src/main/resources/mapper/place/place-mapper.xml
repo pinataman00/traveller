@@ -145,5 +145,12 @@
 					  USING (CONTENTID) 
 					  WHERE LIKES_ID=#{likesId}
 	</select>
+	
+	<select id="selectWithKeyword" resultType="place">
+		SELECT * FROM PLACES P
+					  JOIN LIKES_INFO I
+					  USING (CONTENTID) 
+					  WHERE LIKES_ID=#{likesId} AND TITLE LIKE '%'||#{title}||'%'
+	</select>
 
 </mapper>

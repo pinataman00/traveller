@@ -48,4 +48,6 @@ public interface PlaceService {
 
 	List<Place> selectLikedPlace(LikesInfo like);
 
+	List<Place> searchWithKeyword(Map<String, String> param);
+
 }

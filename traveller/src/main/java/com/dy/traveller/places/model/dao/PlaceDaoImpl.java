@@ -133,4 +133,10 @@ public class PlaceDaoImpl implements PlaceDao {
 		return session.selectList("place.selectLikedPlace",like);
 	}
 
+	@Override
+	public List<Place> searchWithKeyword(SqlSessionTemplate session, Map<String, String> param) {
+		
+		return session.selectList("place.selectWithKeyword",param);
+	}
+
 }

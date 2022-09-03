@@ -53,4 +53,6 @@ public interface PlaceDao {
 
 	List<Place> selectLikedPlace(SqlSessionTemplate session, LikesInfo like);
 
+	List<Place> searchWithKeyword(SqlSessionTemplate session, Map<String, String> param);
+
 }
