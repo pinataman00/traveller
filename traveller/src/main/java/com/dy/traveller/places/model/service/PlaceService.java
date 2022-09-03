@@ -50,4 +50,6 @@ public interface PlaceService {
 
 	List<Place> searchWithKeyword(Map<String, String> param);
 
+	int delCatagory(String likesId);
+
 }

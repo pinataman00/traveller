@@ -158,4 +158,9 @@ public class PlaceServiceImpl implements PlaceService {
 		return dao.searchWithKeyword(session,param);
 	}
 
+	@Override
+	public int delCatagory(String likesId) {
+		return dao.delCatagory(session,likesId);
+	}
+
 }

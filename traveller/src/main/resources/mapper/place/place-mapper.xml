@@ -153,4 +153,9 @@
 					  WHERE LIKES_ID=#{likesId} AND TITLE LIKE '%'||#{title}||'%'
 	</select>
 
+	<delete id="deleteCatagory" parameterType="string">
+		DELETE FROM LIKES WHERE LIKES_ID=#{likesId}
+	</delete>
+
+
 </mapper>

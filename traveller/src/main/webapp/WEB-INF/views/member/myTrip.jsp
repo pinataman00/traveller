@@ -377,37 +377,34 @@ const myList = ()=>{ //"편집" 버튼 클릭 시, 좋아요 목록 불러오기
 			
 			alert("안녕!");
 			
+			let likesId = document.getElementById("catList2").value;
 			
-			
+			fetch('${path}/place/delCatagory.do', {
+			  method: 'POST', 
+			  headers: {
+			    'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify({"likesId":likesId}),
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				
+				console.log("삭제 완료?", data);
+				
+ 				if(data==0){
+ 					
+					alert("삭제 실패! 다시 시도해주세요");
+					
+				} else if(data==1){
+					alert("삭제 성공!");
+					$("#catEditor").modal("hide");
+					location.replace("${path}/member/myTrip.do");
+				} 
+				
+			});
 			
 			
 		});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //회원 프로필 이미지 출력 관련

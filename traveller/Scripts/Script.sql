@@ -93,3 +93,4 @@ SELECT * FROM PLACES P
 			  USING(CONTENTID)
 			  WHERE I.LIKES_ID =13 
 			  AND P.TITLE LIKE '%가%';
+			  

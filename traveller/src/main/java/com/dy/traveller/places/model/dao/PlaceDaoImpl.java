@@ -139,4 +139,9 @@ public class PlaceDaoImpl implements PlaceDao {
 		return session.selectList("place.selectWithKeyword",param);
 	}
 
+	@Override
+	public int delCatagory(SqlSessionTemplate session, String likesId) {
+		return session.delete("place.deleteCatagory", likesId);
+	}
+
 }

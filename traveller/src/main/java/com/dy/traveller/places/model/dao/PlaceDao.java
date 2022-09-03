@@ -55,4 +55,6 @@ public interface PlaceDao {
 
 	List<Place> searchWithKeyword(SqlSessionTemplate session, Map<String, String> param);
 
+	int delCatagory(SqlSessionTemplate session, String likesId);
+
 }
