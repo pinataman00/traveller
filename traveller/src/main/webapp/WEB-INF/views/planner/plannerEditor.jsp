@@ -241,7 +241,7 @@ div#dropZone {
 
 				<!-- dropdown : 사용자 아이템 드롭다운 -->
 				<div class="dropdown-menu">
-					<a class="dropdown-item" href="#">나의 좋아요</a> <a
+					<a class="dropdown-item" onclick="myLikes();">나의 좋아요</a> <a
 						class="dropdown-item" href="#">나의 그룹</a> <a class="dropdown-item"
 						href="#" onclick="showCkList();">나의 체크 리스트</a>
 					<div class="dropdown-divider"></div>
@@ -328,7 +328,15 @@ div#dropZone {
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">"좋아요"를 클릭했던 장소들</div>
+					<div class="modal-body">
+					
+						
+						"좋아요"를 클릭했던 장소들
+						
+						
+					
+					
+					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal">Close</button>
@@ -807,7 +815,16 @@ div#dropZone {
 		console.log("오늘 날짜 : ",getToday());
 		today.innerText = getToday();
 
-	}	
+	}
+	
+	//나의 도구들 > "좋아요" ===============================================================
+	const myLikes = ()=>{
+		
+		//모달 열기
+		$("#myLikes").modal("show");
+		
+		
+	}
 	
 	
 	//나의 도구들 > 체크 리스트 구성하기 ====================================================================================================================

@@ -495,8 +495,7 @@ public class PlaceController {
 		 
 		 if(res>0) {
 			 System.out.println("삭제 성공!");
-			 
-			 
+			 			 
 		 } else {
 			 System.out.println("삭제 실패!");
 			 
