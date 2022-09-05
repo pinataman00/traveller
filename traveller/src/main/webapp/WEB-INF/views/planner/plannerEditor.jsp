@@ -155,7 +155,38 @@ div#dropZone {
 	background-color:#a0a0a0;
 	color:black;
 }
+.my-likes-container{
+	height:480px;
+}
 
+.my-likes-body{
+	overflow:scroll;
+}
+
+.my-likes-body::-webkit-scrollbar {
+	display: none;
+}
+.card-img{
+
+	margin-right:30px;
+	width:100px;
+	height:100px;
+	border:1px solid red;
+}
+.my-likes-card{
+	display:flex;
+}
+.myLikes-btn{
+	margin-left:200px;
+	margin-top:24px;
+}
+.result-card{
+	margin-top:10px;
+}
+.no-saved-place{
+	margin-top:30px;
+	text-align:center;
+}
 </style>
 
 	<section>
@@ -241,9 +272,9 @@ div#dropZone {
 
 				<!-- dropdown : 사용자 아이템 드롭다운 -->
 				<div class="dropdown-menu">
-					<a class="dropdown-item" onclick="myLikes();">나의 좋아요</a> <a
-						class="dropdown-item" href="#">나의 그룹</a> <a class="dropdown-item"
-						href="#" onclick="showCkList();">나의 체크 리스트</a>
+					<a class="dropdown-item" onclick="myLikes();">나의 좋아요</a> 
+					<a class="dropdown-item" href="#">나의 그룹</a> 
+					<a class="dropdown-item" href="#" onclick="showCkList();">나의 체크 리스트</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="#" onclick="ckWeather();">날씨</a> 
 <!-- 					<a class="dropdown-item" href="#">길 찾기</a> -->
@@ -319,22 +350,52 @@ div#dropZone {
 		<!-- Modal : 좋아요 -->
 		<div class="modal fade" id="myLikes" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
+			<div class="modal-dialog modal-dialog-centered" role="document" style="max-height:1000px;">
+				<div class="modal-content my-likes-container">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">나의 좋아요</h5>
+						<h5 class="modal-title" id="exampleModalLabel">${loginMember.memberId}님의 좋아요</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body my-likes-body">
 					
+						<div class="likes-opt-container">
+							<select name="likesId" id="catList" class="custom-select">
+								<option value="notOpt" selected disabled>-- 선택 --</option>
+							</select>
+							<p id="addAlarm" style="color:red; display:none;">좋아요 카테고리를 먼저 추가해주세요!</p>
+						</div>
+						<div class="likes-content-container">
 						
-						"좋아요"를 클릭했던 장소들
-						
-						
+							<!-- 카드가 출력되는 영역 -->
+							
+							<!-- 저장된 장소 정보가 없는 경우, 다음 안내 문구와 버튼이 화면에 출력됨 -->
+							<div class="no-saved-place" style="display:none;">
+								<p class="info-text" style="color: red;">저장된 장소가 없습니다! 나만의 장소를 추가해보세요!</p>
+								<button type="button" class="btn btn-primary btn-sm" onclick="window.open('${path}/place/placesMain')">
+									여행지 탐색하기
+								</button>
+							</div>
+
+
+							<!-- 카드 출력 예시 -->
+							<div class="result-card card">								
+								<div class="card-body my-likes-card">
+									<img class="card-img" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
+									<div>
+										<!-- 장소명  -->							
+										<h5 class="card-title">Card title</h5>
+										<!-- 리스트에 장소 추가하기 -->
+										<button type="button" class="btn btn-outline-primary myLikes-btn">추가하기</button>
+									</div>													
+								</div>								
+							</div>
+							
 					
+							
+						</div>					
 					
 					</div>
 					<div class="modal-footer">
@@ -345,6 +406,99 @@ div#dropZone {
 				</div>
 			</div>
 		</div>
+		
+		<script>
+		
+			/* "좋아요" 관련 로직 */
+		
+			let id = "${loginMember.memberId}";
+
+			//1. 좋아요 목록 불러오기 -----------------------------------------------------------------------
+			fetch('${path}/place/loadLikesList.do', {
+			  method: 'POST', 
+			  headers: {
+			    'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify({"memberId":id}),
+			})
+			.then((response) => response.json())
+			.then((data) => {
+			  		
+				console.log("저장된 좋아요 목록이 있습니까? ",data);
+				
+				if(data.length==0){
+					
+					console.log("좋아요 리스트가 없습니다!");
+					//0830) 좋아요 리스트가 부재하는 경우, '카테고리+' 버튼으로 사용자 정의 항목을 추가할 수 있음을 안내할 것
+					document.getElementById("addAlarm").style.display="block";
+					
+					
+				} else {
+					
+					
+					
+					const select = document.getElementById("catList");
+					//존재하는 경우, select의 option으로서 저장된 리스트의 '항목'들 가져오기
+					
+					select.innerHTML = "";
+					let basicOpt = document.createElement("option");
+					basicOpt.innerText = "-- 선택 --";
+					basicOpt.value="notOpt";
+					basicOpt.selected="true";
+					basicOpt.disabled="true";
+					select.append(basicOpt);
+					
+					data.forEach(e=>{
+						
+						let opt = document.createElement("option");
+						opt.innerText = e.likesTitle;
+						opt.value= e.likesId;
+						select.append(opt);
+						
+					});
+				}
+				
+			});
+			
+			//2. 좋아요 장소 정보 불러오기 -----------------------------------------------------------------			
+			//catList의 select option에서 선택한 항목에 해당하는 장소 카드 출력하기
+			const heartsList = document.getElementById("catList");
+			heartsList.addEventListener("change",e=>{
+				
+				const likesId = e.target.value;
+				console.log("/////////////////",likesId);
+				
+				fetch('${path}/place/savedHearts.do', {
+					  method: 'POST', 
+					  headers: {
+					    'Content-Type': 'application/json',
+					  },
+					  body: JSON.stringify({"likesId":likesId}),
+					})
+					.then((response) => response.json())
+					.then((data) => {
+						
+						//option에 해당하는 장소 정보 가져오기
+						console.log(data);
+						
+						
+						
+						
+
+					});
+				
+				
+				
+			});
+			
+			
+			
+			
+		
+		</script> 
+		
+		
+		
 
 
 		<!-- Modal : 리스트 카드 클릭 시 출력될 것 -->
@@ -716,13 +870,24 @@ div#dropZone {
 		
 		//기상청API 활용하기
 		//1. 중기육상예보 조회
-		const url = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst"
+/* 		const url = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst"
 			        +"?serviceKey=elB%2BRI1Qb32rIFvCv63J%2FI7Tc7CNydheC6%2BgTHJNP3TAiREJhR6WkEu5GXN8OGWj9Fcwzdvw7z72B6hQRKHdGw%3D%3D"
 					+"&pageNo=1"
 					+"&numOfRows=10"
 					+"&dataType=JSON"
 					+"&regId="+areaCode
-					+"&tmFc="+today;
+					+"&tmFc="+today; */
+		
+		console.log("지역 ",areaCode);
+					
+					
+		const url = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?"
+				    +"serviceKey=elB%2BRI1Qb32rIFvCv63J%2FI7Tc7CNydheC6%2BgTHJNP3TAiREJhR6WkEu5GXN8OGWj9Fcwzdvw7z72B6hQRKHdGw%3D%3D"
+				    +"&pageNo=1&numOfRows=10&dataType=json"
+				    +"&regId="+areaCode
+				    +"&tmFc="+today;			
+					
+					
 			
 		fetch(url)
 		.then(res=>res.json())
