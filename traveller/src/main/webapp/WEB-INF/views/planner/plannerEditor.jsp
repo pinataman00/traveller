@@ -171,16 +171,13 @@ div#dropZone {
 	margin-right:30px;
 	width:150px;
 	height:150px;
-	border:1px solid red;
+/* 	border:1px solid red; */
 	border-radius:10px;
 }
 .my-likes-card{
 	display:flex;
 }
-/* .myLikes-btn{
-	margin-left:200px;
-	margin-top:24px;
-} */
+
 .result-card{
 	margin-top:10px;
 }
@@ -188,8 +185,16 @@ div#dropZone {
 	margin-top:30px;
 	text-align:center;
 }
+.card-title{
+	font-weight:600;
+}
 .my-likes-address{
 	margin-bottom:0px;
+	font-size:13px;
+}
+.my-likes-theme{
+	font-size:13px;
+	margin-top:3px;
 }
 .my-likes-btn-container{
 	display:flex;
@@ -437,6 +442,9 @@ div#dropZone {
 		
 		<script>
 		
+		/* 오버레이하면 전체가 하얗게 변하는 오류 발생  */
+		
+		
 			/* "좋아요" 관련 로직 */
 		
 			let id = "${loginMember.memberId}";
@@ -564,15 +572,6 @@ div#dropZone {
 						cardImg.src="${path}/resources/img/testPic/pikachu.png";
 					}
 					
-					//"상세보기" 클릭 시, 장소 상세 페이지가 열리도록
-					const contentId = data[i].contentId;
-					resCard.addEventListener("click",e=>{
-						
-						window.open("${path}/place/placeView/"+contentId);
-					});
-					
-					
-					cardBody.append(cardImg);
 					
 					//제목, 버튼이 포함된 div
 					const likesDiv = document.createElement("div");
@@ -586,24 +585,113 @@ div#dropZone {
 					//주소
 					const addr = document.createElement("p");
 					addr.classList.add("my-likes-address");
-					addr.innerText = 
+					addr.innerText = data[i].address;
 					//테마
 					const likesTheme = document.createElement("p");
 					likesTheme.classList.add("my-likes-theme");
-					likesTheme.innerText= 
-						
-						
+					const themeData = data[i].cat2;
+					
+					switch(themeData){
+					
+					case 'A0101' : likesTheme.innerText="자연 관광지";break;
+					case 'A0102' : likesTheme.innerText="관광 자원";break;
+					
+					case 'A0201' : likesTheme.innerText="역사";break;
+					case 'A0202' : likesTheme.innerText="휴양";break;
+					case 'A0203' : likesTheme.innerText="체험";break;
+					case 'A0204' : likesTheme.innerText="산업";break;
+					case 'A0205' : likesTheme.innerText="건축/조형";break;
+					case 'A0206' : likesTheme.innerText="문화시설";break;
+					case 'A0207' : likesTheme.innerText="축제";break;
+					case 'A0208' : likesTheme.innerText="공연/행사";break;
+					
+					case 'C0112' : likesTheme.innerText="가족";break;
+					case 'C0113' : likesTheme.innerText="나홀로";break;
+					case 'C0114' : likesTheme.innerText="힐링";break;
+					case 'C0115' : likesTheme.innerText="도보";break;
+					case 'C0116' : likesTheme.innerText="캠핑";break;
+					case 'C0117' : likesTheme.innerText="맛";break;
+					
+					case 'A0301' : likesTheme.innerText="레포츠 > 일반";break;
+					case 'A0302' : likesTheme.innerText="레포츠 > 육상";break;
+					case 'A0303' : likesTheme.innerText="레포츠 > 수상";break;
+					case 'A0304' : likesTheme.innerText="레포츠 > 항공";break;
+					case 'A0305' : likesTheme.innerText="레포츠 > 복합";break;
+					
+					case 'B0201' : likesTheme.innerText="숙박";break;
+					case 'A0401' : likesTheme.innerText="쇼핑";break;
+					case 'A0502' : likesTheme.innerText="음식";break;
+				
+				
+				}
+
+					//좌표
+					const likesX = document.createElement("div");
+					likesX.type="hidden";
+					likesX.classList.add("likesX");
+					likesX.value=data[i].mapx;
+					
+					const likesY = document.createElement("div");
+					likesY.type="hidden";
+					likesY.classList.add("likesY");
+					likesY.value=data[i].mapy;
+					
+					cardBody.append(cardImg);
+					
+					likesDiv.append(title);
+					likesDiv.append(addr);
+					likesDiv.append(likesTheme);
+					likesDiv.append(likesX);
+					likesDiv.append(likesY);
+					
+					
 					//버튼
+					const likesBtnContainer = document.createElement("div");
+					likesBtnContainer.classList.add("my-likes-btn-container");
+					
 					const likesBtn = document.createElement("button");
 					likesBtn.classList.add("btn");
 					likesBtn.classList.add("btn-outline-primary");
+					likesBtn.classList.add("btn-sm");
 					likesBtn.classList.add("myLikes-btn");
 					likesBtn.innerText = "추가하기";
 					
-					likesDiv.append(title);
-					likesDiv.append(likesBtn);
 					
-					//TODO0905) "추가하기" 버튼 클릭 시 리스트에 장소 카드가 추가되도록 구현해야 함
+					//"추가하기" 클릭 시, 플래너 에디터 리스트에 장소 카드 추가
+					likesBtn.addEventListener("click",e=>{
+						
+						//TODO 0906) 리스트에 추가되는 것까지는 되지만, "마커", "선"이 제대로 구현되지 않음!
+						//addMarkerFunc(), drawLines()관련해서도 처리해야 함!
+						addLikesToList(data[i].mapy,data[i].mapx,data[i].title);
+						
+					});
+					
+					
+					const infoBtn = document.createElement("button");
+					infoBtn.classList.add("btn");
+					infoBtn.classList.add("btn-outline-primary");
+					infoBtn.classList.add("btn-sm");
+					infoBtn.classList.add("infoBtn");
+					infoBtn.innerText = "상세보기";
+					
+					
+					//"상세보기" 클릭 시, 장소 상세 페이지가 열리도록
+					const contentId = data[i].contentId;
+					infoBtn.addEventListener("click",e=>{
+						
+						window.open("${path}/place/placeView/"+contentId);
+						
+						
+						
+						
+					});
+					
+					
+					likesBtnContainer.append(infoBtn);
+					likesBtnContainer.append(likesBtn);
+					
+					likesDiv.append(likesBtnContainer);
+					
 					
 					cardBody.append(likesDiv);
 					resCard.append(cardBody);
@@ -619,6 +707,91 @@ div#dropZone {
 			}
 			
 			
+			
+			
+			
+			/* TODO0906 "좋아요" 리스트에 추가하기! */
+			
+			
+			
+			const addLikesToList = (latitude,longitude,title)=>{
+				
+				//alert(lat,lng);
+				//===================================================================================
+					
+					
+				clearDragEvent();
+				       	
+				const lat = latitude;
+				const lng = longitude;
+			 	const placeName = title;
+			 	
+			 	//const memo = document.getElementById("memo").value;			 	
+				//console.log("위도 : ",lat,"경도 : ",lng,"타이틀 : ",placeName,"메모 : ",memo);
+			
+				//장소 카드 생성해, 플랜 리스트에 추가하기 -----------------------------------
+				const dropZone = document.getElementById("dropZone");
+				
+				const addPlan = document.createElement("div"); //div생성하기
+				addPlan.classList.add("box_drag");
+				addPlan.setAttribute("draggable",true);
+				
+			
+				//index를 식별하기 위해, 현재 dropZone에 자식 태그들이 몇 개 있는지 확인하기	
+				
+				const cards = document.querySelectorAll("div#dropZone div");
+				console.log("현재 카드 개수 : ",cards.length);
+				let tempNo = cards.length+1;
+				addPlan.id="p"+tempNo;
+				
+				dropZone.insertAdjacentElement("beforeend",addPlan);
+				addDragEvent();
+				
+				console.log(addPlan);
+				//dropZone.append(document.createElement("button"));
+				
+				addPlan.innerText = placeName;
+				//-------------------------------------------------------------------
+			
+				//장소 카드의 "속성"을 새로 생성해, 해당 장소의 정보를 저장하기--------------------
+				
+				addPlan.setAttribute("id",addPlan.id);
+				addPlan.setAttribute("placeName",placeName);
+				addPlan.setAttribute("latitude",lat);
+				addPlan.setAttribute("longitude",lng);
+				addPlan.setAttribute("memo",""); //memo는 없음
+		
+				//deletePlace(addPlan); //더블클릭 시, 편집 시점에 생성된 마커와 카드가 삭제됨
+				//deletePlaceMarker(addPlan);
+				moveMap(addPlan);
+				printInfo(addPlan);	
+					
+				
+				
+				
+				
+				
+				//====================================================================================
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+		
+			
+			
+		
+		
+		
+		
+		
 		
 		</script> 
 		
@@ -2077,6 +2250,8 @@ div#dropZone {
  	    		const lat = e.target.getAttribute("latitude");
  	    		const lng = e.target.getAttribute("longitude");
  	    		
+ 	    		console.log("0906확인",lat,",",lng);
+ 	    		
  	    		//0618) 마커가 생성됨 (선만으로는 확인하기 어려우니까)
  	    		var markerPosition  = new kakao.maps.LatLng(lat, lng); 
  	     		// 마커를 생성합니다
@@ -2131,7 +2306,7 @@ div#dropZone {
 		map.addControl(btnController[0], kakao.maps.ControlPosition.TOPLEFT);
 		
 		//3. TODO0817) 클릭 시, 해당 위치에 마커 꽂기 ---------------------------------------------------------------------------
-		//러브다이브
+		
 		// 지도를 클릭한 위치에 표출할 마커입니다
  		var marker = new kakao.maps.Marker({ 
 		    // 지도 중심좌표에 마커를 생성합니다 
