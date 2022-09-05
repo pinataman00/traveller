@@ -169,17 +169,18 @@ div#dropZone {
 .card-img{
 
 	margin-right:30px;
-	width:100px;
-	height:100px;
+	width:150px;
+	height:150px;
 	border:1px solid red;
+	border-radius:10px;
 }
 .my-likes-card{
 	display:flex;
 }
-.myLikes-btn{
+/* .myLikes-btn{
 	margin-left:200px;
 	margin-top:24px;
-}
+} */
 .result-card{
 	margin-top:10px;
 }
@@ -187,6 +188,17 @@ div#dropZone {
 	margin-top:30px;
 	text-align:center;
 }
+.my-likes-address{
+	margin-bottom:0px;
+}
+.my-likes-btn-container{
+	display:flex;
+	margin-top:30px;
+	margin-left:90px;
+}
+
+
+
 </style>
 
 	<section>
@@ -367,31 +379,47 @@ div#dropZone {
 							</select>
 							<p id="addAlarm" style="color:red; display:none;">좋아요 카테고리를 먼저 추가해주세요!</p>
 						</div>
-						<div class="likes-content-container">
+
+
+						<!-- 저장된 장소 정보가 없는 경우, 다음 안내 문구와 버튼이 화면에 출력됨 -->
+						<div class="no-saved-place" style="display:none;">
+							<p class="info-text" style="color: red;">저장된 장소가 없습니다! 나만의 장소를 추가해보세요!</p>
+							<button type="button" class="btn btn-primary btn-sm" onclick="window.open('${path}/place/placesMain')">
+								여행지 탐색하기
+							</button>
+						</div>
+
+						<div class="likes-content-container cards-container">
 						
 							<!-- 카드가 출력되는 영역 -->
-							
-							<!-- 저장된 장소 정보가 없는 경우, 다음 안내 문구와 버튼이 화면에 출력됨 -->
-							<div class="no-saved-place" style="display:none;">
-								<p class="info-text" style="color: red;">저장된 장소가 없습니다! 나만의 장소를 추가해보세요!</p>
-								<button type="button" class="btn btn-primary btn-sm" onclick="window.open('${path}/place/placesMain')">
-									여행지 탐색하기
-								</button>
-							</div>
 
+							<!-- 기본 출력 내용 -->
+							
 
 							<!-- 카드 출력 예시 -->
-							<div class="result-card card">								
+ 							<div class="result-card card">								
 								<div class="card-body my-likes-card">
 									<img class="card-img" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
-									<div>
+									<div class="likes-info-container">
 										<!-- 장소명  -->							
 										<h5 class="card-title">Card title</h5>
+										<p class="my-likes-address" style="margin-bottom:0px;">주소</p>
+										<!-- TODO0905) cat2를 기준으로 pasring해야 함 -->
+										<p class="my-likes-theme">테마</p>
+										
+										<!-- 좌표 정보 -->
+										<input type="hidden" class="likesX">
+										<input type="hidden" class="likesY">
+										
 										<!-- 리스트에 장소 추가하기 -->
-										<button type="button" class="btn btn-outline-primary myLikes-btn">추가하기</button>
+										<!-- <button type="button" class="btn btn-outline-primary myLikes-btn">추가하기</button> -->
+										<div class="my-likes-btn-container" style="display:flex; margin-top:30px; margin-left:90px;">
+										<button type="button" class="btn btn-outline-primary btn-sm infoBtn" style="margin-right:5px;">상세보기</button>
+										<button type="button" class="btn btn-outline-primary btn-sm myLikes-btn">추가하기</button>
+										</div>
 									</div>													
 								</div>								
-							</div>
+							</div> 
 							
 					
 							
@@ -481,8 +509,26 @@ div#dropZone {
 						//option에 해당하는 장소 정보 가져오기
 						console.log(data);
 						
+						//카드 출력되는 영역
+						const cardContainer = document.getElementsByClassName("cards-container")[0];
+						cardContainer.innerHTML="";
+
 						
+						const noSavedPlace = document.getElementsByClassName("no-saved-place")[0];
 						
+						if(data.length!=0){ //						
+							//document.getElementsByClassName("search-container")[0].style.display="flex";
+							noSavedPlace.style.display="none";
+							
+						} else {
+							//document.getElementsByClassName("search-container")[0].style.display="none";
+							//document.getElementsByClassName("no-saved-place")[0].style.display="";
+							noSavedPlace.style.display="";
+						}
+						
+						createCards(data);
+						
+
 						
 
 					});
@@ -491,7 +537,86 @@ div#dropZone {
 				
 			});
 			
-			
+			//카드 생성 함수
+			const createCards = (data)=>{
+				
+				//카드 생성하기
+				
+				//1. 메인 콘테이너
+				const container = document.getElementsByClassName("likes-content-container")[0];
+				
+				for(let i=0;i<data.length;i++){
+					
+					const resCard = document.createElement("div");
+					resCard.classList.add("result-card");
+					resCard.classList.add("card");
+					
+					const cardBody = document.createElement("div");
+					cardBody.classList.add("card-body");
+					cardBody.classList.add("my-likes-card");
+					
+					//이미지 출력
+					const cardImg = document.createElement("img");
+					cardImg.classList.add("card-img");
+					if(data[i].firstImage!=null){
+						cardImg.src = data[i].firstImage;
+					} else { //카드 정보 부재 시, 기본 이미지 출력
+						cardImg.src="${path}/resources/img/testPic/pikachu.png";
+					}
+					
+					//"상세보기" 클릭 시, 장소 상세 페이지가 열리도록
+					const contentId = data[i].contentId;
+					resCard.addEventListener("click",e=>{
+						
+						window.open("${path}/place/placeView/"+contentId);
+					});
+					
+					
+					cardBody.append(cardImg);
+					
+					//제목, 버튼이 포함된 div
+					const likesDiv = document.createElement("div");
+					likesDiv.classList.add("likes-info-container");
+					
+					//제목
+					const title = document.createElement("h5");
+					title.classList.add("card-title");
+					title.innerText = data[i].title;
+					
+					//주소
+					const addr = document.createElement("p");
+					addr.classList.add("my-likes-address");
+					addr.innerText = 
+					//테마
+					const likesTheme = document.createElement("p");
+					likesTheme.classList.add("my-likes-theme");
+					likesTheme.innerText= 
+						
+						
+					//버튼
+					const likesBtn = document.createElement("button");
+					likesBtn.classList.add("btn");
+					likesBtn.classList.add("btn-outline-primary");
+					likesBtn.classList.add("myLikes-btn");
+					likesBtn.innerText = "추가하기";
+					
+					likesDiv.append(title);
+					likesDiv.append(likesBtn);
+					
+					//TODO0905) "추가하기" 버튼 클릭 시 리스트에 장소 카드가 추가되도록 구현해야 함
+					
+					cardBody.append(likesDiv);
+					resCard.append(cardBody);
+					container.append(resCard);
+					
+					
+					
+				}
+				
+				
+				
+				
+			}
 			
 			
 		
