@@ -107,10 +107,6 @@ div#dropZone {
 	margin: 2px;
 }
 
-#myLikes {
-	height: 600px;
-}
-
 .title-container {
 	font-weight: 300;
 }
@@ -3188,6 +3184,8 @@ div#dropZone {
 		
 		//==============================================================================================================
 		//플래너 저장||삭제 관련 함수
+		
+		//1. 플래너 삭제 함수
 		const deleteSchedule = ()=>{
 			
 			localStorage.clear(); //localStorage 비우기
@@ -3195,8 +3193,12 @@ div#dropZone {
 			
 		}
 		
+		
+		//TODO0906)
+		//2. 플래너 저장 함수
 		const saveSchedule = ()=>{ //form은 form대로 보내고, 여기에는 개별 구체적인 plan들을 fetch로 전송할 수 있을까?
-			alert("저장!");
+			
+				alert("저장!");
 		
 /* 			fetch('${path}/planner/savePlanner'),{
 				method:'POST',
@@ -3207,10 +3209,62 @@ div#dropZone {
 			} */
 		
 		
+			//-------------------------------------------------------------------
+			//startPlanner.jsp 페이지에서 사용자가 입력한 값 확인하기
+			//console.log("사용자 입력 값 : ",${tempPlanner});
+			
+			
+			
+			const fileInput = document.querySelector("#img_");
+			
+			//FormData객체 사용해보기
+			
+			let formData = new FormData();
+			
+			formData.append("thumbNail", fileInput.files[0]); //이미지 파일 가져오기
+			
+			//플래너 제목, localStorage > JS객체 배열 데이터도 추가할 수 있나?
+			
+			//플래너 정보
+			//0. 작성자 > memberId
+			formData.append("memberId","${loginMember.memberId}");
+			//1. 제목 > plannerTitle
+			formData.append("plannerTitle",document.getElementById("plannerTitle_").value);
+			//2. 여행일자 > travelDays
+			formData.append("travelDays","${tempPlanner.travelDays}");
+			//3. 테마 > theme
+			formData.append("theme","${tempPlanner.theme}");
+			//4. 주요 여행지 > areaCode, sigunguCode
+			formData.append("areaCode","${tempPlanner.areaCode}");
+			formData.append("sigunguCode","${tempPlanner.sigunguCode}");
+			//5. 소개글 > sumamry
+			formData.append("sumamry",document.getElementById("summary_").value);
+			
+			
+			
+			//localStorage배열도 저장할 수 있나?
+			//5. Plan[] plan			
+			
+			//console.log(formData);
+			fetch('${path}/planner/savePlanner2',{
+				method:'POST',
+				cach: 'no-cache',
+				body:formData 
+				
+			})
+			.then((res)=>res.json())
+			.then((data)=>{
+				console.log(data);
+			});
+			
+			
+			
 		}
 		
 		const tempAlert = ()=>{
+			
 			alert("구현 중입니다");
+			
 		}
 		
 		
@@ -3256,16 +3310,16 @@ div#dropZone {
 	      </div>
 	      
 	      
-	     <form name="memberEnrollFrm" action="${path }/planner/savePlanner" method="post"
-		 enctype="multipart/form-data">
+<%-- 	     
+		TODO0906) form태그는 주석 처리
+		<form name="memberEnrollFrm" action="${path }/planner/savePlanner" method="post"
+		 enctype="multipart/form-data"> --%>
 	      <div class="modal-body">
-		
-
 					<div class="input-group input-group-sm mb-3">
 						<div class="input-group-prepend">
 							<span class="input-group-text" id="inputGroup-sizing-sm">플래너 제목</span>
 						</div>
-						<input name="plannerTitle" type="text" class="form-control" aria-label="Small"
+						<input name="plannerTitle" id="plannerTitle_" type="text" class="form-control" aria-label="Small"
 							aria-describedby="inputGroup-sizing-sm" value="${tempPlanner.plannerTitle}">
 					</div>
 					<p style="margin-bottom:5px;font-style:italic;">플래너를 소개할 수 있는 짤막한 한 문장!</p>
@@ -3273,7 +3327,7 @@ div#dropZone {
 						<div class="input-group-prepend">
 							<span class="input-group-text" id="inputGroup-sizing-sm">소개글</span>
 						</div>
-						<input name="plannerTitle" type="text" class="form-control" aria-label="Small"
+						<input id="summary_" name="summary" type="text" class="form-control" aria-label="Small"
 							aria-describedby="inputGroup-sizing-sm">
 					</div>
 					
@@ -3300,15 +3354,14 @@ div#dropZone {
 							  </div>
 							</div>
 					</div>
-
 	      </div>
 	      
 	      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
 		       <!--  <button type="submit" class="btn btn-outline-success" onclick="saveSchedule();">저장하기</button> -->
-		        <button type="button" class="btn btn-outline-success" onclick="tempAlert();">저장하기</button>
+		        <button type="button" class="btn btn-outline-success" onclick="saveSchedule();">저장하기</button>
 	      </div>
-	      </form>
+<!-- 	      </form> -->
 	      
 	    </div>
 	  </div>

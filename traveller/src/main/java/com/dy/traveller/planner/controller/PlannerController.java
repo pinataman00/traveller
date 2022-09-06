@@ -175,19 +175,16 @@ public class PlannerController {
 					e.printStackTrace();
 				}
 		  }
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	
 	}
 	
+	//TODO 0906) FormData객체 활용해 form태그 대신 데이터 서버로 전송받기
+	@RequestMapping("/savePlanner2")
+	@ResponseBody
+	public void savePlanner2(MultipartFile thumbNail, Planner planner) {
+		System.out.println("FormData테스트!!!! 파일 이름 : "+thumbNail.getOriginalFilename());
+		System.out.println("제목도 가져올 수 있나? "+planner);
+	}
 	
 	
 }
