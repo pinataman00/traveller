@@ -660,8 +660,7 @@ div#dropZone {
 					//"추가하기" 클릭 시, 플래너 에디터 리스트에 장소 카드 추가
 					likesBtn.addEventListener("click",e=>{
 						
-						//TODO 0906) 리스트에 추가되는 것까지는 되지만, "마커", "선"이 제대로 구현되지 않음!
-						//addMarkerFunc(), drawLines()관련해서도 처리해야 함!
+						//0906) 리스트에 추가하기
 						addLikesToList(data[i].mapy,data[i].mapx,data[i].title);
 						
 					});
@@ -710,7 +709,7 @@ div#dropZone {
 			
 			
 			
-			/* TODO0906 "좋아요" 리스트에 추가하기! */
+			/* 0906 "좋아요" 리스트에 추가하기! */
 			
 			
 			
@@ -767,12 +766,14 @@ div#dropZone {
 				printInfo(addPlan);	
 					
 				
-				
-				
-				
-				
 				//====================================================================================
 				
+				//0906 ) 마커 추가하기
+				//1. addMarkerFunc()
+				addMarkerFunc(latitude,longitude,title);
+				
+					
+					
 			}
 			
 			
@@ -3298,7 +3299,7 @@ div#dropZone {
 							    <label class="custom-file-label" for="inputGroupFile02">최대 10MB</label>
 							  </div>
 							</div>
-						</div>
+					</div>
 
 	      </div>
 	      
