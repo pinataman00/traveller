@@ -297,5 +297,18 @@ public class PlannerController {
 
 	}
 	
+	//--------------------------------------------------------------------------------------
+	//TODO 0907) 플래너 불러오기
+	@RequestMapping("/loadPlanner.do")
+	@ResponseBody
+	public void loadPlanner(@RequestBody Map<String,String>data){
+		
+		String memberId = data.get("memberId");
+		
+		//List<Planner> list = service.getPlanner(memberId);
+	
+		//System.out.println("리스트 확인 "+list.size());
+	}
+	
 	
 }

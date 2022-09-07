@@ -112,6 +112,22 @@
 	
 	}
 	
+	/* 플래너 출력 카드 */
+	.my-planner-card{
+	display:flex;
+	}
+	
+	.card-title{
+		font-weight:600;
+	}
+
+	.my-planner-theme{
+		font-size:13px;
+		margin-top:3px;
+	}
+	
+	
+	
 </style>
 
 <section>
@@ -165,6 +181,7 @@
 						</select>
 						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#catEditor" onclick="myList();">편집</button>
 					</div>
+					
 					<div class="myPlanner-contents-container" style="display:none;">
 						<select name="plannerNo" id="plannerNo_" class="custom-select">
 							<option value="notOpt" selected disabled>-- 선택 --</option>
@@ -224,11 +241,6 @@
 </div>
 
 
-
-
-
-
-
 					<div class="search-container" style="display:none;">
 						<input id="keyword" name="keyword" class="form-control mr-sm-2" style="width: 444px;" 
 						type="search" placeholder="결과 내 검색" aria-label="Search">
@@ -243,14 +255,32 @@
 					<div class="cards-container">
 						<!-- 카테고리 옵션 선택 시, 검색 결과 카드가 출력될 영역 -->									
 					</div>
-			
+					
+					
+					<!-- TODO0907) 플래너 불러오기 -->
+					<div class="planner-container">
 
-			
-			
-			
-			
-			
 
+							<!-- 카드 출력 예시 -->
+ 							<div class="result-card card">								
+								<div class="card-body my-planner-card">
+									<img class="card-img" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
+									<div class="likes-info-container">
+										<!-- 장소명  -->							
+										<h5 class="card-title">Card title</h5>
+										<!-- TODO0907) cat2를 기준으로 pasring해야 함 -->
+										<p class="my-planner-theme">테마</p>
+
+									</div>													
+								</div>								
+							</div> 
+
+
+					
+					
+					
+					
+					</div>
 
 		</div>
 	</div>
@@ -674,14 +704,40 @@ function myPlace (contentId, firstImage, title){
 				contentTitle.innerText= "내가 저장한 플래너 열람하기";
 				
 				likesContainer.style.display="none";
-				plannerContainer.style.display="";
+				//plannerContainer.style.display="";
 				
 				searchContainer.style.display="none";
 				noContent.style.display="none";
 				cardContainer.style.display="none";
 				
+				document.getElementById("plannerNo_").innerHTML="";
+				//존재하는 경우, select의 option으로서 저장된 리스트의 '항목'들 가져오기
 				
+				
+				//"플래너" 정보 불러오기 ---------------------------
+				
+				//alert("안녕!");
+				let id = "${loginMember.memberId}";
+				
+				//1. 좋아요 목록 불러오기
+				fetch('${path}/planner/loadPlanner.do', {
+				  method: 'POST', 
+				  headers: {
+				    'Content-Type': 'application/json',
+				  },
+				  body: JSON.stringify({"memberId":id}),
+				})
+				.then((response) => response.json())
+				.then((data) => {
+				  		
+					console.log("저장된 좋아요 목록이 있습니까? ",data);
+
+					
+				});
+
 			}
+			
+			
 			
 			//좋아요 ----------------------------------------------------------------------------------
 			const myLikes = ()=>{
@@ -695,7 +751,7 @@ function myPlace (contentId, firstImage, title){
 				likesContainer.style.display="";
 				
 				//likesMainContainer.style.display="";
-				
+				cardContainer.style.display="";
 			}
 			
 			
