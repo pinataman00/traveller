@@ -212,8 +212,8 @@ public class PlannerController {
 		
 		//1. 멀티 미디어 파일 받아오기
 		//1-1. 썸네일 이미지 관련 기본 정보 확인
-		System.out.println("파일 이름 : "+img.getOriginalFilename());
-		System.out.println("파일 크기 : "+img.getSize());
+		//System.out.println("파일 이름 : "+img.getOriginalFilename());
+		//System.out.println("파일 크기 : "+img.getSize());
 		
 		//1-2. 첨부파일 저장 경로 설정하기
 		String path = rs.getServletContext().getRealPath("/resources/planner/thumbnail/");
@@ -222,7 +222,7 @@ public class PlannerController {
 		if(!uploadDir.exists()) uploadDir.mkdirs();
 		
 		  
-		  if(!img.isEmpty()) { //만약, 파일을 업로드했다면... 다음의 로직을 수행하라
+		  if(img!=null&&!img.isEmpty()) { //만약, 파일을 업로드했다면... 다음의 로직을 수행하라
 			  
 			  //1-3. 리네임 처리
 			  String oriName = img.getOriginalFilename(); //원본 파일명 가져오기 
