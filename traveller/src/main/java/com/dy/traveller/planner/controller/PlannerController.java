@@ -255,10 +255,10 @@ public class PlannerController {
 		
 		for(int i=0;i<list.size();i++) { //저장 데이터 확인하기
 			
-			System.out.println(i+1+"일자의 여행 계획");
-			System.out.println("방문 장소는 몇 군데? "+list.get(i).length);
+			//System.out.println(i+1+"일자의 여행 계획");
+			//System.out.println("방문 장소는 몇 군데? "+list.get(i).length);
 			//System.out.println(Arrays.toString(list.get(i)));
-			System.out.println(Arrays.toString(list.get(i)));
+			//System.out.println(Arrays.toString(list.get(i)));
 			
 			
 		}
@@ -272,7 +272,7 @@ public class PlannerController {
 		try {
 			
 			res = service.insertPlanner(planner);
-			System.out.println("저장 성공!");
+			//System.out.println("저장 성공!");
 			return res;
 			
 		} catch (RuntimeException e) {
@@ -288,7 +288,7 @@ public class PlannerController {
 				}
 			}
 			
-			System.out.println("저장 실패!");
+			//System.out.println("저장 실패!");
 			return res;
 			
 		}

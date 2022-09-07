@@ -62,18 +62,18 @@ public class PlannerServiceImpl implements PlannerService {
 		
 		try {
 			
-			System.out.println("여기까지 왔니?");
+			//System.out.println("여기까지 왔니?");
 			//부모 테이블 > PLANNER에 기본 데이터 저장하기
 			res = dao.insertPlanner(session, planner);
-			System.out.println("여기는 왔니?");
+			//System.out.println("여기는 왔니?");
 			//PLANNER > PK값 변수에 따로 저장하기!
 			String plannerNo = planner.getPlannerNo();
-			System.out.println("방금 생성된 시퀀스 넘버 : "+plannerNo);
+			//System.out.println("방금 생성된 시퀀스 넘버 : "+plannerNo);
 			
 				//THUMBNAIL 썸네일 저장하기 -------------------------------------------------
 				if(res>0&&planner.getImage()!=null) {
 					
-					System.out.println("PLANNER는 저장 성공했어");
+					//System.out.println("PLANNER는 저장 성공했어");
 					
 					//IMAGE에 SEQUENCE로써 갓 생성된 PLANNER의 PK값(=PLANNER_NO) 저장하기
 					planner.getImage().setPlannerNo(plannerNo);

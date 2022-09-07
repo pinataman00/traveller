@@ -50,7 +50,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    width: 280px;
+/*     width: 280px; */
     height: 200px;
     object-fit: cover;
     border-radius:10px;
@@ -76,9 +76,7 @@
 		height:100px;
  		max-width: 200px;
 	    max-height: 200px;
-	    border-radius: 50px;
-	    
-/* 	    border:1px solid red; */
+	    border-radius: 10px;
 	
 	}
 	
@@ -104,6 +102,14 @@
     float: right;
     margin-top: 10px;
     margin-bottom: 10px;
+	}
+	
+	p#contentTitle{
+	
+	 text-align:right; 
+	 margin-top:10px; 
+	 margin-right:30px;
+	
 	}
 	
 </style>
@@ -135,24 +141,39 @@
 		<div class="card text-center" style="margin-top:0px;">
 			<div class="card-header">
 				<ul class="nav nav-tabs card-header-tabs">
-					<li class="nav-item"><a class="nav-link active" href="#">나의 장소</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">나의 플랜</a></li>
+					<li class="nav-item"><a id="likeMenu" class="nav-link active" href="#" onclick="myLikes();">나의 장소</a></li>
+					<li class="nav-item"><a id="planMenu" class="nav-link" href="#" onclick="myPlanner();">나의 플랜</a></li>
 					<li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a></li>
 				</ul>
 			</div>
 			
 			<div class="content-body" style="border:1px solid red; margin-bottom:30px;">
 			
+		
+			
 				<div class="content-title-container">
-					<p style="text-align:right; margin-top:10px; margin-right:30px;">내가 '좋아요'한 장소 모아보기</p>
+				
+					<p id="contentTitle">내가 '좋아요'한 장소 모아보기</p>
+					
 				</div>
 				
 				<div class="option-container" style="display:flex;">
-					<select name="likesId" id="catList" class="custom-select">
-						<option value="notOpt" selected disabled>-- 선택 --</option>
-					</select>
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#catEditor" onclick="myList();">편집</button>
+				
+					<div class="myLikes-contents-container">
+						<select name="likesId" id="catList" class="custom-select">
+							<option value="notOpt" selected disabled>-- 선택 --</option>
+						</select>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#catEditor" onclick="myList();">편집</button>
+					</div>
+					<div class="myPlanner-contents-container" style="display:none;">
+						<select name="plannerNo" id="plannerNo_" class="custom-select">
+							<option value="notOpt" selected disabled>-- 선택 --</option>
+						</select>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#catEditor" onclick="plannerEditor();">편집</button>
+					</div>
 				</div>						
+		
+		
 			</div>
 
 
@@ -195,13 +216,8 @@
 								aria-describedby="inputGroup-sizing-sm" placeholder="카테고리 제목을 작성하세요" required>
 						</div>
 						<button type="button" class="btn btn-outline-primary btn-sm" style="float:right;" onclick="addCatagory();">'좋아요' 항목에 추가하기</button>
-					</span> 
-        
-        
-        
-        
-        </div>
-        
+					</span>   
+        </div>        
       </div>
     </div>
   </div>
@@ -213,20 +229,27 @@
 
 
 
-			<div class="search-container" style="display:none;">
-				<input id="keyword" name="keyword" class="form-control mr-sm-2" style="width: 444px;" 
-				type="search" placeholder="결과 내 검색" aria-label="Search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="searchMyPlaces();">검색</button>
-			</div>
+					<div class="search-container" style="display:none;">
+						<input id="keyword" name="keyword" class="form-control mr-sm-2" style="width: 444px;" 
+						type="search" placeholder="결과 내 검색" aria-label="Search">
+						<button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="searchMyPlaces();">검색</button>
+					</div>
+					
+					<div class="no-saved-place" style="margin-bottom:30px; display:none;">
+						<p class="info-text" style="color:red;">저장된 장소가 없습니다! 나만의 장소를 추가해보세요!</p>
+						<button type="button" class="btn btn-primary btn-lg" onclick="location.assign('${path}/place/placesMain')">여행지 탐색하기</button>
+					</div>
+					
+					<div class="cards-container">
+						<!-- 카테고리 옵션 선택 시, 검색 결과 카드가 출력될 영역 -->									
+					</div>
 			
-			<div class="no-saved-place" style="margin-bottom:30px; display:none;">
-				<p class="info-text" style="color:red;">저장된 장소가 없습니다! 나만의 장소를 추가해보세요!</p>
-				<button type="button" class="btn btn-primary btn-lg" onclick="location.assign('${path}/place/placesMain')">여행지 탐색하기</button>
-			</div>
+
 			
-			<div class="cards-container">
-				<!-- 카테고리 옵션 선택 시, 검색 결과 카드가 출력될 영역 -->									
-			</div>
+			
+			
+			
+			
 
 
 		</div>
@@ -622,6 +645,62 @@ function myPlace (contentId, firstImage, title){
 			}
 
 
+//===================================================================================================================
+//0907) PLANNER 불러오기	
+
+
+			const planMenu = document.getElementById("planMenu");
+			const likeMenu = document.getElementById("likeMenu");
+			const contentTitle = document.getElementById("contentTitle");
+			
+			const likesContainer = document.getElementsByClassName("myLikes-contents-container")[0];
+			const plannerContainer = document.getElementsByClassName("myLikes-contents-container")[0];
+			
+			//좋아요 관련
+			const searchContainer = document.getElementsByClassName("search-container")[0];
+			const noContent = document.getElementsByClassName("no-saved-place")[0];
+			const cardContainer = document.getElementsByClassName("cards-container")[0];
+			
+			
+			
+			//플래너 ----------------------------------------------------------------------------------
+			const myPlanner = ()=>{
+				
+				//메뉴 탭 활성화 대상 변경하기
+				
+				likeMenu.classList.remove("active");
+				planMenu.classList.add("active");
+				
+				contentTitle.innerText= "내가 저장한 플래너 열람하기";
+				
+				likesContainer.style.display="none";
+				plannerContainer.style.display="";
+				
+				searchContainer.style.display="none";
+				noContent.style.display="none";
+				cardContainer.style.display="none";
+				
+				
+			}
+			
+			//좋아요 ----------------------------------------------------------------------------------
+			const myLikes = ()=>{
+				
+				planMenu.classList.remove("active");
+				likeMenu.classList.add("active");
+				
+				contentTitle.innerText= "내가 '좋아요'한 장소 모아보기";
+				
+				plannerContainer.style.display="none";
+				likesContainer.style.display="";
+				
+				//likesMainContainer.style.display="";
+				
+			}
+			
+			
+			
+			
 </script>
 
 
