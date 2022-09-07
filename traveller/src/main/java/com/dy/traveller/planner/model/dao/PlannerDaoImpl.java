@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.dy.traveller.planner.model.vo.Crew;
 import com.dy.traveller.planner.model.vo.Friends;
+import com.dy.traveller.planner.model.vo.Plan;
+import com.dy.traveller.planner.model.vo.Planner;
+import com.dy.traveller.planner.model.vo.Thumbnail;
 
 @Repository
 public class PlannerDaoImpl implements PlannerDao {
@@ -21,4 +24,23 @@ public class PlannerDaoImpl implements PlannerDao {
 		return session.insert("crew.insertFriends",f);
 	}
 
+	//플래너 저장 관련 메소드 3종 (PLANNER, THUMBNAIL, PLAN) ------------------------
+	@Override
+	public int insertPlanner(SqlSessionTemplate session, Planner planner) {
+		
+		return session.insert("planner.insertPlanner",planner);
+	}
+
+	@Override
+	public int insertThumbnail(SqlSessionTemplate session, Thumbnail image) {
+		
+		return session.insert("planner.insertThumbnail",image);
+	}
+
+	@Override
+	public int insertPlan(SqlSessionTemplate session, Plan plan) {
+		
+		return session.insert("planner.insertPlan",plan);
+	}
+	//-------------------------------------------------------------------------
 }

@@ -3232,7 +3232,7 @@ div#dropZone {
 			
 			let formData = new FormData();
 			
-			formData.append("thumbNail", fileInput.files[0]); //이미지 파일 가져오기
+			formData.append("img", fileInput.files[0]); //이미지 파일 가져오기
 			
 			//플래너 제목, localStorage > JS객체 배열 데이터도 추가할 수 있나?
 			
@@ -3260,19 +3260,9 @@ div#dropZone {
 			
 				console.log("tempArr 확인하기 : ",tempArr.length);
 				
-				console.log("tempArr 확인하기 : ",tempArr[0]);
-				console.log("tempArr 확인하기 : ",tempArr[0][0]['day']);
-				
 				//배열 구조
 				//-> 여행 일자 (3일)
 				//   -> 해당 일의 방문 장소 (2개 : 객체 배열 형태임)
-				//=> 방문장소가 저장된 배열은 별도의 배열에 또 저장하는 건 어때... 왜냐면 이중배열의 length를 추출할 수 없으므로...
-				
-				
-				console.log("tempArr 이중 배열이니까 다시 확인하기 : ",tempArr[0][0]);
-				console.log("tempArr 이중 배열이니까 다시 확인하기 : ",tempArr[0][1]);
-				
-				//console.log("tempArr 확인하기 : ",localStorage[0].day);
 			
 				for(let i=0;i<tempArr.length;i++){ //여행 일자 만큼 반복
 				
@@ -3284,7 +3274,7 @@ div#dropZone {
 					formData.append("planList["+i+"].memo",tempArr[i].memo);
 					formData.append("planList["+i+"].placeName",tempArr[i].placeName); */
 					
-					for(let j=0;j<tempArr[i].length;j++){ //방문 장소 만큼 반복
+					for(let j=0;j<tempArr[i].length;j++){ //방문 장소 만큼 반복 (PlanTemp클래스 참고)
 						
 						formData.append("planList["+i+"]["+j+"].day",tempArr[i][j]['day']);
 						formData.append("planList["+i+"]["+j+"].id",tempArr[i][j]['id']);

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="planner">
+ 
+ 	<insert id="insertPlanner" parameterType="planner">
+ 		INSERT INTO PLANNER VALUES('PLAN'||SEQ_PLANNER.NEXTVAL,#{memberId},#{plannerTitle},#{travelDays},SYSDATE,#{theme},#{areaCode},#{sigunguCode},DEFAULT,DEFAULT,#{summary})
+ 		<selectKey keyProperty="plannerNo" resultType="string" order="AFTER">
+ 			SELECT SEQ_PLANNER.CURRVAL FROM DUAL
+ 		</selectKey>
+ 	</insert>
+ 
+ 	<insert id="insertThumbnail" parameterType="thumbnail">
+ 		INSERT INTO THUMBNAIL VALUES('T'||SEQ_THUMBNAIL.NEXTVAL,'PLAN'||#{plannerNo},#{oriName},#{renamedFileName},SYSDATE)
+ 	</insert>
+ 
+ 	<insert id="insertPlan" parameterType="plan">
+ 		INSERT INTO PLAN VALUES('P'||SEQ_PLANNO.NEXTVAL,'PLAN'||#{plannerNo},#{day},#{latitude},#{longitude},#{memo},#{placeName})
+ 	</insert>
+ 
+</mapper>

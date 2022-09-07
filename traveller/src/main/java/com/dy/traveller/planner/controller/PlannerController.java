@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dy.traveller.member.model.vo.Profileimg;
 import com.dy.traveller.planner.model.service.PlannerService;
 import com.dy.traveller.planner.model.vo.Crew;
 import com.dy.traveller.planner.model.vo.Friends;
@@ -170,8 +171,9 @@ public class PlannerController {
 					
 					img.transferTo(new File(path+rename));
 
+					//1. Thumbnail테이블에 plannerNo를 어떻게 저장할 수 있을까? (객체는 임시니까 저장할 필요는 없음. service에서 처리할 것!)
 					Thumbnail t = Thumbnail.builder().oriName(oriName).renamedFileName(rename).build();
-					p.setImgage(t);
+					p.setImage(t); //플래너에 thumnail관련 정보 저장하기 (has a 관계)
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -180,21 +182,78 @@ public class PlannerController {
 	
 	}
 	
+	
+	
+	
+	
+	
+	
 	//TODO 0906) FormData객체 활용해 form태그 대신 데이터 서버로 전송받기
 	@RequestMapping("/savePlanner2")
 	@ResponseBody
-	public void savePlanner2(MultipartFile thumbNail, Planner planner, PlanTemp temp) {
-		System.out.println("FormData테스트!!!! 파일 이름 : "+thumbNail.getOriginalFilename());
-		System.out.println("제목도 가져올 수 있나? "+planner);
-		System.out.println("객체 배열은 ? "+temp.toString());
-		System.out.println("객체 배열은 ? "+temp.getPlanList());
-		System.out.println("객체 배열은 ? "+temp.getPlanList().get(0).toString());
+	public void savePlanner2(MultipartFile img, Planner planner, PlanTemp temp, HttpServletRequest rs) {
 		
+		//3개 테이블에 저장해야 함
+		//썸네일 저장 -> PLANNER -> (SEQUENCE, PK전달) -> THUMBNAIL, PLAN저장
+		
+		//1. 썸네일 저장하기
+		//System.out.println("FormData테스트!!!! 파일 이름 : "+thumbNail.getOriginalFilename());
+		
+		
+		/* 로직 순서
+		 * 
+		 * 1. Planner 테이블에 플래너 정보 저장하기 (plannerTitle, sumamry, crewId)
+		 * -> PLANNER테이블에 저장 실패 시, ROLLBACK처리하기
+		 * 2. PLANNER테이블에서 자동 생성된 PLANNER_NO 전달 > THUMBNAIL테이블에 플래너 대표 이미지 저장하기
+		 * ※ 테이블 간 관계 : 대표 이미지 관련 THUMBNAIL테이블은 PLANNER테이블에 종속됨
+		 * -> PLANNER의 PK, 'PLANNER_NO'는 PLANNER의 FK임
+		 * 
+		 * */
+		
+		//1. 멀티 미디어 파일 받아오기
+		//1-1. 썸네일 이미지 관련 기본 정보 확인
+		System.out.println("파일 이름 : "+img.getOriginalFilename());
+		System.out.println("파일 크기 : "+img.getSize());
+		
+		//1-2. 첨부파일 저장 경로 설정하기
+		String path = rs.getServletContext().getRealPath("/resources/planner/thumbnail/");
+		File uploadDir = new File(path);
+		//1-2-1. 폴더가 없는 경우, 생성하기
+		if(!uploadDir.exists()) uploadDir.mkdirs();
+		
+		  
+		  if(!img.isEmpty()) { //만약, 파일을 업로드했다면... 다음의 로직을 수행하라
+			  
+			  //1-3. 리네임 처리
+			  String oriName = img.getOriginalFilename(); //원본 파일명 가져오기 
+			  String ext = oriName.substring(oriName.lastIndexOf(".")); //파일명으로부터 확장자 추출 //리네임 작명 규칙 설정
+			  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS"); 
+			  int rndNum = (int)(Math.random()*10000); 
+			  String rename = sdf.format(System.currentTimeMillis())+"_"+rndNum+ext;
+			  
+			  //1-4. 서버 업로드 처리하기 
+				try {
+					
+					img.transferTo(new File(path+rename));
+
+					//1. Thumbnail테이블에 plannerNo를 어떻게 저장할 수 있을까? (객체는 임시니까 저장할 필요는 없음. service에서 처리할 것!)
+					Thumbnail t = Thumbnail.builder().oriName(oriName).renamedFileName(rename).build();
+					planner.setImage(t); //플래너에 thumbnail관련 정보 저장하기 (has a 관계)
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		  }
+		  
+		  
+		//-----------------------------------------------------------------------------
+		  
+	  
+		//2. 플랜 저장하기
 		//일자별 여행지 정보를 저장할 ArrayList
 		List<Plan[]> list = temp.getPlanList();
 		
-		
-		for(int i=0;i<list.size();i++) {
+		for(int i=0;i<list.size();i++) { //저장 데이터 확인하기
 			
 			System.out.println(i+1+"일자의 여행 계획");
 			System.out.println("방문 장소는 몇 군데? "+list.get(i).length);
@@ -203,6 +262,37 @@ public class PlannerController {
 			
 			
 		}
+		  
+		planner.setPlan(list); //plan저장하기 (has a 관계)  
+		  
+		//DB에 PLANNER, THUMBNAIL, PLAN 정보 저장하기 --------------------------------------
+		
+		int res = 0; //저장 성공 여부 확인 기준
+		
+		try {
+			
+			service.insertPlanner(planner);
+			System.out.println("저장 성공!");
+			
+		} catch (RuntimeException e) {
+			
+			//플래너 저장 실패 시!
+			//+ 서버에 저장된 썸네일 파일이 있다면 삭제하기
+			if(!img.isEmpty()) {
+				File deleteFile = new File(path+planner.getImage().getRenamedFileName());
+				if(deleteFile.exists()) { //대상 파일이 존재한다면
+					deleteFile.delete(); //삭제하기
+					
+					System.out.println("이미지 삭제 성공!");
+				}
+			}
+			
+			System.out.println("저장 실패!");
+			
+		}
+		
+		
+
 
 	}
 	
