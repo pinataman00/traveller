@@ -3199,20 +3199,31 @@ div#dropZone {
 		const saveSchedule = ()=>{ //form은 form대로 보내고, 여기에는 개별 구체적인 plan들을 fetch로 전송할 수 있을까?
 			
 				alert("저장!");
-		
-/* 			fetch('${path}/planner/savePlanner'),{
-				method:'POST',
-				headers: {
-					'Content-Type' : 'application/json',
-				},
-				body:JSON.stringify({"plans":})
-			} */
+
 		
 		
 			//-------------------------------------------------------------------
 			//startPlanner.jsp 페이지에서 사용자가 입력한 값 확인하기
 			//console.log("사용자 입력 값 : ",${tempPlanner});
 			
+			//localStorage객체 배열로 저장하기
+			//내장점
+			console.log("파싱 테스트 : ", JSON.parse(localStorage.getItem(1)));
+			
+			let tempArr = []; //객체가 저장될 배열
+			for(let i=0;i<localStorage.length;i++){
+				
+				
+				//tempArr.push(localStorage.getItem(i+1)); //key값은 1부터 시작하므로... i+1의 형태로 저장함
+				//TODO 0907) localStorage의 value를 tempArr에 저장하기
+			
+				//localStorage.getItem
+				tempArr.push(JSON.parse(localStorage.getItem(i+1)));
+			
+			}
+			
+			console.log("배열 확인 : ", tempArr);
+			//console.log("JSON.stringify(배열) : ", JSON.stringify(tempArr));
 			
 			
 			const fileInput = document.querySelector("#img_");
@@ -3238,12 +3249,69 @@ div#dropZone {
 			formData.append("areaCode","${tempPlanner.areaCode}");
 			formData.append("sigunguCode","${tempPlanner.sigunguCode}");
 			//5. 소개글 > sumamry
-			formData.append("sumamry",document.getElementById("summary_").value);
+			formData.append("summary",document.getElementById("summary_").value);
 			
 			
 			
-			//localStorage배열도 저장할 수 있나?
+			//localStorage배열도 저장할 수 있나? ------------------------------------------------------------
 			//5. Plan[] plan			
+			//formData.append("tempArr",tempArr);
+			
+			
+				console.log("tempArr 확인하기 : ",tempArr.length);
+				
+				console.log("tempArr 확인하기 : ",tempArr[0]);
+				console.log("tempArr 확인하기 : ",tempArr[0][0]['day']);
+				
+				//배열 구조
+				//-> 여행 일자 (3일)
+				//   -> 해당 일의 방문 장소 (2개 : 객체 배열 형태임)
+				//=> 방문장소가 저장된 배열은 별도의 배열에 또 저장하는 건 어때... 왜냐면 이중배열의 length를 추출할 수 없으므로...
+				
+				
+				console.log("tempArr 이중 배열이니까 다시 확인하기 : ",tempArr[0][0]);
+				console.log("tempArr 이중 배열이니까 다시 확인하기 : ",tempArr[0][1]);
+				
+				//console.log("tempArr 확인하기 : ",localStorage[0].day);
+			
+				for(let i=0;i<tempArr.length;i++){ //여행 일자 만큼 반복
+				
+					
+/* 					formData.append("planList["+i+"].day",tempArr[i].day);
+					formData.append("planList["+i+"].id",tempArr[i].id);
+					formData.append("planList["+i+"].latitude",tempArr[i].latitude);
+					formData.append("planList["+i+"].longitude",tempArr[i].longitude);
+					formData.append("planList["+i+"].memo",tempArr[i].memo);
+					formData.append("planList["+i+"].placeName",tempArr[i].placeName); */
+					
+					for(let j=0;j<tempArr[i].length;j++){ //방문 장소 만큼 반복
+						
+						formData.append("planList["+i+"]["+j+"].day",tempArr[i][j]['day']);
+						formData.append("planList["+i+"]["+j+"].id",tempArr[i][j]['id']);
+						formData.append("planList["+i+"]["+j+"].latitude",tempArr[i][j]['latitude']);
+						formData.append("planList["+i+"]["+j+"].longitude",tempArr[i][j]['longitude']);
+						formData.append("planList["+i+"]["+j+"].memo",tempArr[i][j]['memo']);
+						formData.append("planList["+i+"]["+j+"].placeName",tempArr[i][j]['placeName']);
+						
+/* 						formData.append("planList["+i+"].day",tempArr[i][j]['day']);
+						formData.append("planList["+i+"].id",tempArr[i][j]['id']);
+						formData.append("planList["+i+"].latitude",tempArr[i][j]['latitude']);
+						formData.append("planList["+i+"].longitude",tempArr[i][j]['longitude']);
+						formData.append("planList["+i+"].memo",tempArr[i][j]['memo']);
+						formData.append("planList["+i+"].placeName",tempArr[i][j]['placeName']); */
+						
+						
+					}
+				
+				
+				
+				}
+			
+			
+			
+			
+			
+			//-------------------------------------------------------------------------------------------
 			
 			//console.log(formData);
 			fetch('${path}/planner/savePlanner2',{

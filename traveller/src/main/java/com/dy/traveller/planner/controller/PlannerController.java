@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import com.dy.traveller.planner.model.service.PlannerService;
 import com.dy.traveller.planner.model.vo.Crew;
 import com.dy.traveller.planner.model.vo.Friends;
 import com.dy.traveller.planner.model.vo.Plan;
+import com.dy.traveller.planner.model.vo.PlanTemp;
 import com.dy.traveller.planner.model.vo.Planner;
 import com.dy.traveller.planner.model.vo.Thumbnail;
 
@@ -181,9 +183,27 @@ public class PlannerController {
 	//TODO 0906) FormData객체 활용해 form태그 대신 데이터 서버로 전송받기
 	@RequestMapping("/savePlanner2")
 	@ResponseBody
-	public void savePlanner2(MultipartFile thumbNail, Planner planner) {
+	public void savePlanner2(MultipartFile thumbNail, Planner planner, PlanTemp temp) {
 		System.out.println("FormData테스트!!!! 파일 이름 : "+thumbNail.getOriginalFilename());
 		System.out.println("제목도 가져올 수 있나? "+planner);
+		System.out.println("객체 배열은 ? "+temp.toString());
+		System.out.println("객체 배열은 ? "+temp.getPlanList());
+		System.out.println("객체 배열은 ? "+temp.getPlanList().get(0).toString());
+		
+		//일자별 여행지 정보를 저장할 ArrayList
+		List<Plan[]> list = temp.getPlanList();
+		
+		
+		for(int i=0;i<list.size();i++) {
+			
+			System.out.println(i+1+"일자의 여행 계획");
+			System.out.println("방문 장소는 몇 군데? "+list.get(i).length);
+			//System.out.println(Arrays.toString(list.get(i)));
+			System.out.println(Arrays.toString(list.get(i)));
+			
+			
+		}
+
 	}
 	
 	

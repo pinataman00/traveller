@@ -18,4 +18,6 @@ public class Plan {
 	private String longitude;
 	private String memo;
 	private String placeName;
+	
+	private String id; //방문 순서 식별하기 위해 만듦
 }
