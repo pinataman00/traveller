@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="planner">
  
+ 
+ 	<!-- 
+ 	
+ 		PLANNER 저장 관련 : PLANNER, THUMBNAIL, PLAN테이블에 여행 일정 데이터 저장하기
+ 	
+ 	 -->
+ 
  	<insert id="insertPlanner" parameterType="planner">
  		INSERT INTO PLANNER VALUES('PLAN'||SEQ_PLANNER.NEXTVAL,#{memberId},#{plannerTitle},#{travelDays},SYSDATE,#{theme},#{areaCode},#{sigunguCode},DEFAULT,DEFAULT,#{summary})
  		<selectKey keyProperty="plannerNo" resultType="string" order="AFTER">
@@ -16,5 +23,51 @@
  	<insert id="insertPlan" parameterType="plan">
  		INSERT INTO PLAN VALUES('P'||SEQ_PLANNO.NEXTVAL,'PLAN'||#{plannerNo},#{day},#{latitude},#{longitude},#{memo},#{placeName})
  	</insert>
+ 	
+ 	<!-- 
+ 	
+ 		저장한 PLANNER 불러오기 : has a 관계이므로, 잘 불러올 수 있어야 함!
+ 	
+ 	 -->
+ 	
+ 	<resultMap id="plannerMap" type="planner">
+ 	
+ 		<id column="planner_no" property="plannerNo"/>
+ 		<result column="member_id" property="memberId"/>
+ 		<result column="planner_title" property="plannerTitle"/>
+ 		<result column="travel_days" property="travelDays"/>
+ 		<result column="written_date" property="writtenDate"/>
+ 		<result column="theme" property="theme"/>
+ 		<result column="areacode" property="areaCode"/>
+ 		<result column="sigungucode" property="sigunguCode"/>
+ 		<result column="score" property="score"/>
+ 		<result column="crew_id" property="crewId"/>
+ 		<result column="summary" property="summary"/>
+ 		
+ 		<!-- has a 관계인 THUMBNAIL객체가 보유한 것 -->
+ 		<collection property="image" ofType="thumbnail">
+ 			<id column="imgno" property="imgNo"/>
+ 			<result column="planner_no" property="plannerNo"/>
+ 			<result column="oriname" property="oriName"/>
+ 			<result column="renamedfilename" property="renamedFileName"/>
+ 			<result column="saveddate" property="savedDate"/>
+ 		</collection>
+ 		
+ 		<!-- has a 관계인 PLAN객체가 보유한 것 
+ 			 될까... 걱정되는군...
+ 		-->
+ 		<collection property="plan" ofType="plan">
+ 		 	<id column="plan_code" property="planCode"/>
+ 			<result column="planner_no" property="plannerNo"/>
+ 			<result column="day" property="day"/>
+ 			<result column="latitude" property="latitude"/>
+ 			<result column="longitude" property="longitude"/>
+ 			<result column="memo" property="memo"/>
+ 			<result column="place_name" property="placeName"/>
+ 		</collection>
+ 	
+ 	</resultMap>
+ 	
+ 	
  
 </mapper>

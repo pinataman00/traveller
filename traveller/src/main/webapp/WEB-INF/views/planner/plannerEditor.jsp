@@ -3312,19 +3312,29 @@ div#dropZone {
 			})
 			.then((res)=>res.json())
 			.then((data)=>{
-				console.log(data);
+				
+			
+				console.log("저장 결과 확인 : ",data);
+				if(data==1){
+					
+					alert("저장 성공! 메인화면으로 돌아갑니다!");
+					//localStorage삭제 후 메인화면으로 이동
+					localStorage.clear(); //localStorage 비우기
+					location.replace("${path}/"); //메인화면으로 돌아가기 (뒤로 가기 불가)
+					
+				} else {
+					
+					alert("저장 실패! 다시 시도해주세요");
+					//모달 창만 닫기
+					$("#saveSchedule").modal("hide");
+					//$("#myLikes").modal("show");
+				}
+			
 			});
 			
 			
 			
 		}
-		
-		const tempAlert = ()=>{
-			
-			alert("구현 중입니다");
-			
-		}
-		
 		
 		
 		//==============================================================================================================

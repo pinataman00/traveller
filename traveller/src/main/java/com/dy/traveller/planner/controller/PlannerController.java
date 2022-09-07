@@ -191,7 +191,7 @@ public class PlannerController {
 	//TODO 0906) FormData객체 활용해 form태그 대신 데이터 서버로 전송받기
 	@RequestMapping("/savePlanner2")
 	@ResponseBody
-	public void savePlanner2(MultipartFile img, Planner planner, PlanTemp temp, HttpServletRequest rs) {
+	public int savePlanner2(MultipartFile img, Planner planner, PlanTemp temp, HttpServletRequest rs) {
 		
 		//3개 테이블에 저장해야 함
 		//썸네일 저장 -> PLANNER -> (SEQUENCE, PK전달) -> THUMBNAIL, PLAN저장
@@ -271,8 +271,9 @@ public class PlannerController {
 		
 		try {
 			
-			service.insertPlanner(planner);
+			res = service.insertPlanner(planner);
 			System.out.println("저장 성공!");
+			return res;
 			
 		} catch (RuntimeException e) {
 			
@@ -288,11 +289,11 @@ public class PlannerController {
 			}
 			
 			System.out.println("저장 실패!");
+			return res;
 			
 		}
 		
 		
-
 
 	}
 	
