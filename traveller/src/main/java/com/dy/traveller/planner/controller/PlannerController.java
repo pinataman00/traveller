@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dy.traveller.member.model.vo.Profileimg;
 import com.dy.traveller.planner.model.service.PlannerService;
 import com.dy.traveller.planner.model.vo.Crew;
 import com.dy.traveller.planner.model.vo.Friends;
@@ -335,5 +334,28 @@ public class PlannerController {
 		
 	}
 	
+	@RequestMapping("/plannerView/{plannerNo}")
+	public ModelAndView getPlannerView(@PathVariable String plannerNo, ModelAndView mv) {
+		mv.addObject("plannerNo",plannerNo);
+		mv.setViewName("/planner/plannerView");
+		
+		return mv;
+	}
+	
+	@RequestMapping("/plannerDetail")
+	@ResponseBody
+	public List<Plan> getPlans(@RequestBody Map<String,String> map){
+
+		String plannerNo = map.get("plannerNo");
+		List<Plan> list = service.getPlans(plannerNo);
+		
+		System.out.println("가져온 플랜의 개수 : "+list.size());
+		for (Plan plan : list) {
+			System.out.println(plan);
+		}
+		
+		return list;
+		
+	}
 	
 }

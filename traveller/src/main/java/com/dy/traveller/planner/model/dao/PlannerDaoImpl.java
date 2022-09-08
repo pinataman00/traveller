@@ -51,4 +51,9 @@ public class PlannerDaoImpl implements PlannerDao {
 		
 		return session.selectList("planner.selectPlanner",memberId);
 	}
+
+	@Override
+	public List<Plan> getPlans(SqlSessionTemplate session, String plannerNo) {
+		return session.selectList("planner.selectPlans",plannerNo);
+	}
 }

@@ -76,5 +76,9 @@
  		   <!--  SELECT * FROM PLANNER WHERE MEMBER_ID=#{memberId} -->
  	</select>
  	
+ 	<select id="selectPlans" resultType="plan">
+ 		SELECT * FROM PLAN WHERE PLANNER_NO=#{plannerNo}
+ 	</select>
+ 	
  
 </mapper>

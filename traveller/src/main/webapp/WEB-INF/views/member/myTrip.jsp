@@ -147,6 +147,8 @@
 
  		max-width: 130px;
 	    max-height: 130px;
+	    object-fit:cover;
+	    over-flow:hidden;
 	    border-radius: 10px;
 	    
 	    
@@ -306,6 +308,7 @@
 					</div>
 					
 					
+					<div class="temp-container">
 					<!-- 0907) 플래너 불러오기 -->
 					<div class="planner-container" style="display:none;">
 
@@ -328,7 +331,7 @@
 										</div>												
 								</div>								
 							</div> 
-
+					</div>
 
 					
 					
@@ -812,12 +815,10 @@ function myPlace (contentId, firstImage, title){
 						plannerImg.classList.add("planner-card-img");
 						
 						if(data[i].img!=null){
-							//다듀
+							//저장된 썸네일이 존재하는 경우
 							plannerImg.src= "${path}/resources/planner/thumbnail/"+data[i].img;
 							
-							
-							
-						} else { //기본 이미지 출력
+						} else { //없는 경우, 기본 이미지 출력
 							plannerImg.src= "${path}/resources/img/testPic/pikachu.png";
 						}
 						
@@ -852,6 +853,15 @@ function myPlace (contentId, firstImage, title){
 						infoBtn.classList.add("btn-sm");
 						infoBtn.classList.add("planner-info-btn");
 						infoBtn.innerText = "상세보기";
+						
+						//"상세보기" 버튼 클릭 시, 플랜 데이터 조회 가능
+						const plannerNo = data[i].plannerNo;
+						infoBtn.addEventListener("click",e=>{
+							//alert("클릭! "+data[i].plannerTitle);
+
+							location.assign("${path}/planner/plannerView/"+plannerNo);
+							
+						})
 						
 						plannerBtnContainer.append(infoBtn);
 						

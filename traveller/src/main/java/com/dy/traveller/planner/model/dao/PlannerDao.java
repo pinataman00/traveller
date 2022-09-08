@@ -24,4 +24,6 @@ public interface PlannerDao {
 
 	List<Planner> getPlanner(SqlSessionTemplate session, String memberId);
 
+	List<Plan> getPlans(SqlSessionTemplate session, String plannerNo);
+
 }
