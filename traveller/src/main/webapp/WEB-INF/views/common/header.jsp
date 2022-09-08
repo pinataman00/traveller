@@ -128,11 +128,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">로그인</h5>
+         
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        	
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+      <p>(관리자 계정 : admin08 | 비밀번호 : 1q2w3e4r)</p>
       		<div style="text-align:center;margin:10px;">
 		        <form action="${path }/member/memberLogin.do" method="post">
 		        		<input style="margin-bottom:10px;"type="text" name="memberId" placeholder="아이디"><br/>

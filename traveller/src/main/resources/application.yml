@@ -1,5 +1,5 @@
 server:
-  port: 8877
+  port: 8844
   servlet:
     context-path: /GDJ47_traveller_final
   
