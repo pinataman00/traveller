@@ -1,5 +1,7 @@
 package com.dy.traveller.planner.model.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.dy.traveller.planner.model.vo.Crew;
@@ -19,5 +21,7 @@ public interface PlannerDao {
 	int insertThumbnail(SqlSessionTemplate session, Thumbnail image);
 
 	int insertPlan(SqlSessionTemplate session, Plan p);
+
+	List<Planner> getPlanner(SqlSessionTemplate session, String memberId);
 
 }

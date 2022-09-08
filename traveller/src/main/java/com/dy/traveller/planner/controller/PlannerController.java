@@ -298,16 +298,41 @@ public class PlannerController {
 	}
 	
 	//--------------------------------------------------------------------------------------
-	//TODO 0907) 플래너 불러오기
+	//0908) 플래너 불러오기
 	@RequestMapping("/loadPlanner.do")
 	@ResponseBody
-	public void loadPlanner(@RequestBody Map<String,String>data){
+	public List<Planner> loadPlanner(@RequestBody Map<String,String>data){
 		
 		String memberId = data.get("memberId");
+		System.out.println("!!!!!!!!!!"+memberId);
 		
-		//List<Planner> list = service.getPlanner(memberId);
-	
-		//System.out.println("리스트 확인 "+list.size());
+		List<Planner> list = service.getPlanner(memberId);
+		List<Planner> res = new ArrayList();
+		
+		//System.out.println("리스트 확인 "+list);
+		for (Planner planner : list) {
+			//System.out.println("리스트 : "+planner);
+			String plannerNo = planner.getPlannerNo();
+			String img = planner.getImage().getRenamedFileName();
+			String plannerTitle = planner.getPlannerTitle();
+			String theme = planner.getTheme();
+			String sumamry = planner.getSummary();
+			int area = planner.getAreaCode();
+			int sigungu = planner.getSigunguCode();
+			
+			res.add(new Planner().builder().
+					plannerNo(plannerNo)
+					.plannerTitle(plannerTitle)
+					.theme(theme)
+					.img(img)
+					.summary(sumamry)
+					.areaCode(area)
+					.sigunguCode(sigungu).build());
+			
+		}
+		
+		return res;
+		
 	}
 	
 	

@@ -1,5 +1,7 @@
 package com.dy.traveller.planner.model.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -43,4 +45,10 @@ public class PlannerDaoImpl implements PlannerDao {
 		return session.insert("planner.insertPlan",plan);
 	}
 	//-------------------------------------------------------------------------
+
+	@Override
+	public List<Planner> getPlanner(SqlSessionTemplate session, String memberId) {
+		
+		return session.selectList("planner.selectPlanner",memberId);
+	}
 }

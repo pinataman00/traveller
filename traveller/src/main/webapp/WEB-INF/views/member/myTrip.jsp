@@ -32,7 +32,7 @@
 	
 	}
 	.cards-container{
-		border: 1px solid blue;
+		/* border: 1px solid blue; */
 	}
 	
 	/* 카드 관련 설정 */
@@ -42,7 +42,7 @@
 }
 .result-card{
 	margin:10px;
-	width:300px;
+ 	width:300px; 
 	height:340px;
 }
 .result-card img{
@@ -79,6 +79,8 @@
 	    border-radius: 10px;
 	
 	}
+	
+
 	
 	
 	.option-container{
@@ -126,6 +128,53 @@
 		margin-top:3px;
 	}
 	
+	.planner-result-card{
+		width:500px;
+		height:150px;
+		display:inline-block;
+	}
+	.my-planner-card{
+		display:flex;
+	}
+	.planner-card-img{
+		width: 130px;
+	    height: 130px;
+	    margin-top: 10px;
+	    margin-left: 10px;
+	    padding: 6px;
+	    /* border: 1px solid red; */
+	    
+
+ 		max-width: 130px;
+	    max-height: 130px;
+	    border-radius: 10px;
+	    
+	    
+	}
+	.planner-info-container{
+		width: 300px;
+	    text-align: left;
+	    margin-top: 10px;
+	    margin-left: 10px;
+	}
+	.planner-btn-container{
+		display:flex;
+		margin-top:103px;
+		margin-right:20px;
+	}
+	.planner-info-btn{
+		margin-right:5px;
+		
+	}
+	.planner-container{
+		margin-left:30px;
+		display:grid;
+		height:500px;
+		overflow-y:scroll;
+	}
+	.planner-container::-webkit-scrollbar{
+		display:none;
+	}
 	
 	
 </style>
@@ -163,7 +212,7 @@
 				</ul>
 			</div>
 			
-			<div class="content-body" style="border:1px solid red; margin-bottom:30px;">
+			<div class="content-body" style="margin-bottom:30px;">
 			
 		
 			
@@ -257,21 +306,26 @@
 					</div>
 					
 					
-					<!-- TODO0907) 플래너 불러오기 -->
-					<div class="planner-container">
+					<!-- 0907) 플래너 불러오기 -->
+					<div class="planner-container" style="display:none;">
 
 
-							<!-- 카드 출력 예시 -->
- 							<div class="result-card card">								
-								<div class="card-body my-planner-card">
-									<img class="card-img" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
-									<div class="likes-info-container">
+							<!-- TODO0908) 카드 출력 예시 -->
+ 							<div class="planner-result-card card">								
+								<div class="my-planner-card">
+									<img class="planner-card-img" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
+									<div class="planner-info-container">
 										<!-- 장소명  -->							
 										<h5 class="card-title">Card title</h5>
 										<!-- TODO0907) cat2를 기준으로 pasring해야 함 -->
 										<p class="my-planner-theme">테마</p>
 
-									</div>													
+									</div>
+									
+										<div class="planner-btn-container">
+										<button type="button" class="btn btn-outline-primary btn-sm planner-info-btn">상세보기</button>
+										<button type="button" class="btn btn-outline-primary btn-sm planner-del-btn">삭제하기</button>
+										</div>												
 								</div>								
 							</div> 
 
@@ -598,7 +652,9 @@ const createCards = (data)=>{ //매개변수 : DB에서 가져온 data배열
 			if(data[i].firstImage!=null){ //Place에 이미지 정보가 포함된 경우
 				img.src= data[i].firstImage;
 			} else { //미포함 시 기본 이미지 출력
+				
 				img.src="${path}/resources/img/testPic/doraemon.png";
+				
 			}
 			
 			//장소 contentId
@@ -684,7 +740,8 @@ function myPlace (contentId, firstImage, title){
 			const contentTitle = document.getElementById("contentTitle");
 			
 			const likesContainer = document.getElementsByClassName("myLikes-contents-container")[0];
-			const plannerContainer = document.getElementsByClassName("myLikes-contents-container")[0];
+			const plannerContainer = document.getElementsByClassName("planner-container")[0];
+			
 			
 			//좋아요 관련
 			const searchContainer = document.getElementsByClassName("search-container")[0];
@@ -713,13 +770,14 @@ function myPlace (contentId, firstImage, title){
 				document.getElementById("plannerNo_").innerHTML="";
 				//존재하는 경우, select의 option으로서 저장된 리스트의 '항목'들 가져오기
 				
+				plannerContainer.style.display="";
 				
 				//"플래너" 정보 불러오기 ---------------------------
 				
 				//alert("안녕!");
 				let id = "${loginMember.memberId}";
 				
-				//1. 좋아요 목록 불러오기
+				//1. 플래너 목록 불러오기
 				fetch('${path}/planner/loadPlanner.do', {
 				  method: 'POST', 
 				  headers: {
@@ -730,7 +788,117 @@ function myPlace (contentId, firstImage, title){
 				.then((response) => response.json())
 				.then((data) => {
 				  		
-					console.log("저장된 좋아요 목록이 있습니까? ",data);
+					console.log("저장된 플래너 목록이 있습니까? ",data);
+					
+					if(data.length==0){
+						plannerContainer.innerText = "저장된 플래너 목록이 없습니다";
+					}
+					
+					plannerContainer.innerHTML="";
+					
+					//검색 결과 출력하기
+					
+					for(let i=0;i<data.length;i++){
+						
+						const plannerCard = document.createElement("div");
+						plannerCard.classList.add("planner-result-card");
+						plannerCard.classList.add("card");
+						
+						const myPlannerCard = document.createElement("div");
+						myPlannerCard.classList.add("my-planner-card");
+						
+						//TODO이미지
+						const plannerImg = document.createElement("img");
+						plannerImg.classList.add("planner-card-img");
+						
+						if(data[i].img!=null){
+							//다듀
+							plannerImg.src= "${path}/resources/planner/thumbnail/"+data[i].img;
+							
+							
+							
+						} else { //기본 이미지 출력
+							plannerImg.src= "${path}/resources/img/testPic/pikachu.png";
+						}
+						
+
+						
+						const plannerInfo = document.createElement("div");
+						plannerInfo.classList.add("planner-info-container");
+						
+						const planTitle = document.createElement("h5");
+						planTitle.classList.add("card-title");
+						planTitle.innerText=data[i].plannerTitle;
+						
+						const plannerTheme = document.createElement("p");
+						plannerTheme.classList.add("my-planner-theme");
+						plannerTheme.innerText=data[i].summary;
+						
+						//구조 맞추기
+						plannerInfo.append(planTitle);
+						plannerInfo.append(plannerTheme);
+						
+						myPlannerCard.append(plannerImg);
+						myPlannerCard.append(plannerInfo);
+						
+						
+						//버튼 영역 > my-planner-card의 하위 태그 ----------------------------
+						const plannerBtnContainer= document.createElement("div");
+						plannerBtnContainer.classList.add("planner-btn-container");
+						
+						const infoBtn = document.createElement("button");
+						infoBtn.classList.add("btn");
+						infoBtn.classList.add("btn-outline-primary");
+						infoBtn.classList.add("btn-sm");
+						infoBtn.classList.add("planner-info-btn");
+						infoBtn.innerText = "상세보기";
+						
+						plannerBtnContainer.append(infoBtn);
+						
+						const delBtn = document.createElement("button");
+						delBtn.classList.add("btn");
+						delBtn.classList.add("btn-outline-primary");
+						delBtn.classList.add("btn-sm");
+						delBtn.classList.add("planner-del-btn");
+						delBtn.innerText="삭제하기";
+						
+						plannerBtnContainer.append(delBtn);
+						
+						myPlannerCard.append(plannerBtnContainer);
+						
+						//----------------------------------------------------------------------
+						plannerCard.append(myPlannerCard);
+						plannerContainer.append(plannerCard);
+						
+											
+					}				
+								
+				
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 
 					
 				});
@@ -752,6 +920,7 @@ function myPlace (contentId, firstImage, title){
 				
 				//likesMainContainer.style.display="";
 				cardContainer.style.display="";
+				plannerContainer.style.display="none";
 			}
 			
 			

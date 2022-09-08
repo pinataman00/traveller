@@ -31,4 +31,6 @@ public class Planner {
 	private String summary; //플래너 소개
 	private Thumbnail image; //대표 이미지
 	
+	String img;
+	
 }

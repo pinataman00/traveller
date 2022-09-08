@@ -113,4 +113,9 @@ public class PlannerServiceImpl implements PlannerService {
 		return res;
 	}
 
+	@Override
+	public List<Planner> getPlanner(String memberId) {
+		return dao.getPlanner(session, memberId);
+	}
+
 }

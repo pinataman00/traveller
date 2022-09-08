@@ -68,6 +68,13 @@
  	
  	</resultMap>
  	
+ 	<select id="selectPlanner" resultMap="plannerMap">
+  		SELECT * FROM PLANNER 
+ 					  LEFT JOIN PLAN USING(PLANNER_NO)
+ 					  LEFT JOIN THUMBNAIL USING(PLANNER_NO)
+ 					  WHERE MEMBER_ID=#{memberId}
+ 		   <!--  SELECT * FROM PLANNER WHERE MEMBER_ID=#{memberId} -->
+ 	</select>
  	
  
 </mapper>

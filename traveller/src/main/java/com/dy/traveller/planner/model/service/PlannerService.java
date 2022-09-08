@@ -12,4 +12,6 @@ public interface PlannerService {
 
 	int insertPlanner(Planner planner);
 
+	List<Planner> getPlanner(String memberId);
+
 }
