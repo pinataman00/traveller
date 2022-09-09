@@ -80,5 +80,9 @@
  		SELECT * FROM PLAN WHERE PLANNER_NO=#{plannerNo}
  	</select>
  	
+ 	<select id="selectOnePlanner" resultType="planner">
+ 		SELECT * FROM PLANNER WHERE PLANNER_NO=#{plannerNo}
+ 	</select>
+ 	
  
 </mapper>

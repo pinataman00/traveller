@@ -17,4 +17,6 @@ public interface PlannerService {
 
 	List<Plan> getPlans(String plannerNo);
 
+	Planner selectPlanner(String plannerNo);
+
 }

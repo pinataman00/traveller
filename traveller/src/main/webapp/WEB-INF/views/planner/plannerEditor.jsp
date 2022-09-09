@@ -3199,7 +3199,6 @@ div#dropZone {
 		const saveSchedule = ()=>{ //form은 form대로 보내고, 여기에는 개별 구체적인 plan들을 fetch로 전송할 수 있을까?
 			
 				alert("저장!");
-
 		
 		
 			//-------------------------------------------------------------------
@@ -3304,7 +3303,7 @@ div#dropZone {
 			//-------------------------------------------------------------------------------------------
 			
 			//console.log(formData);
-			fetch('${path}/planner/savePlanner2',{
+			fetch('${path}/planner/savePlanner2.do',{
 				method:'POST',
 				cach: 'no-cache',
 				body:formData 
@@ -3335,7 +3334,6 @@ div#dropZone {
 			
 			
 		}
-		
 		
 		//==============================================================================================================
 	</script>
