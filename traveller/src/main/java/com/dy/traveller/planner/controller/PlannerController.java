@@ -249,10 +249,10 @@ public class PlannerController {
 		String plannerNo = map.get("plannerNo");
 		List<Plan> list = service.getPlans(plannerNo);
 		
-		System.out.println("가져온 플랜의 개수 : "+list.size());
-		for (Plan plan : list) {
-			System.out.println(plan);
-		}
+		/*
+		 * System.out.println("가져온 플랜의 개수 : "+list.size()); for (Plan plan : list) {
+		 * System.out.println(plan); }
+		 */
 		
 		return list;
 		
