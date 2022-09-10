@@ -75,6 +75,7 @@
 		<div class="basic-info-container">			
 				<p id="plannerTitle">내가 작성한 플래너</p>
 				<p id="summary">플래너 설명</p>
+				<p id="planTheme">플래너 테마</p>
 		</div>
 
 		<div class="plan-content-container">
