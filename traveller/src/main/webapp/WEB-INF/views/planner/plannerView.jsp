@@ -53,6 +53,7 @@
 .place-addr{
 	font-size:13px;
 	margin-bottom:0px;
+	font-weight:100;
 }
 .memo{
 	font-size:11px;
@@ -175,23 +176,30 @@
 			//지도 생성하기 > 기본 : 1일 차의 첫 번째 방문지를 중심으로 지도 생성함
 			printMap(data[0].latitude,data[0].longitude);
 			console.log(data[0].latitude," , ",data[0].longitude)
-			
+			let forLine = [];
 
 			
 			selectDays.addEventListener("change",e=>{
 				
-				alert(e.target.value);
+				//alert(e.target.value);
 				cardContainer.innerHTML="";
+				document.getElementById('map').innerHTML="";
 				
 				//선택한 일자
 				let ckDay = e.target.value;
 
+				let markersArr = [];
+				forLine.length=0; //배열 초기화
+				
 				for(let i=0;i<data.length;i++){
 					
 					if(data[i].day==ckDay){ //선택한 옵션 일자에 대응되는 장소 정보 출력하기 
 						
-						//리스트 업---------------------------------------------------------------
+						//지도 생성
+						//printMap(data[i].latitude,data[i].longitude);
 						
+						//리스트 업---------------------------------------------------------------
+						//"카드" 생성 -> 리스트 추가
 							const planCard = document.createElement("div");
 							planCard.classList.add("plan-card");
 							const txtContainer = document.createElement("div");
@@ -217,15 +225,20 @@
 							cardContainer.append(planCard);
 						
 						//지도 관련 -----------------------------------------------------------------
+						//1. 마커 표기하기						
+						//"배열"에 저장하기
 						
-							
+						markersArr.push(new place(data[i].placeName,data[i].latitude,data[i].longitude));
+						//console.log(ckDay,"방문 장소 : ",markersArr);
+						forLine.push(new kakao.maps.LatLng(data[i].latitude,data[i].longitude));
 						
+						//--------------------------------------------------------------------------
 						
 					}
-					
+
 				}
-				
-				
+				console.log("일자별 방문 장소 : ",markersArr);
+				printInfo(markersArr,forLine);
 				
 			});
 			
@@ -252,6 +265,72 @@
 		
 	})();
 	
+	//마커생성+지도 생성
+	function printInfo (positions,forLine) {
+	
+	console.log(positions);
+	//console.log(positions[0].latlng.La);
+
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+    mapOption = { 
+        center: new kakao.maps.LatLng(positions[0].latlng.Ma,positions[0].latlng.La), // 지도의 중심좌표
+        level: 10 // 지도의 확대 레벨
+    };
+
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	 
+
+	// 마커 이미지의 이미지 주소입니다
+ 	var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+	    
+	for (var i = 0; i < positions.length; i ++) {
+	    
+	    // 마커 이미지의 이미지 크기 입니다
+	    var imageSize = new kakao.maps.Size(24, 35); 
+	    
+	    // 마커 이미지를 생성합니다    
+	    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+	    
+	    // 마커를 생성합니다
+	    var marker = new kakao.maps.Marker({
+	        map: map, // 마커를 표시할 지도
+	        position: positions[i].latlng, // 마커를 표시할 위치
+	        title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+	        image : markerImage // 마커 이미지 
+	    });
+  
+	} 
+
+	//마커 간을 잇는 선 그리기 -----------------------------------------------------
+	//선 생성 관련 --------------------------------------------------------------
+	var polyline = new kakao.maps.Polyline({
+	    path: forLine, // 선을 구성하는 좌표배열 입니다
+	    strokeWeight: 5, // 선의 두께 입니다
+	    strokeColor: '#FFAE00', // 선의 색깔입니다
+	    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+	    strokeStyle: 'solid', // 선의 스타일입니다
+		endArrow:true
+	});
+
+	// 지도에 선을 표시합니다 
+	polyline.setMap(map); 
+
+		
+
+	}
+	
+
+	
+	
+	
+	
+	
+	
+	//장소 정보 저장 객체 생성하기 -----------------------------------------------
+	function place (title,lat,lng){
+		this.title= title;
+		this.latlng = new kakao.maps.LatLng(lat,lng);
+	}
 	
 
 	
@@ -278,7 +357,7 @@
 		}
 	
 	
-	//지도 생성하기 ------------------------------------------------------------
+		//지도 생성하기 ------------------------------------------------------------
 	 	function printMap(latitude,longitude){
  		
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
@@ -288,11 +367,10 @@
 	    };
 		
 		var map = new kakao.maps.Map(mapContainer, mapOption); 
+		
+		
+		}
 
- 	}
-
-	
-	
 </script>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
