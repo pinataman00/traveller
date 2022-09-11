@@ -108,9 +108,24 @@
 		<artifactId>spring-boot-starter-websocket</artifactId>
 	</dependency>
 	
-	<!-- 0828 채팅 : STOMP 관련 -->
+	<!-- 0828 채팅 : STOMP 관련 (보류)-->
+
+	<!-- 0910 엑셀 다운로드 관련 -->
+	<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+	<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi</artifactId>
+		<version>5.2.2</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-ooxml</artifactId>
+		<version>5.2.2</version>
+	</dependency>
+
 	
-		
 	</dependencies>
 
 	<build>

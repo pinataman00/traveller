@@ -369,7 +369,26 @@ public class PlannerController {
 			
 
 		}
-	
+		
+		//TODO 0910) 엑셀 다운 -------------------------------------------
+		@RequestMapping("/plannerDownload")
+		@ResponseBody
+		public void plannerDownload(@RequestBody Map<String,String>data){
+			
+			String plannerNo = data.get("plannerNo");
+			System.out.println("다운 대상 : "+plannerNo);
+			
+			List<Plan> list = service.getPlans(plannerNo);
+			for (Plan plan : list) {
+				System.out.println(plan);
+			}
+			
+			
+			
+			
+			
+		
+		}
 	
 	
 }

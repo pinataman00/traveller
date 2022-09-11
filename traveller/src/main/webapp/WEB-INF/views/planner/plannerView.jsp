@@ -67,6 +67,10 @@
 .card-container::-webkit-scrollbar{
 	display:none;
 }
+p#planTheme{
+	text-align:right;
+	margin-right:30px;
+}
 
 
 </style>
@@ -75,6 +79,7 @@
 		<div class="basic-info-container">			
 				<p id="plannerTitle">내가 작성한 플래너</p>
 				<p id="summary">플래너 설명</p>
+				<!-- TODO 0910) 플래너 테마 : 이모지로 표시하기 -->
 				<p id="planTheme">플래너 테마</p>
 		</div>
 
@@ -115,7 +120,7 @@
 		<div class="controller-container" style="display:flex;float:right;">
 
 			<div class="btn-container">
-				<button type="button" class="btn btn-outline-primary btn-sm">다운받기</button>
+				<button type="button" class="btn btn-outline-primary btn-sm" onclick="downloadPlan();">다운받기</button>
 				<button type="button" class="btn btn-outline-primary btn-sm">수정하기</button>
 			</div>
 		</div>	
@@ -125,6 +130,7 @@
 
 </section>
 <script>
+
 	
 	const plannerNo = "${plannerNo}";
 	
@@ -154,14 +160,57 @@
 			
 		}
 	
+	
+	//플래너 테마 가져오기
+	//console.log("${planner.theme}");
+	
+	const myTheme = "${planner.theme}";
+	const theme = document.getElementById("planTheme");
+	console.log("테마? ",myTheme);
+	
+					switch(myTheme){
+				
+					case 'A0101' : theme.innerText="자연 관광지";break;
+					case 'A0102' : theme.innerText="관광 자원";break;
+					
+					case 'A0201' : theme.innerText="역사";break;
+					case 'A0202' : theme.innerText="휴양";break;
+					case 'A0203' : theme.innerText="체험";break;
+					case 'A0204' : theme.innerText="산업";break;
+					case 'A0205' : theme.innerText="건축/조형";break;
+					case 'A0206' : theme.innerText="문화시설";break;
+					case 'A0207' : theme.innerText="축제";break;
+					case 'A0208' : theme.innerText="공연/행사";break;
+					
+					case 'C0112' : theme.innerText="가족";break;
+					case 'C0113' : theme.innerText="나홀로";break;
+					case 'C0114' : theme.innerText="힐링";break;
+					case 'C0115' : theme.innerText="도보";break;
+					case 'C0116' : theme.innerText="캠핑";break;
+					case 'C0117' : theme.innerText="맛";break;
+					
+					case 'A0301' : theme.innerText="레포츠 > 일반";break;
+					case 'A0302' : theme.innerText="레포츠 > 육상";break;
+					case 'A0303' : theme.innerText="레포츠 > 수상";break;
+					case 'A0304' : theme.innerText="레포츠 > 항공";break;
+					case 'A0305' : theme.innerText="레포츠 > 복합";break;
+					
+					case 'B0201' : theme.innerText="숙박";break;
+					case 'A0401' : theme.innerText="쇼핑";break;
+					case 'A0502' : theme.innerText="음식";break;
+				
+				
+				}
+	
+	
+	
+	
 	//--------------------------------------------------------------------------------
 	//PLAN데이터 가져오기 > select option이 변경되면, 일자에 대응되는 PLAN을 불러옴
 
 	(()=>{
 		
-		
-		
-		
+	
 		fetch('${path}/planner/plannerDetail',{
 			method:'POST',
 			headers:{
@@ -203,12 +252,26 @@
 						//"카드" 생성 -> 리스트 추가
 							const planCard = document.createElement("div");
 							planCard.classList.add("plan-card");
+							
+							
 							const txtContainer = document.createElement("div");
 							txtContainer.classList.add("text-container");
 							
 							const title = document.createElement("p");
 							title.classList.add("place-title");
 							title.innerText = data[i].placeName;
+							
+							moveMap(title,data[i].latitude,data[i].longitude);
+							
+							//title.setAttribute("onclick", moveMap(title,data[i].latitude,data[i].longitude));
+							title.addEventListener("click",e=>{
+								//alert(data[i].placeName);
+								moveMap(data[i].placeName,data[i].latitude,data[i].longitude);
+							})
+							
+							
+							console.log("제목 : ",title);
+
 							
 							const addr = document.createElement("p");
 							addr.classList.add("place-addr");
@@ -223,6 +286,9 @@
 							txtContainer.append(addr);
 							txtContainer.append(memo);
 							
+							
+							//const forOpt = document.createElement("input")
+							
 							cardContainer.append(planCard);
 						
 						//지도 관련 -----------------------------------------------------------------
@@ -234,12 +300,13 @@
 						forLine.push(new kakao.maps.LatLng(data[i].latitude,data[i].longitude));
 						
 						//--------------------------------------------------------------------------
+
 						
 					}
 
 				}
 				console.log("일자별 방문 장소 : ",markersArr);
-				printInfo(markersArr,forLine);
+				printInfo(markersArr,forLine); //지도, 마커, 선 등 비주얼 정보 출력하기
 				
 			});
 			
@@ -250,21 +317,12 @@
 
 
 		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 	})();
+	
+	
+	
+	
 	
 	//마커생성+지도 생성
 	function printInfo (positions,forLine) {
@@ -316,12 +374,205 @@
 	// 지도에 선을 표시합니다 
 	polyline.setMap(map); 
 
-		
+	
 
 	}
 	
+	//카드에 마우스 오버 시, 해당 마커로 시점 이동 --------------------------------------
 
+		
+
+
+     		
+     	//TODO 0911) "클릭" 횟수에 따라 (홀/짝), 함수 달리 대응하기 > 클로저 활용
+     			//좋아요 카테고리 추가 관련
+		
+	function moveMap (title,latitude,longitude){
+		
+		let thisMarker = "";
+		const lat = latitude;
+		const lng = longitude;
+		
+		console.log("카운트 : ", document.getElementsByClassName("selectDays")[0].value);
+		
+		const sel = document.getElementsByClassName("selectDays")[0]; //select 선택
+		
+		
+		let cnt= 0;
+		
+		title.addEventListener("click",title=>{
+
+			
+			if(++cnt%2!=0){
+	 			panTo(lat,lng);
+				title.target.style.color="red";
+				
+			} else {
+				
+				
+				title.target.style.color="";
+				const opt = document.getElementsByClassName("selectDays")[0].value;
+				console.log("옵션 확인 : ",opt,"일자를 선택하셨네요");
+				reloadPage(sel,opt);
 	
+			}
+			
+		});
+
+	}
+    
+     	
+	function reloadPage(sel,opt){ //타이틀 재클릭 시, 전경으로 지도 축소		
+		localStorage.setItem("day",opt);		
+		location.reload();		
+	}
+
+	(()=>{
+		
+		const sel = document.getElementsByClassName("selectDays")[0];
+		
+		
+		for(let i=0;i<sel.length;i++){
+			
+			if(sel[i].value==localStorage.getItem("day")){
+				
+				console.log("//////////////",localStorage.getItem("day"));
+				sel[i].selected= true;
+				
+				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~				
+				
+						fetch('${path}/planner/plannerDetail',{
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json',
+			},
+			body:JSON.stringify({"plannerNo":plannerNo}),
+		})
+		.then((response)=>response.json())
+		.then((data)=>{
+			
+			console.log("데이터 가져왔니 ? ", data);
+			
+			//지도 생성하기 > 기본 : 1일 차의 첫 번째 방문지를 중심으로 지도 생성함
+			printMap(data[0].latitude,data[0].longitude);
+			console.log(data[0].latitude," , ",data[0].longitude)
+			let forLine = [];
+
+				
+				//alert(e.target.value);
+				cardContainer.innerHTML="";
+				document.getElementById('map').innerHTML="";
+				
+				//선택한 일자
+				let ckDay = localStorage.getItem("day");
+
+				let markersArr = [];
+				forLine.length=0; //배열 초기화
+				
+				for(let i=0;i<data.length;i++){
+					
+					if(data[i].day==ckDay){ //선택한 옵션 일자에 대응되는 장소 정보 출력하기 
+						
+						//지도 생성
+						//printMap(data[i].latitude,data[i].longitude);
+						
+						//리스트 업---------------------------------------------------------------
+						//"카드" 생성 -> 리스트 추가
+							const planCard = document.createElement("div");
+							planCard.classList.add("plan-card");
+							
+							
+							const txtContainer = document.createElement("div");
+							txtContainer.classList.add("text-container");
+							
+							const title = document.createElement("p");
+							title.classList.add("place-title");
+							title.innerText = data[i].placeName;
+							
+							moveMap(title,data[i].latitude,data[i].longitude);
+							
+							//title.setAttribute("onclick", moveMap(title,data[i].latitude,data[i].longitude));
+							title.addEventListener("click",e=>{
+								//alert(data[i].placeName);
+								moveMap(data[i].placeName,data[i].latitude,data[i].longitude);
+							})
+							
+							
+							console.log("제목 : ",title);
+
+							
+							const addr = document.createElement("p");
+							addr.classList.add("place-addr");
+							getAddr(data[i].latitude,data[i].longitude,addr);								
+							
+							const memo = document.createElement("p");
+							memo.classList.add("memo");
+							memo.innerText = data[i].memo;
+							
+							planCard.append(txtContainer);
+							txtContainer.append(title);
+							txtContainer.append(addr);
+							txtContainer.append(memo);
+							
+							
+							//const forOpt = document.createElement("input")
+							
+							cardContainer.append(planCard);
+						
+						//지도 관련 -----------------------------------------------------------------
+						//1. 마커 표기하기						
+						//"배열"에 저장하기
+						
+						markersArr.push(new place(data[i].placeName,data[i].latitude,data[i].longitude));
+						//console.log(ckDay,"방문 장소 : ",markersArr);
+						forLine.push(new kakao.maps.LatLng(data[i].latitude,data[i].longitude));
+						
+						//--------------------------------------------------------------------------
+
+						
+					}
+
+				}
+				console.log("일자별 방문 장소 : ",markersArr);
+				printInfo(markersArr,forLine); //지도, 마커, 선 등 비주얼 정보 출력하기
+				
+				});
+				
+				
+				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			}
+			
+		}
+		
+		
+	})();
+     		
+		
+	
+	//지도 이동 관련 -------------------------------------------------------------
+		function panTo(lat,lng){
+		
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	    mapOption = { 
+	        center: new kakao.maps.LatLng(lat,lng), // 지도의 중심좌표
+	        level: 3 // 지도의 확대 레벨
+	    };
+
+		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+		var moveLatLon = new kakao.maps.LatLng(lat,lng);
+		map.panTo(moveLatLon);
+		
+		//마커 생성 관련
+		var markerPosition  = new kakao.maps.LatLng(lat, lng); 
+ 		// 마커를 생성합니다
+ 		thisMarker = new kakao.maps.Marker({
+ 		    position: markerPosition
+ 		});
+		
+		thisMarker.setMap(map);
+		
+	}
 	
 	
 	
@@ -371,6 +622,31 @@
 		
 		
 		}
+		
+		//========================================================================
+	 	//플랜 다운받기
+		function downloadPlan(){
+			
+			let plannerNo = "${plannerNo}";
+			alert(plannerNo);
+			
+			fetch('${path}/planner/plannerDownload',{
+				method:'POST',
+				headers:{
+					'Content-Type':'application/json',
+				},
+				body:JSON.stringify({"plannerNo":plannerNo}),
+			})
+			.then((response)=>response.json())
+			.then((data)=>{
+				
+				console.log(data);
+				
+			});
+			
+			
+		}
+	 	
 
 </script>
 

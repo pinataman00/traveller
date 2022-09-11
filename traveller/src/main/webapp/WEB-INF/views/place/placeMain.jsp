@@ -678,7 +678,7 @@ button#addCat{
 	 				}
 
 
-	 				//TODO0902
+	 				//ㅊㅌㄹ0902
 					//결과 화면 구성하기 > 카드 형태로 데이터 출력하기 ============================================================				
 					for(let i=0;i<data.length;++i){
 						
@@ -962,7 +962,7 @@ button#addCat{
 
 					}
 					
-					//TODO0830)
+					//0830)
 					//'좋아요 취소하기' 로직 구현하기
 					document.getElementById("delHeart").addEventListener("click",e=>{
 						

@@ -127,6 +127,9 @@
 		font-size:13px;
 		margin-top:3px;
 	}
+	.my-planner-summary{
+		margin-bottom:0px;
+	}
 	
 	.planner-result-card{
 		width:500px;
@@ -321,6 +324,7 @@
 										<!-- 장소명  -->							
 										<h5 class="card-title">Card title</h5>
 										<!-- TODO0907) cat2를 기준으로 pasring해야 함 -->
+										<p class="my-planner-summary">요약</p>
 										<p class="my-planner-theme">테마</p>
 
 									</div>
@@ -831,16 +835,57 @@ function myPlace (contentId, firstImage, title){
 						planTitle.classList.add("card-title");
 						planTitle.innerText=data[i].plannerTitle;
 						
-						const plannerTheme = document.createElement("p");
-						plannerTheme.classList.add("my-planner-theme");
-						plannerTheme.innerText=data[i].summary;
+						const plannerSummary = document.createElement("p");
+						plannerSummary.classList.add("my-planner-summary");
+						plannerSummary.innerText=data[i].summary;
+						
+						const theme = document.createElement("p");
+						theme.classList.add("my-planner-theme");
+						let themeData = data[i].theme;
+						
+						switch(themeData){
+						
+						case 'A0101' : theme.innerText="자연 관광지";break;
+						case 'A0102' : theme.innerText="관광 자원";break;
+						
+						case 'A0201' : theme.innerText="역사";break;
+						case 'A0202' : theme.innerText="휴양";break;
+						case 'A0203' : theme.innerText="체험";break;
+						case 'A0204' : theme.innerText="산업";break;
+						case 'A0205' : theme.innerText="건축/조형";break;
+						case 'A0206' : theme.innerText="문화시설";break;
+						case 'A0207' : theme.innerText="축제";break;
+						case 'A0208' : theme.innerText="공연/행사";break;
+						
+						case 'C0112' : theme.innerText="가족";break;
+						case 'C0113' : theme.innerText="나홀로";break;
+						case 'C0114' : theme.innerText="힐링";break;
+						case 'C0115' : theme.innerText="도보";break;
+						case 'C0116' : theme.innerText="캠핑";break;
+						case 'C0117' : theme.innerText="맛";break;
+						
+						case 'A0301' : theme.innerText="레포츠 > 일반";break;
+						case 'A0302' : theme.innerText="레포츠 > 육상";break;
+						case 'A0303' : theme.innerText="레포츠 > 수상";break;
+						case 'A0304' : theme.innerText="레포츠 > 항공";break;
+						case 'A0305' : theme.innerText="레포츠 > 복합";break;
+						
+						case 'B0201' : theme.innerText="숙박";break;
+						case 'A0401' : theme.innerText="쇼핑";break;
+						case 'A0502' : theme.innerText="음식";break;
+					
+					
+					}
 						
 						//구조 맞추기
 						plannerInfo.append(planTitle);
-						plannerInfo.append(plannerTheme);
+						plannerInfo.append(plannerSummary);
+						plannerInfo.append(theme);
 						
 						myPlannerCard.append(plannerImg);
 						myPlannerCard.append(plannerInfo);
+						
+						
 						
 						
 						//버튼 영역 > my-planner-card의 하위 태그 ----------------------------
