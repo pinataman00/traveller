@@ -760,19 +760,16 @@ div#dropZone {
 				//deletePlaceMarker(addPlan);
 				moveMap(addPlan);
 				printInfo(addPlan);	
-					
 				
 				//====================================================================================
 				
 				//0906 ) 마커 추가하기
 				//1. addMarkerFunc()
 				addMarkerFunc(latitude,longitude,title);
-				
-					
 					
 			}
 			
-			
+
 			
 			
 			
@@ -2174,7 +2171,8 @@ div#dropZone {
 	        if (status === kakao.maps.services.Status.OK) {
 	            console.log(result);
 	            addrTemp = result[0]['address']['address_name'];
-	            console.log(addrTemp);
+	            console.log("주소정보 확인하기 : ",addrTemp);
+	            //TODO 0911) localStorage에 추가할 수 있나?
 	            container.innerText = addrTemp;
 	            
 	        }
@@ -2302,7 +2300,7 @@ div#dropZone {
 		const btnController = document.getElementsByClassName("btn-controller");
 		map.addControl(btnController[0], kakao.maps.ControlPosition.TOPLEFT);
 		
-		//3. TODO0817) 클릭 시, 해당 위치에 마커 꽂기 ---------------------------------------------------------------------------
+		//3. 0817) 클릭 시, 해당 위치에 마커 꽂기 ---------------------------------------------------------------------------
 		
 		// 지도를 클릭한 위치에 표출할 마커입니다
  		var marker = new kakao.maps.Marker({ 
@@ -3250,6 +3248,7 @@ div#dropZone {
 			//5. 소개글 > sumamry
 			formData.append("summary",document.getElementById("summary_").value);
 			
+			//TODO 0911 > 6. 주소 > address도 저장해야 함
 			
 			
 			//localStorage배열도 저장할 수 있나? ------------------------------------------------------------
@@ -3265,13 +3264,7 @@ div#dropZone {
 			
 				for(let i=0;i<tempArr.length;i++){ //여행 일자 만큼 반복
 				
-					
-/* 					formData.append("planList["+i+"].day",tempArr[i].day);
-					formData.append("planList["+i+"].id",tempArr[i].id);
-					formData.append("planList["+i+"].latitude",tempArr[i].latitude);
-					formData.append("planList["+i+"].longitude",tempArr[i].longitude);
-					formData.append("planList["+i+"].memo",tempArr[i].memo);
-					formData.append("planList["+i+"].placeName",tempArr[i].placeName); */
+
 					
 					for(let j=0;j<tempArr[i].length;j++){ //방문 장소 만큼 반복 (PlanTemp클래스 참고)
 						
@@ -3281,15 +3274,8 @@ div#dropZone {
 						formData.append("planList["+i+"]["+j+"].longitude",tempArr[i][j]['longitude']);
 						formData.append("planList["+i+"]["+j+"].memo",tempArr[i][j]['memo']);
 						formData.append("planList["+i+"]["+j+"].placeName",tempArr[i][j]['placeName']);
-						
-/* 						formData.append("planList["+i+"].day",tempArr[i][j]['day']);
-						formData.append("planList["+i+"].id",tempArr[i][j]['id']);
-						formData.append("planList["+i+"].latitude",tempArr[i][j]['latitude']);
-						formData.append("planList["+i+"].longitude",tempArr[i][j]['longitude']);
-						formData.append("planList["+i+"].memo",tempArr[i][j]['memo']);
-						formData.append("planList["+i+"].placeName",tempArr[i][j]['placeName']); */
-						
-						
+
+					
 					}
 				
 				

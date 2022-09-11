@@ -208,6 +208,8 @@ p#planTheme{
 	//--------------------------------------------------------------------------------
 	//PLAN데이터 가져오기 > select option이 변경되면, 일자에 대응되는 PLAN을 불러옴
 
+	let addrArr = [];
+	
 	(()=>{
 		
 	
@@ -227,6 +229,14 @@ p#planTheme{
 			printMap(data[0].latitude,data[0].longitude);
 			console.log(data[0].latitude," , ",data[0].longitude)
 			let forLine = [];
+			
+			//장소 정보 저장하기
+			
+			
+			for(let a=0;a<data.length;a++){
+				getAddress(data[a].latitude,data[a].longitude,addrArr);
+			}
+			
 
 			
 			selectDays.addEventListener("change",e=>{
@@ -627,25 +637,81 @@ p#planTheme{
 	 	//플랜 다운받기
 		function downloadPlan(){
 			
-			let plannerNo = "${plannerNo}";
-			alert(plannerNo);
+ 			let plannerNo = "${plannerNo}";
 			
-			fetch('${path}/planner/plannerDownload',{
+			location.assign('${path}/planner/plannerDownload/${plannerNo}');
+
+			
+			
+			
+/* 			fetch('${path}/planner/plannerDownload/${plannerNo}',{
 				method:'POST',
 				headers:{
 					'Content-Type':'application/json',
 				},
-				body:JSON.stringify({"plannerNo":plannerNo}),
+				//body:JSON.stringify({"addrArr":addrArr}),
 			})
-			.then((response)=>response.json())
+			.then((res)=>res.json())
 			.then((data)=>{
 				
 				console.log(data);
 				
-			});
+			});  */
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			//주소가 저장된 배열
+			console.log("배열 : ",addrArr);
+			
+			//--------------------------------------------------------------------
+/* 			fetch('${path}/planner/plannerDownload2',{
+				method:'POST',
+				headers:{
+					'Content-Type':'application/json',
+				},
+				body:JSON.stringify({"addrArr":addrArr}),
+			})
+			.then((res)=>res.json())
+			.then((data)=>{
+				
+				console.log(data);
+				
+			});  */
+			
 			
 			
 		}
+
+		//주소 정보 가져오기 2) ---------------------------------------------------
+		
+		function getAddress(lat,lng,arr){
+		
+		    let geocoder = new kakao.maps.services.Geocoder();
+		    let coord = new kakao.maps.LatLng(lat, lng);
+		    
+		    let callback = function(result, status) {
+		        if (status === kakao.maps.services.Status.OK) {
+		            console.log(result);
+		            let addrTemp = result[0]['address']['address_name'];
+		            console.log(addrTemp);
+		            
+		            //console.log("//////////",addr);
+		            arr.push(addrTemp);
+		            
+		        }
+		    };
+
+		    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+		    
+		}
+		
 	 	
 
 </script>

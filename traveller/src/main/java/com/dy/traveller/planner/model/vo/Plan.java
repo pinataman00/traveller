@@ -20,4 +20,7 @@ public class Plan {
 	private String placeName;
 	
 	private String id; //방문 순서 식별하기 위해 만듦
+	
+	//TODO 0911
+	private String address; //장소의 주소 정보도 있으면 좋음...
 }

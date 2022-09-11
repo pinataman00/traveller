@@ -9,7 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -371,11 +377,16 @@ public class PlannerController {
 		}
 		
 		//TODO 0910) 엑셀 다운 -------------------------------------------
-		@RequestMapping("/plannerDownload")
+		@RequestMapping("/plannerDownload/{plannerNo}")
 		@ResponseBody
-		public void plannerDownload(@RequestBody Map<String,String>data){
+		/*
+		 * public void plannerDownload(@RequestBody Map<String,String>data,
+		 * HttpServletResponse rs) throws IOException {
+		 */
+			public void plannerDownload(@PathVariable String plannerNo, HttpServletResponse rs)
+					throws IOException {
 			
-			String plannerNo = data.get("plannerNo");
+			//String plannerNo = data.get("plannerNo");
 			System.out.println("다운 대상 : "+plannerNo);
 			
 			List<Plan> list = service.getPlans(plannerNo);
@@ -383,12 +394,81 @@ public class PlannerController {
 				System.out.println(plan);
 			}
 			
+			//엑셀 다운 관련 --------------------------------------
+			Workbook wb = new XSSFWorkbook();
+			Sheet sheet = wb.createSheet("첫 번째 시트");
+			
+			Row row = null;
+			Cell cell = null;
+			
+			int rowNum = 0;
 			
 			
+			  //Header 
+			  row = sheet.createRow(rowNum++); 
+			  cell = row.createCell(0);
+			  cell.setCellValue("일자"); 
+			  cell = row.createCell(1); cell.setCellValue("장소명");
+			  cell = row.createCell(2); //cell.setCellValue("주소"); //cell =
+			  row.createCell(3); cell.setCellValue("메모");
+			  
+			  //Body 
+			  
+			  for(int i=0;i<list.size();i++) {
+			  
+			  row = sheet.createRow(rowNum++);
+			  
+			  cell = row.createCell(0); //일자 
+			  
+			  cell.setCellValue(list.get(i).getDay());
+			  
+			  cell = row.createCell(1); //장소명
+			  cell.setCellValue(list.get(i).getPlaceName());
+			  
+			  //cell = row.createCell(0); //주소 
+			  //cell.setCellValue(list.get(i).getDay());
+			  
+			  cell = row.createCell(2); //메모 
+			  cell.setCellValue(list.get(i).getMemo());
+			  
+			  }
+			 
 			
 			
-		
+			/*
+			 * // Header row = sheet.createRow(rowNum++); cell = row.createCell(0);
+			 * cell.setCellValue("번호"); cell = row.createCell(1); cell.setCellValue("이름");
+			 * cell = row.createCell(2); cell.setCellValue("제목");
+			 * 
+			 * // Body for (int i=0; i<3; i++) { row = sheet.createRow(rowNum++); cell =
+			 * row.createCell(0); cell.setCellValue(i); cell = row.createCell(1);
+			 * cell.setCellValue(i+"_name"); cell = row.createCell(2);
+			 * cell.setCellValue(i+"_title"); }
+			 */
+			
+			
+			//콘텐츠 타입, 파일명 지정
+	        rs.setCharacterEncoding("UTF-8");
+			rs.setContentType("ms-vnd/excel");
+			rs.setHeader("Content-Disposition","attachment;filename=example.xlsx");
+			
+			//Excel File Output
+			wb.write(rs.getOutputStream());
+			wb.close();
+			
+			
 		}
 	
-	
+		//주소지 정보 포함된 엑셀 파일 다운받기 -----------------------
+		@RequestMapping("/plannerDownload2")
+		@ResponseBody
+		public void plannerDownload2( Map<String,Object> addrArr, HttpServletResponse rs)
+		throws IOException {
+			
+			//System.out.println("플래너 넘버 : "+plannerNo);
+			System.out.println(addrArr);
+			
+		}
+		
+		
 }
