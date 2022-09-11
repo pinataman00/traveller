@@ -21,7 +21,7 @@
  	</insert>
  
  	<insert id="insertPlan" parameterType="plan">
- 		INSERT INTO PLAN VALUES('P'||SEQ_PLANNO.NEXTVAL,'PLAN'||#{plannerNo},#{day},#{latitude},#{longitude},#{memo},#{placeName})
+ 		INSERT INTO PLAN VALUES('P'||SEQ_PLANNO.NEXTVAL,'PLAN'||#{plannerNo},#{day},#{latitude},#{longitude},#{memo},#{placeName},#{address})
  	</insert>
  	
  	<!-- 
@@ -64,6 +64,7 @@
  			<result column="longitude" property="longitude"/>
  			<result column="memo" property="memo"/>
  			<result column="place_name" property="placeName"/>
+ 			<result column="address" property="address"/>
  		</collection>
  	
  	</resultMap>

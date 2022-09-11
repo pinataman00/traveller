@@ -603,6 +603,7 @@ p#planTheme{
 		    let coord = new kakao.maps.LatLng(lat, lng);
 		    
 		    let callback = function(result, status) {
+		    	
 		        if (status === kakao.maps.services.Status.OK) {
 		            console.log(result);
 		            let addrTemp = result[0]['address']['address_name'];
@@ -642,21 +643,22 @@ p#planTheme{
 			location.assign('${path}/planner/plannerDownload/${plannerNo}');
 
 			
+			//console.log("얘도 넘길 수 있나? ",addrArr);
 			
-			
-/* 			fetch('${path}/planner/plannerDownload/${plannerNo}',{
+/* 			fetch('${path}/planner/plannerDownload2/${plannerNo}',{
 				method:'POST',
 				headers:{
 					'Content-Type':'application/json',
 				},
-				//body:JSON.stringify({"addrArr":addrArr}),
-			})
-			.then((res)=>res.json())
+				body:JSON.stringify({"addrArr":addrArr}),
+			}); */
+			
+/* 			.then((res)=>res.json())
 			.then((data)=>{
 				
 				console.log(data);
 				
-			});  */
+			}); */
 			
 			
 			
