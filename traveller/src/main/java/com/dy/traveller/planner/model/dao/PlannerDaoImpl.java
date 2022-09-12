@@ -61,4 +61,14 @@ public class PlannerDaoImpl implements PlannerDao {
 	public Planner selectPlanner(SqlSessionTemplate session, String plannerNo) {
 		return session.selectOne("planner.selectOnePlanner",plannerNo);
 	}
+
+	@Override
+	public int deletePlan(SqlSessionTemplate session, String plannerNo) {
+		return session.delete("planner.deletePlans",plannerNo);
+	}
+
+	@Override
+	public int deletePlanner(SqlSessionTemplate session, String plannerNo) {
+		return session.delete("planner.deletePlanner", plannerNo);
+	}
 }

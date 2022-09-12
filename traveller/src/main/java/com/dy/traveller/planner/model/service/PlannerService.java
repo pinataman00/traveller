@@ -19,4 +19,6 @@ public interface PlannerService {
 
 	Planner selectPlanner(String plannerNo);
 
+	int delPlanner(String plannerNo);
+
 }

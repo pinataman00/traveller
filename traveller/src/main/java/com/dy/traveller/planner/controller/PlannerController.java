@@ -254,6 +254,7 @@ public class PlannerController {
 
 		String plannerNo = map.get("plannerNo");
 		List<Plan> list = service.getPlans(plannerNo);
+		System.out.println(list);
 		
 		/*
 		 * System.out.println("가져온 플랜의 개수 : "+list.size()); for (Plan plan : list) {
@@ -538,5 +539,22 @@ public class PlannerController {
 			
 		}
 		
+		//플래너 삭제하기
+		@RequestMapping("/deletePlanner/{plannerNo}")
+		@ResponseBody
+		public int deletePlanner (@PathVariable String plannerNo) {
+			
+			System.out.println("삭제 대상 : "+plannerNo);
+			int res = service.delPlanner(plannerNo);
+			if(res>0) {
+				System.out.println("삭제 성공!");
+			} else {
+				System.out.println("삭제 실패!");
+			}
+			
+			return res;
+			
+			
+		}
 		
 }

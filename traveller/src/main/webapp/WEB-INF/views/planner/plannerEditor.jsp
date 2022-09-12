@@ -204,7 +204,7 @@ div#dropZone {
 
 	<section>
 	
-		<input type="hidden" id="placeAddress">
+		<input type="hidden" id="tempAddrContainer">
 
 		<div class="main-container">
 			<div class="editor-container">
@@ -768,13 +768,39 @@ div#dropZone {
 				//0906 ) 마커 추가하기
 				//1. addMarkerFunc()
 				addMarkerFunc(latitude,longitude,title);
-					
+				
+				//=====================================================================================
+				//TODO 0912) lat, lng정보 토대로 "주소"정보 가져오기
+				
+				
+				
 			}
 			
 
+/* 			function getAddress(lat,lng){
+				
+			    let geocoder = new kakao.maps.services.Geocoder();
+			    let coord = new kakao.maps.LatLng(lat, lng);
+			    let addrTemp = "";
+			    let arr = [];
+			    
+				    let callback = function(result, status,addressArr) {
+				        if (status === kakao.maps.services.Status.OK) {
+				            //console.log(result);
+				            addrTemp = result[0]['address']['address_name'];
+				            console.log("주소 확인 : ", addrTemp);
+				            arr.push(addrTemp);
+				            
+				        }
+				    };
+
+			    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+				return arr;
+			}
 			
-			
-			
+			let hypeboy = "";
+			hypeboy = getAddress('35.62423567800049','126.46606410122298')[0];
+			console.log("hypeboy : ",hypeboy); */
 			
 			
 			
@@ -3251,7 +3277,7 @@ div#dropZone {
 			formData.append("summary",document.getElementById("summary_").value);
 			
 			//TODO 0911 > 6. 주소 > address도 저장해야 함
-			
+			//TODO 0912 > address정보 저장 시도!
 			
 			//localStorage배열도 저장할 수 있나? ------------------------------------------------------------
 			//5. Plan[] plan			
@@ -3261,73 +3287,13 @@ div#dropZone {
 				console.log("tempArr 확인하기 : ",tempArr.length);
 				
 				
-				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				
-				let addressArr = [];
 
-				function getAddr(lat,lng,addressArr){
-					
-				    let geocoder = new kakao.maps.services.Geocoder();
-				    let coord = new kakao.maps.LatLng(lat, lng);
-				    let addrTemp = "";
-				    
-				    let callback = function(result, status) {
-				        if (status === kakao.maps.services.Status.OK) {
-				            //console.log(result);
-				            addrTemp = result[0]['address']['address_name'];
-				            console.log("주소 확인 : ", addrTemp);
-				            addressArr.push(addrTemp);
-				            
-				        }
-				    };
-
-				    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
-				}
-				
-				console.log(tempArr);
-				
-
-				for(let i=0;i<tempArr.length;i++){ //여행 일자 만큼 반복
-				
-					
-					for(let j=0;j<tempArr[i].length;j++){
-					
-						console.log(tempArr[i][j]['latitude']);
-						console.log(tempArr[i][j]['longitude']);
-						
-						getAddr(tempArr[i][j]['latitude'],tempArr[i][j]['longitude'],addressArr);
-						console.log(addressArr.length);						
-						console.log(addressArr);						
-
-					}
-				
-				}
-				
-				console.log("//////////////배열 : ",addressArr);
-				console.log("//////////////배열의 길이 : ",addressArr.length);
-				//console.log("배열 인덱스 : ",addressArr[0]);
-				
-
-				
-/* 				let test3 = addressArr.slice();
-				console.log(test3);
-				console.log(test3[0]); */
-				
-				
-				
-				
-				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				
 				//배열 구조
 				//-> 여행 일자 (3일)
 				//   -> 해당 일의 방문 장소 (2개 : 객체 배열 형태임)
 			
 				for(let i=0;i<tempArr.length;i++){ //여행 일자 만큼 반복
-				
-					console.log("받아올 수 있을까? ",addressArr);
-					//let address = addressArr[0];
-					//console.log("주소 하나는? ", addressArr[0]);
-					
 					
 					for(let j=0;j<tempArr[i].length;j++){ //방문 장소 만큼 반복 (PlanTemp클래스 참고)
 						
@@ -3337,16 +3303,23 @@ div#dropZone {
 						formData.append("planList["+i+"]["+j+"].longitude",tempArr[i][j]['longitude']);
 						formData.append("planList["+i+"]["+j+"].memo",tempArr[i][j]['memo']);
 						formData.append("planList["+i+"]["+j+"].placeName",tempArr[i][j]['placeName']);
-						console.log(addressArr[0]);
-						formData.append("planList["+i+"]["+j+"].address",addressArr[0]);
-					
+						
+						//console.log(addressArr[0]);
+						formData.append("planList["+i+"]["+j+"].address",""); //장소 정보 DB에 저장 불가능함
+/* 						let lat = tempArr[i][j]['latitude'];
+						let lng = tempArr[i][j]['longitude'];
+						console.log("좌표 전달하기 : ",lat,lng);
+						getAddress(lat,lng);
+						
+						console.log("가져올 수 있니?????", document.getElementById("tempAddrContainer").value); */
+						
 					}
 				
 				
 				
 				}
 			
-				console.log("리턴 값 테스트 : ",test2);
+				//console.log("리턴 값 테스트 : ",test2);
 			
 			
 			

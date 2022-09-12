@@ -4,15 +4,17 @@
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69ad1295dea4b05c5c134dce63cc80fc"></script> -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69ad1295dea4b05c5c134dce63cc80fc&libraries=services"></script>	
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69ad1295dea4b05c5c134dce63cc80fc&libraries=services"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+	
 <style>
 
  div.main-container{
  	margin-top : 100px;
- 	border: 1px solid red;
+/*  	border: 1px solid red; */
  }
  .container div{
- 	border: 1px solid blue;
+/*  	border: 1px solid blue; */
  }
  .plan-content-container{
  	display:flex;
@@ -26,9 +28,19 @@
 	width:70%;
 	height:500px;
 	border-radius:10px;
+	margin-left:10px;
 }
 .basic-info-container p{
 	text-align:left;
+
+}
+.basic-info-container{
+	border: 0.5px solid gray;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	padding: 10px;
+	padding-left: 20px;
+	padding-top: 20px;
 }
 #plannerTitle{
 	font-size:30px;
@@ -36,7 +48,9 @@
 	margin-bottom:0px;
 }
 .plan-card{
-	border:1px solid red;
+	
+	border:1px solid gray;
+	
 	border-radius:10px;
 	height:90px;
 	text-align:left;
@@ -49,6 +63,7 @@
 .place-title{
 	margin-bottom:0px;
 	margin-top:10px;
+	font-size:17px;
 }
 .place-addr{
 	font-size:13px;
@@ -62,7 +77,7 @@
 .card-container{
 	 overflow:scroll;
 	 height:430px;
-	 border:1px solid red;
+/* 	 border:1px solid red; */
 }
 .card-container::-webkit-scrollbar{
 	display:none;
@@ -71,7 +86,9 @@ p#planTheme{
 	text-align:right;
 	margin-right:30px;
 }
-
+.btn-container{
+	margin-top: 10px;
+}
 
 </style>
 <section class="container">
@@ -114,14 +131,16 @@ p#planTheme{
 			</div>
 			<div class="map-container">
 				<!-- 지도가 들어가는 영역 -->
-				<div id="map" style="border:1px solid red; height:500px;"></div>
+				<div id="map" style="border-radius:5px; height:500px;"></div>
 			</div>
 		</div>
 		<div class="controller-container" style="display:flex;float:right;">
 
 			<div class="btn-container">
 				<button type="button" class="btn btn-outline-primary btn-sm" onclick="downloadPlan();">다운받기</button>
-				<button type="button" class="btn btn-outline-primary btn-sm">수정하기</button>
+				
+				<!-- <button type="button" class="btn btn-outline-primary btn-sm" onclick="friendSend()" value="Custom">공유하기</button> -->
+				
 			</div>
 		</div>	
 	
@@ -692,7 +711,7 @@ p#planTheme{
 		}
 
 		//주소 정보 가져오기 2) ---------------------------------------------------
-		
+		//-> 주소정보는 실시간 확인만 가능. DB저장 불가!
 		function getAddress(lat,lng,arr){
 		
 		    let geocoder = new kakao.maps.services.Geocoder();
@@ -714,7 +733,13 @@ p#planTheme{
 		    
 		}
 		
-	 	
+		//공유하기 -----------------------------------------------------------------
+		//Kakao.init('69ad1295dea4b05c5c134dce63cc80fc');
+
+</script>
+
+
+<script type="text/javascript">
 
 </script>
 

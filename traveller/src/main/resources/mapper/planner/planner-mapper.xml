@@ -85,5 +85,11 @@
  		SELECT * FROM PLANNER WHERE PLANNER_NO=#{plannerNo}
  	</select>
  	
+ 	<delete id="deletePlans" parameterType="string">
+ 		DELETE FROM PLAN WHERE PLANNER_NO = #{plannerNo}
+ 	</delete>
+ 	<delete id="deletePlanner" parameterType="string">
+ 		DELETE FROM PLANNER WHERE PLANNER_NO = #{plannerNo}
+ 	</delete>
  
 </mapper>

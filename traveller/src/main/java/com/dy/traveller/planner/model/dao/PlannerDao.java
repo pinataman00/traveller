@@ -28,4 +28,8 @@ public interface PlannerDao {
 
 	Planner selectPlanner(SqlSessionTemplate session, String plannerNo);
 
+	int deletePlan(SqlSessionTemplate session, String plannerNo);
+
+	int deletePlanner(SqlSessionTemplate session, String plannerNo);
+
 }

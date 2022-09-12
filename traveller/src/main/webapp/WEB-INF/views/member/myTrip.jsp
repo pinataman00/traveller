@@ -917,6 +917,13 @@ function myPlace (contentId, firstImage, title){
 						delBtn.classList.add("planner-del-btn");
 						delBtn.innerText="삭제하기";
 						
+						delBtn.addEventListener("click",e=>{
+							
+							//alert(data[i].plannerNo);
+							delPlanner(plannerNo);
+							
+						});
+						
 						plannerBtnContainer.append(delBtn);
 						
 						myPlannerCard.append(plannerBtnContainer);
@@ -978,6 +985,36 @@ function myPlace (contentId, firstImage, title){
 				plannerContainer.style.display="none";
 			}
 			
+			//삭제하기 -----------------------------------------------------------------------------------
+			const delPlanner = (num) =>{ //플랜 삭제하기!
+				
+				alert(num);
+				let plannerNo = num; 
+				console.log(plannerNo);
+				
+				  fetch('${path}/planner/deletePlanner/'+num, {
+					  method: 'POST', 
+					  headers: {
+					    'Content-Type': 'application/json',
+					  }
+					})
+					.then((response) => response.json())
+					.then((data) => {
+						
+						console.log("삭제 잘 했니? ",data);
+						if(data==1){
+							alert("삭제 성공!");
+							location.reload();
+						} else {
+							alert("삭제 실패! 다시 시도해주세요");
+							
+						}
+						
+					});
+				
+			
+				
+			}
 			
 			
 			

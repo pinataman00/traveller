@@ -128,4 +128,19 @@ public class PlannerServiceImpl implements PlannerService {
 		return dao.selectPlanner(session,plannerNo);
 	}
 
+	@Override
+	public int delPlanner(String plannerNo) {
+
+		int res = 0;
+		// 先 : (자식 테이블) PLAN 삭제
+		res = dao.deletePlan(session, plannerNo);
+
+		if (res > 0) { // 後 (부모 테이블) PLANNER 삭제
+			res = dao.deletePlanner(session, plannerNo);
+		}
+
+		return res;
+
+	}
+
 }
