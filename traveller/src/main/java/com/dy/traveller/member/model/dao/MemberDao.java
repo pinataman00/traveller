@@ -32,6 +32,8 @@ public interface MemberDao {
 
 	public int updateGrade(SqlSessionTemplate session, Member m);
 
+	public List<Member> selectPlanner(SqlSessionTemplate session);
+
 
 	
 }

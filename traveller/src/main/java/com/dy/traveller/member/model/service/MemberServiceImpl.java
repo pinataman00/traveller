@@ -112,4 +112,10 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updateGrade(session,m);
 	}
 
+
+	@Override
+	public List<Member> selectPlanner() {
+		return dao.selectPlanner(session);
+	}
+
 }

@@ -84,11 +84,11 @@ button#routeBtn{
 			    	<!-- 홈페이지 (없을 수도 있음) -->
 			    </div>			    
 			    <p class="lead address-container" id="theme">테마</p>
-			    <p class="star-container">★★★★★</p>
+			    <!-- <p class="star-container">★★★★★</p> -->
 			    <hr class="my-4">
 				<p class="lead" style="float:right;">
 					<button id="likeBtn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addLikesList" role="button">좋아요</button>
-					<button class="btn btn-primary btn-sm" href="#">별점</button>
+					<!-- <button class="btn btn-primary btn-sm" href="#">별점</button> -->
 				</p>
 
 			</div>
@@ -102,9 +102,9 @@ button#routeBtn{
 						<div id="map"></div>
 					</div>
 					<!-- <button type="button" class="btn btn-primary" style="margin-top:15px;">길 찾기</button> -->
-					<button id="routeBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchRoute">
+<!-- 					<button id="routeBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchRoute">
 						길 찾기
-					</button>
+					</button> -->
 				</div>
 				<div class="photo-container">
 					<img id="photo"></img>		
@@ -458,7 +458,7 @@ button#routeBtn{
 					photo.src=data.firstImage;
 			
 				} else { //기본 이미지 출력
-					photo.src= "${path}/resources/img/testPic/doraemon.png";
+					photo.src= "${path}/resources/img/traveller/basicImg.png";
 				}
 				
 				//지도 (좌표 정보)

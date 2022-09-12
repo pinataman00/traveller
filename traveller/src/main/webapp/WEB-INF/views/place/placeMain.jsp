@@ -131,7 +131,7 @@ button#addCat{
 						<!-- 검색 前 기본 화면 출력 -->
 			<div class="promotion-container">
 				<!-- 프로모션 -->
-				<div class="jumbotron" onclick="alert('여름!');">
+				<div class="jumbotron">
 					  <h1 class="display-4">Hello! Travellers!</h1>
 					  <p class="lead">어디로 갈까요? 먼저 검색해보세요</p>
 					  <hr class="my-4">
@@ -286,7 +286,7 @@ button#addCat{
 									</div>
 
 									<!-- <div class="btn-container"> -->
-											<button class="btn btn-outline-success my-2 my-sm-0" style="margin-left:10px;" type="submit" onclick="fn_searchTheme();">검색</button>	
+											<!-- <button class="btn btn-outline-success my-2 my-sm-0" style="margin-left:10px;" type="submit" onclick="fn_searchTheme();">검색</button> -->	
 									<!-- </div> -->
 
 
@@ -402,16 +402,18 @@ button#addCat{
 				
 				<div class="best-choice-title">
 				<hr>
-					<h5>인기 여행지 TOP3</h5>
+				
+<%-- 					<h5>인기 여행지 TOP3</h5>
  					<c:if test="${loginMember!=null}">
 						<p>${loginMember.memberId}님이 관심 있는 지역의 인기 여행지</p>
- 					</c:if>
+ 					</c:if> --%>
+ 					
 				</div>
 			<!-- 클라이언트의 관심사 > 조회수||좋아요 순 베스트 장소 출력하기 -->
-				<div class="basic-contents-container">
+				 <div class="basic-contents-container">
 
 
-						<div class="result-card card" style="width: 18rem;">
+<%--  						<div class="result-card card" style="width: 18rem;">
 							<img class="card-img-top" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
 							<div class="card-body">							
 								<h5 class="card-title">Card title</h5>
@@ -437,8 +439,8 @@ button#addCat{
 								<p class="card-text">인기 여행지 3순위</p>
 								<img class="heart" src="${path}/resources/img/icons/heart.svg" onclick="alert('좋아요!');">
 							</div>
-						</div>					
-				 </div> 
+						</div> 	 --%>		
+				 </div>  
 	
 				
 				
@@ -678,7 +680,7 @@ button#addCat{
 	 				}
 
 
-	 				//ㅊㅌㄹ0902
+	 				//0902
 					//결과 화면 구성하기 > 카드 형태로 데이터 출력하기 ============================================================				
 					for(let i=0;i<data.length;++i){
 						
@@ -699,7 +701,7 @@ button#addCat{
 								img.src=data[i].firstImage;
 								
 							} else { //기본 이미지 출력
-								img.src="${path}/resources/img/testPic/doraemon.png";
+								img.src="${path}/resources/img/traveller/basicImg.png";
 							}
 							const contentId = data[i].contentId;
 							img.addEventListener("click",e=>{

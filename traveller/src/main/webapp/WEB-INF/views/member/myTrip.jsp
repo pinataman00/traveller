@@ -306,6 +306,11 @@
 						<button type="button" class="btn btn-primary btn-lg" onclick="location.assign('${path}/place/placesMain')">여행지 탐색하기</button>
 					</div>
 					
+					<div class="no-saved-planner" style="margin-bottom:30px; display:none;">
+						<p class="info-text" style="color:red;">저장된 플래너가 없습니다! 나만의 플래너를 만들어보세요!</p>
+						<button type="button" class="btn btn-primary btn-lg" onclick="location.assign('${path }/planner/startPlanner')">플래너 만들기</button>
+					</div>
+					
 					<div class="cards-container">
 						<!-- 카테고리 옵션 선택 시, 검색 결과 카드가 출력될 영역 -->									
 					</div>
@@ -319,7 +324,7 @@
 							<!-- TODO0908) 카드 출력 예시 -->
  							<div class="planner-result-card card">								
 								<div class="my-planner-card">
-									<img class="planner-card-img" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
+									<img class="planner-card-img" src="${path}/resources/img/traveller/traveller_noImg.png" alt="Card image cap">
 									<div class="planner-info-container">
 										<!-- 장소명  -->							
 										<h5 class="card-title">Card title</h5>
@@ -797,12 +802,27 @@ function myPlace (contentId, firstImage, title){
 				  		
 					console.log("저장된 플래너 목록이 있습니까? ",data);
 					
-					if(data.length==0){
-						plannerContainer.innerText = "저장된 플래너 목록이 없습니다";
-					}
+
 					
 					plannerContainer.innerHTML="";
 					
+/* 					if(data.length==0){
+						plannerContainer.innerText = "저장된 플래너 목록이 없습니다";
+					} */
+					
+					
+					
+					if(data.length!=0){ //
+						//document.getElementsByClassName("search-container")[0].style.display="flex";
+						document.getElementsByClassName("no-saved-planner")[0].style.display="none";
+						
+					} else {
+						//document.getElementsByClassName("search-container")[0].style.display="none";
+						document.getElementsByClassName("no-saved-planner")[0].style.display="";
+						
+					}
+					
+
 					//검색 결과 출력하기
 					
 					for(let i=0;i<data.length;i++){
@@ -823,7 +843,7 @@ function myPlace (contentId, firstImage, title){
 							plannerImg.src= "${path}/resources/planner/thumbnail/"+data[i].img;
 							
 						} else { //없는 경우, 기본 이미지 출력
-							plannerImg.src= "${path}/resources/img/testPic/pikachu.png";
+							plannerImg.src= "${path}/resources/img/traveller/traveller_noImg.png";
 						}
 						
 
@@ -983,6 +1003,8 @@ function myPlace (contentId, firstImage, title){
 				//likesMainContainer.style.display="";
 				cardContainer.style.display="";
 				plannerContainer.style.display="none";
+				
+				document.getElementsByClassName("no-saved-planner")[0].style.display="none";
 			}
 			
 			//삭제하기 -----------------------------------------------------------------------------------

@@ -52,7 +52,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="${path }/planner/startPlanner">플래너 만들기</a>
-          <a class="dropdown-item" href="#">크리에이터 구경하기</a>
+          <a class="dropdown-item" href="${path }/member/creatorList">크리에이터 구경하기</a>
 <!--           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a> -->
         </div>
@@ -94,8 +94,8 @@
      <c:if test="${loginMember!=null }">
      
      	<!-- TODO : 메시지, 알림이 있을 때, 아이콘 분기 처리해야 함 -->
-        <img src="${path}/resources/img/icons/msg.svg" alt="msg" style="width:25px;height:25px; margin-right:10px;">
-        <img src="${path}/resources/img/icons/bell.svg" alt="alarm" style="width:25px;height:25px; margin-right:10px;">
+<%--         <img src="${path}/resources/img/icons/msg.svg" alt="msg" style="width:25px;height:25px; margin-right:10px;">
+        <img src="${path}/resources/img/icons/bell.svg" alt="alarm" style="width:25px;height:25px; margin-right:10px;"> --%>
      	<span>
 
 				<div class="dropdown" style="margin-right:10px;">

@@ -87,6 +87,13 @@
 	<update id="updateGrade" parameterType="member">
 		UPDATE MEMBER SET GRADE=#{grade} WHERE MEMBER_ID=#{memberId}
 	</update>
+	
+	<select id="selectPlannerList" resultMap="memberMap">
+		SELECT * FROM MEMBER M
+					  LEFT JOIN PROFILEIMG P
+					  USING(MEMBER_ID)
+					  WHERE GRADE='planner'
+	</select>
 
 	
 </mapper>

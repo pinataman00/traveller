@@ -3,6 +3,7 @@ package com.dy.traveller.member.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,7 +26,6 @@ import com.dy.traveller.common.PageFactory;
 import com.dy.traveller.member.model.service.MemberService;
 import com.dy.traveller.member.model.vo.Member;
 import com.dy.traveller.member.model.vo.Profileimg;
-import com.dy.traveller.places.model.vo.Place;
 
 @Controller
 @RequestMapping("/member")
@@ -184,6 +183,7 @@ public class MemberController {
 	public String myTrip() {
 		return "member/myTrip";
 	}
+
 	
 	//회원 정보 수정 > 전반적인 정보 수정
 	@RequestMapping("/updateInfo.do")
@@ -490,5 +490,47 @@ public class MemberController {
 		return receiver;
 	}
 
+	//크리에이터 리스트 출력 -----------------------------------------------------------------------
+	@RequestMapping("/creatorList")
+	public String creatorList() {
+		return "/creator/creatorList";
+	}
+	
+	//크리에이터 리스트 불러오기
+	@RequestMapping("/selectPlanners.do")
+	@ResponseBody
+	public List<Member> selectPlanners() {
+		
+		
+		List<Member> list = service.selectPlanner();
+		
+		List<Member> res = new ArrayList();
+		
+		for (Member member : list) {
+			
+			//유효한 정보만 추출하기
+			//System.out.println(member);
+			res.add(new Member().builder().memberId(member.getMemberId())
+					.introduce(member.getIntroduce())
+					.image(new Profileimg().builder().renamedFileName(member.getImage().getRenamedFileName()).build())
+					.build());
+		}
+		
+		return res;
+	
+	}
+	
+	//크리에이터 구경하기
+	@RequestMapping("/creatorsBlog/{memberId}")
+	public ModelAndView creatorBlog(@PathVariable String memberId, ModelAndView mv) {
+				
+		//Member temp = new Member().builder().memberId(memberId).build();
+		Member creator = service.login(new Member().builder().memberId(memberId).build());
+		System.out.println("정보 확인 ? : "+creator);
+		mv.addObject("creator", creator);
+		mv.setViewName("creator/creatorView");
+		
+		return mv;
+	}
 	
 }

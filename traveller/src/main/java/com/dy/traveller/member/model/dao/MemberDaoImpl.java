@@ -96,6 +96,13 @@ public class MemberDaoImpl implements MemberDao {
 
 
 
+	@Override
+	public List<Member> selectPlanner(SqlSessionTemplate session) {
+		return session.selectList("member.selectPlannerList");
+	}
+
+
+
 
 
 }

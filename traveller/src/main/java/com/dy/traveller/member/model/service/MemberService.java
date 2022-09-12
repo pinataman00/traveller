@@ -25,6 +25,8 @@ public interface MemberService {
 
 	int updateGrade(Member m);
 
+	List<Member> selectPlanner();
+
 	
 	
 }

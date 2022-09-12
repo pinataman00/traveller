@@ -72,7 +72,7 @@ public class PlannerController {
 		    
 		    //클라이언트 본인도 멤버에 추가하기
 		    list.add(new Friends().builder().memberId(planner.getMemberId()).build());
-			System.out.println("멤버들 확인하기 : "+list);
+			//System.out.println("멤버들 확인하기 : "+list);
 			crew.setFriends(list);
 
 			try {
@@ -83,8 +83,8 @@ public class PlannerController {
 				mv.addObject("crewMembers",list);
 				mv.setViewName("/planner/plannerEditor");
 				
-				System.out.println("될까? "+planner);
-				System.out.println("될까? "+crew);
+				//System.out.println("될까? "+planner);
+				//System.out.println("될까? "+crew);
 				
 				
 				return mv;
@@ -120,7 +120,7 @@ public class PlannerController {
 		int travelDays = Integer.parseInt(String.valueOf(map.get("travelDays")));
 		
 		Planner p = new Planner().builder().memberId(memberId).plannerTitle(plannerTitle).travelDays(travelDays).theme(theme).areaCode(areaCode).sigunguCode(sigunguCode).build();
-		System.out.println("//////////////"+p);
+		//System.out.println("//////////////"+p);
 		mv.addObject("tempData", p);
 		//return p;
 		mv.setViewName("/");
@@ -138,8 +138,8 @@ public class PlannerController {
 	public void savePlanner(Plan[] plans, Planner p, Model model, MultipartFile img, HttpServletRequest rs) {
 		
 		
-		System.out.println(p);
-		System.out.println(plans);
+		//System.out.println(p);
+		//System.out.println(plans);
 		
 		/* 로직 순서
 		 * 
@@ -472,7 +472,7 @@ public class PlannerController {
 			
 			List<Plan> list = service.getPlans(plannerNo);
 			for (Plan plan : list) {
-				System.out.println(plan);
+				//System.out.println(plan);
 			}
 			
 			//엑셀 다운 관련 --------------------------------------
