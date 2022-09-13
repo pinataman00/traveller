@@ -121,7 +121,7 @@ div.planner-btn-container a{
 
 <!-- TODO 0804) 플래너 회원 목록 출력하기 -->
 
- <div class="page-header planner-introduce-title">
+<%--  <div class="page-header planner-introduce-title">
   <h1>Members only! <small>여행 전문가에게 루트를 맡겨보세요!</small></h1>
   <p>원하는 지역과 테마를 말씀해보세요. 마음에 쏙 드는 여행 계획을 만들어 드릴게요</p>
 </div>
@@ -162,7 +162,7 @@ div.planner-btn-container a{
   </div>
 </div>
 </div>
-</div>
+</div> --%>
 
 <hr>
 

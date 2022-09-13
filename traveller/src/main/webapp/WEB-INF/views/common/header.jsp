@@ -38,7 +38,7 @@
     <ul class="navbar-nav mr-auto">
        <li class="nav-item">
         	<div class="container-fluid" onclick="location.replace('${path}/')">
-  		<h5 style="font-family:Work+Sans;text-align:center;padding:10px">traveⅡer</h5>
+  		<h5 style="font-family:Work+Sans;text-align:center;padding:10px;cursor:pointer;">traveⅡer</h5>
 	</div>
       </li>
       <li class="nav-item">
@@ -104,8 +104,8 @@
 				  </button>
 				  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 				    <button class="dropdown-item" type="button" onclick="location.assign('${path}/member/myInfo.do')">정보 수정</button>
-				    <button class="dropdown-item" type="button" onclick="location.assign('${path}/message/openMessageMain.do')">메시지</button>
-				    <button class="dropdown-item" type="button">알림</button>
+<%-- 				    <button class="dropdown-item" type="button" onclick="location.assign('${path}/message/openMessageMain.do')">메시지</button>
+				    <button class="dropdown-item" type="button">알림</button> --%>
 				    <button class="dropdown-item" type="button" onclick="location.assign('${path}/member/myTrip.do')">나의 여행</button>
 				    <div class="dropdown-divider"></div>
 				    <button class="dropdown-item" type="button" onclick="location.replace('${path}/member/logout.do')">로그아웃</button>
@@ -135,7 +135,7 @@
         </button>
       </div>
       <div class="modal-body">
-      <p>(관리자 계정 : admin08 | 비밀번호 : 1q2w3e4r)</p>
+     <!--  <p>(관리자 계정 : admin08 | 비밀번호 : 1q2w3e4r)</p> -->
       		<div style="text-align:center;margin:10px;">
 		        <form action="${path }/member/memberLogin.do" method="post">
 		        		<input style="margin-bottom:10px;"type="text" name="memberId" placeholder="아이디"><br/>

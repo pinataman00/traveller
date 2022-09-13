@@ -1,8 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<footer>
-	
+
+
+<style>
+.footer-title {
+	cursor: pointer;
+	font-size: 13px;
+	color:gray;
+}
+.footer-container{
+	text-align:center;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.footer-main-container {
+	margin-top: 30px;
+	background-color: #f8f9fa;
+	height: 100px;
+	padding-top: 30px;
+}
+</style>
+
+<footer class="footer-main-container navbar-fixed-bottom">
+	<div class="footer-container container container-fluid">
+		<p class="footer-title" onclick="location.assign('${path}/member/aboutTraveller');">ABOUT TRAVELLER <br>서비스 소개</p>	
+	</div>
 </footer>
 
 

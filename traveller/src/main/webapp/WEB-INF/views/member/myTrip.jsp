@@ -135,6 +135,7 @@
 		width:500px;
 		height:150px;
 		display:inline-block;
+		margin-top:10px;
 	}
 	.my-planner-card{
 		display:flex;
@@ -174,7 +175,7 @@
 	.planner-container{
 		margin-left:30px;
 		display:grid;
-		height:500px;
+		/* height:500px; */
 		overflow-y:scroll;
 	}
 	.planner-container::-webkit-scrollbar{
@@ -213,7 +214,7 @@
 				<ul class="nav nav-tabs card-header-tabs">
 					<li class="nav-item"><a id="likeMenu" class="nav-link active" href="#" onclick="myLikes();">나의 장소</a></li>
 					<li class="nav-item"><a id="planMenu" class="nav-link" href="#" onclick="myPlanner();">나의 플랜</a></li>
-					<li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a></li>
+					<!-- <li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a></li> -->
 				</ul>
 			</div>
 			

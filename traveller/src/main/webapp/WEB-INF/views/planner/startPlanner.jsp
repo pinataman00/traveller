@@ -8,6 +8,7 @@
 		/* margin-top: 100px; */
 	    width: 700px;
 	    display: inline-block;
+	    margin-bottom:50px;
 	}
 	.theme-container{
 		display:flex;

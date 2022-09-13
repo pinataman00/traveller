@@ -65,7 +65,7 @@
 				<p class="lead">
 					<a class="btn btn-primary btn-sm" href="#" role="button"
 						data-toggle="tooltip" data-placement="bottom"
-						title="크리에이터가 되고 싶다면, 지금 바로 신청해보세요!">크리에이터 신청하기</a>
+						title="크리에이터가 되고 싶다면, 지금 바로 신청해보세요!" onclick="alert('구현 중입니다');">크리에이터 신청하기</a>
 				</p>
 			</div>
 		</div>
@@ -218,6 +218,11 @@
 				request.classList.add("btn-primary");
 				request.classList.add("request");
 				request.innerText="의뢰하기";
+				
+				request.addEventListener("click",e=>{
+					alert("구현 중입니다");
+				});
+				
 				//card, planner-info에 추가하기
 				body.append(title);
 				body.append(text);

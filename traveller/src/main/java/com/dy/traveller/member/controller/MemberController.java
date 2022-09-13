@@ -190,18 +190,18 @@ public class MemberController {
 	public String updateInfo(Member m, Model model, MultipartFile img, HttpServletRequest rs) {
 		
 		
-			System.out.println("수정 정보 일체 "+m);			
+			//System.out.println("수정 정보 일체 "+m);			
 			Member loginMember = service.login(m);
 			//프로필 사진(PROFILEIMG) 저장 관련
 			
 			
-			System.out.println("기존 : "+loginMember.getPhone());
-			System.out.println("새로운 정보 : "+m.getPhone());
-			System.out.println("수정 정보 일체 "+m);
+			//System.out.println("기존 : "+loginMember.getPhone());
+			//System.out.println("새로운 정보 : "+m.getPhone());
+			//System.out.println("수정 정보 일체 "+m);
 			
 			// 프로필 사진 관련
-			System.out.println("파일 이름 :" + img.getOriginalFilename());
-			System.out.println("파일 크기 : " + img.getSize());
+			//System.out.println("파일 이름 :" + img.getOriginalFilename());
+			//System.out.println("파일 크기 : " + img.getSize());
 	
 			// 첨부파일 저장 경로 설정하기
 			String path = rs.getServletContext().getRealPath("/resources/member/profile/");
@@ -282,7 +282,7 @@ public class MemberController {
 			  }
 		  
 		model.addAttribute("loginMember", m);
-		System.out.println("수정처리완료 : "+m);
+		//System.out.println("수정처리완료 : "+m);
 		model.addAttribute("msg",msg);
 		model.addAttribute("loc",loc);
 		  
@@ -295,7 +295,7 @@ public class MemberController {
 		
 		String viewName = "member/myInfo";
 		
-		System.out.println(m.getMemberId());
+		//System.out.println(m.getMemberId());
 		
 		
 		  Member loginMember = service.login(m); // 1. 클라이언트 입력 아이디-DB 아이디 대조
@@ -526,11 +526,16 @@ public class MemberController {
 				
 		//Member temp = new Member().builder().memberId(memberId).build();
 		Member creator = service.login(new Member().builder().memberId(memberId).build());
-		System.out.println("정보 확인 ? : "+creator);
+		//System.out.println("정보 확인 ? : "+creator);
 		mv.addObject("creator", creator);
 		mv.setViewName("creator/creatorView");
 		
 		return mv;
+	}
+	
+	@RequestMapping("/aboutTraveller")
+	public String aboutTraveller() {
+		return "/guide/aboutTraveller";
 	}
 	
 }

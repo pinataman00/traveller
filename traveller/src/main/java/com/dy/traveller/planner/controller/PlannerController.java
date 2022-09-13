@@ -378,7 +378,7 @@ public class PlannerController {
 
 		}
 		
-		//TODO 0910) 엑셀 다운 -------------------------------------------
+		//0910) 엑셀 다운 -------------------------------------------
 		@RequestMapping("/plannerDownload/{plannerNo}")
 		@ResponseBody
 		/*
@@ -389,11 +389,11 @@ public class PlannerController {
 					throws IOException {
 			
 			//String plannerNo = data.get("plannerNo");
-			System.out.println("다운 대상 : "+plannerNo);
+			//System.out.println("다운 대상 : "+plannerNo);
 			
 			List<Plan> list = service.getPlans(plannerNo);
 			for (Plan plan : list) {
-				System.out.println(plan);
+				//System.out.println(plan);
 			}
 			
 			//엑셀 다운 관련 --------------------------------------
@@ -418,20 +418,20 @@ public class PlannerController {
 			  
 			  for(int i=0;i<list.size();i++) {
 			  
-			  row = sheet.createRow(rowNum++);
-			  
-			  cell = row.createCell(0); //일자 
-			  
-			  cell.setCellValue(list.get(i).getDay());
-			  
-			  cell = row.createCell(1); //장소명
-			  cell.setCellValue(list.get(i).getPlaceName());
-			  
-			  //cell = row.createCell(0); //주소 
-			  //cell.setCellValue(list.get(i).getDay());
-			  
-			  cell = row.createCell(2); //메모 
-			  cell.setCellValue(list.get(i).getMemo());
+					  row = sheet.createRow(rowNum++);
+					  
+					  cell = row.createCell(0); //일자 
+					  
+					  cell.setCellValue(list.get(i).getDay());
+					  
+					  cell = row.createCell(1); //장소명
+					  cell.setCellValue(list.get(i).getPlaceName());
+					  
+					  //cell = row.createCell(0); //주소 
+					  //cell.setCellValue(list.get(i).getDay());
+					  
+					  cell = row.createCell(2); //메모 
+					  cell.setCellValue(list.get(i).getMemo());
 			  
 			  }
 			 
@@ -452,7 +452,7 @@ public class PlannerController {
 			//콘텐츠 타입, 파일명 지정
 	        rs.setCharacterEncoding("UTF-8");
 			rs.setContentType("ms-vnd/excel");
-			rs.setHeader("Content-Disposition","attachment;filename=example.xlsx");
+			rs.setHeader("Content-Disposition","attachment;filename=traveller_planner.xlsx");
 			
 			//Excel File Output
 			wb.write(rs.getOutputStream());

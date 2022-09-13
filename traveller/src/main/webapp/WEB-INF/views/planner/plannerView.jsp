@@ -46,6 +46,7 @@
 	font-size:30px;
 	font-weight:800;
 	margin-bottom:0px;
+	
 }
 .plan-card{
 	
@@ -88,6 +89,9 @@ p#planTheme{
 }
 .btn-container{
 	margin-top: 10px;
+}
+.place-title{
+	cursor:pointer;
 }
 
 </style>

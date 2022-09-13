@@ -288,8 +288,8 @@ div#dropZone {
 				<!-- dropdown : 사용자 아이템 드롭다운 -->
 				<div class="dropdown-menu">
 					<a class="dropdown-item" onclick="myLikes();">나의 좋아요</a> 
-					<a class="dropdown-item" href="#">나의 그룹</a> 
-					<a class="dropdown-item" href="#" onclick="showCkList();">나의 체크 리스트</a>
+<!-- 					<a class="dropdown-item" href="#">나의 그룹</a> 
+					<a class="dropdown-item" href="#" onclick="showCkList();">나의 체크 리스트</a> -->
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="#" onclick="ckWeather();">날씨</a> 
 <!-- 					<a class="dropdown-item" href="#">길 찾기</a> -->
@@ -3346,7 +3346,7 @@ div#dropZone {
 					
 				} else {
 					
-					alert("저장 실패! 다시 시도해주세요");
+					alert("저장 실패! 다시 시도해주세요. 오류가 반복되는 경우, 관리자에게 문의부탁드립니다");
 					//모달 창만 닫기
 					$("#saveSchedule").modal("hide");
 					//$("#myLikes").modal("show");
@@ -3536,4 +3536,4 @@ div#dropZone {
 	            		</script>
 
 
-	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+	<%-- <%@ include file="/WEB-INF/views/common/footer.jsp"%> --%>

@@ -21,7 +21,7 @@
  	</insert>
  
  	<insert id="insertPlan" parameterType="plan">
- 		INSERT INTO PLAN VALUES('P'||SEQ_PLANNO.NEXTVAL,'PLAN'||#{plannerNo},#{day},#{latitude},#{longitude},#{memo},#{placeName},#{address})
+ 		INSERT INTO PLAN VALUES('P'||SEQ_PLANNO.NEXTVAL,'PLAN'||#{plannerNo},#{day},#{latitude},#{longitude},#{memo},#{placeName},#{address},#{id})
  	</insert>
  	
  	<!-- 
@@ -53,8 +53,7 @@
  			<result column="saveddate" property="savedDate"/>
  		</collection>
  		
- 		<!-- has a 관계인 PLAN객체가 보유한 것 
- 			 될까... 걱정되는군...
+ 		<!-- has a 관계인 PLAN객체가 보유한 것
  		-->
  		<collection property="plan" ofType="plan">
  		 	<id column="plan_code" property="planCode"/>
@@ -65,6 +64,7 @@
  			<result column="memo" property="memo"/>
  			<result column="place_name" property="placeName"/>
  			<result column="address" property="address"/>
+ 			<result column="id" property="id"/>
  		</collection>
  	
  	</resultMap>
