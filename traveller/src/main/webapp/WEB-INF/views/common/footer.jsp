@@ -24,7 +24,10 @@
 
 <footer class="footer-main-container navbar-fixed-bottom">
 	<div class="footer-container container container-fluid">
-		<p class="footer-title" onclick="location.assign('${path}/member/aboutTraveller');">ABOUT TRAVELLER <br>서비스 소개</p>	
+		<p class="footer-title" onclick="location.assign('${path}/member/aboutTraveller');">ABOUT TRAVELLER <br>서비스 소개
+			<br><span>pinataman01@gmail.com</span>
+		<br>
+		</p>		
 	</div>
 </footer>
 

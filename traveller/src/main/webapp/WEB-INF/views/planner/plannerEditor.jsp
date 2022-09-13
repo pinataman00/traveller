@@ -285,11 +285,11 @@ div#dropZone {
 
 				<!-- dropdown : 사용자 아이템 드롭다운 -->
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					<a class="dropdown-item" onclick="myLikes();">나의 좋아요</a> 
- 					<a class="dropdown-item" href="#">나의 그룹</a> 
-					<a class="dropdown-item" href="#" onclick="showCkList();">나의 체크 리스트</a>
+					<a class="dropdown-item" onclick="myLikes();" style="cursor:pointer;">나의 좋아요</a> 
+<!--  					<a class="dropdown-item" href="#">나의 그룹</a> 
+					<a class="dropdown-item" href="#" onclick="showCkList();">나의 체크 리스트</a> -->
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#" onclick="ckWeather();">날씨</a> 
+					<a class="dropdown-item" href="#" onclick="ckWeather();" style="cursor:pointer;">날씨</a> 
 <!-- 				<a class="dropdown-item" href="#">길 찾기</a> -->
 				</div>
 			</div>
@@ -398,7 +398,7 @@ div#dropZone {
 							
 
 							<!-- 카드 출력 예시 -->
- 							<div class="result-card card">								
+<%--  							<div class="result-card card">								
 								<div class="card-body my-likes-card">
 									<img class="card-img" src="${path}/resources/img/testPic/pikachu.png" alt="Card image cap">
 									<div class="likes-info-container">
@@ -420,7 +420,7 @@ div#dropZone {
 										</div>
 									</div>													
 								</div>								
-							</div> 
+							</div>  --%>
 							
 					
 							
@@ -565,7 +565,7 @@ div#dropZone {
 					if(data[i].firstImage!=null){
 						cardImg.src = data[i].firstImage;
 					} else { //카드 정보 부재 시, 기본 이미지 출력
-						cardImg.src="${path}/resources/img/testPic/pikachu.png";
+						cardImg.src="${path}/resources/img/traveller/basicImg.png";
 					}
 					
 					
