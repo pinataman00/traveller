@@ -224,10 +224,10 @@ p#contentTitle {
 				<ul class="nav nav-tabs card-header-tabs">
 
 					<li class="nav-item">
-						<a id="planMenu" class="nav-link active" href="#" onclick="myPlanner();">플래너</a>
+						<a id="plannerMenu" class="nav-link active" href="#" onclick="openPlanner();">플래너</a>
 					</li>
 					<li class="nav-item">
-						<a id="likeMenu" class="nav-link" href="#" onclick="myLikes();">의뢰하기</a>
+						<a id="requestMenu" class="nav-link" href="#" onclick="openRequest();">의뢰하기</a>
 					</li>
 					
 				</ul>
@@ -237,7 +237,7 @@ p#contentTitle {
 				<!-- 콘텐츠가 담길 곳~
 				 -->
 				
-					<div class="temp-container" display="none;">
+					<div class="planner-main-container" display="none;">
 							<!-- 0907) 플래너 불러오기 -->
 							<div class="planner-container">
 		
@@ -259,8 +259,22 @@ p#contentTitle {
 									</div>  --%>
 							</div>
 					</div>
-					
+		
 			<!-- content-body종료 시점 -->			
+			</div>
+
+
+			<!-- 의뢰하기 form페이지가 출력될 곳 -->			
+			<!-- <div id="tempContainer"> -->
+			<div class="request-container">
+
+				<div class="request-title-container container">
+					<p>${creator.memberId}님께 의뢰하기</p>
+				</div>
+				<form action="" method="post">
+					
+				</form>
+			
 			</div>
 
 		</div>
@@ -294,13 +308,21 @@ p#contentTitle {
 //===================================================================================================================
 //0912) PLANNER 불러오기	
 
+
+			const openPlanner = ()=>{
+				
+				document.getElementsByClassName("request-container")[0].style.display="none";
+				document.getElementsByClassName("content-body")[0].style.display="";
+				document.getElementById("plannerMenu").classList.add("active");
+				document.getElementById("requestMenu").classList.remove("active");
+			}
+
 			//1. 플래너 목록 불러오기
-			
-			
+					
 			const id = "${creator.memberId}";
 			const contentBody = document.getElementsByClassName("content-body")[0];
 			const plannerContainer = document.getElementsByClassName("planner-container")[0];  
-			
+			document.getElementsByClassName("request-container")[0].style.display="none";
 			
 				fetch('${path}/planner/loadPlanner.do', {
 				  method: 'POST', 
@@ -316,11 +338,11 @@ p#contentTitle {
 					
 					if(data.length!=0){
 						
-						document.getElementsByClassName("temp-container")[0].style.display="";
+						document.getElementsByClassName("planner-main-container")[0].style.display="";
 						//document.getElementsByClassName("search-container")[0].style.display="flex";
 						
 					} else {
-						document.getElementsByClassName("temp-container")[0].style.display="none";
+						document.getElementsByClassName("planner-main-container")[0].style.display="none";
 						contentBody.innerText = "저장된 플랜이 없습니다 :(";
 					}
 					
@@ -447,6 +469,17 @@ p#contentTitle {
 					
 					//-------------------------------------------------------------------------------
 				});
+						
+						
+				const openRequest = ()=>{
+					
+					document.getElementsByClassName("request-container")[0].style.display="";
+					document.getElementsByClassName("content-body")[0].style.display="none";
+					document.getElementById("plannerMenu").classList.remove("active");
+					document.getElementById("requestMenu").classList.add("active");
+				
+				
+				}		
 			
 			
 </script>
