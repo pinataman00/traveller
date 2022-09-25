@@ -16,15 +16,27 @@ public class CreatorController {
 	private CreatorService service;
 	
 	@RequestMapping("/requestPlan.do")
-	public void requestPlan(Request request, Model model) {
+	public String requestPlan(Request request, Model model) {
 		
-		System.out.println("도착했니");
-		System.out.println(request);
 		
 		int res = service.insertRequest(request);
+		
+		String msg, loc = "";
+		
 		if(res>0) {
-			System.out.println("저장 성공!");
-		} else System.out.println("저장 실패!");
+		
+			msg = "의뢰 등록 완료! 검토 후 연락드리겠습니다 :)";
+			loc = "/";
+			
+		} else {
+			
+			msg = "등록 실패! 다시 시도해주세요 :(";
+			loc = "/creatorsBlog/"+request.getCreatorId(); //크리에이터 블로그로 이동
+		}
+		
+		model.addAttribute("msg",msg);
+		model.addAttribute("loc", loc);
+		return "common/msg";
 		
 	}
 

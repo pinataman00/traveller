@@ -37,6 +37,7 @@ public class MemberServiceImpl implements MemberService {
 			//後 PROFILEIMG테이블 : 회원 프로필 사진 저장
 			if(res>0&&m.getImage()!=null) { //회원 가입 절차 성공 AND 프로필 사진이 존재하는 경우
 				
+				System.out.println("가입은 일단 성공함!");
 				//MEMBER_ID값 저장하기
 				m.getImage().setMemberId(m.getMemberId());
 				res = dao.insertProfileimg(session, m.getImage());
